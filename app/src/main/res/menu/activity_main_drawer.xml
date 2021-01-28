@@ -9,13 +9,21 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="Inicio" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/responsablesFragment"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
+            android:title="Responsables" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/lineaTiempoFragment"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:title="Linea de tiempo" />
+        <item
+            android:id="@+id/clienteFragment"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Cliente" />
+        <item
+            android:id="@+id/estrategiasFragment"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Estrategias" />
 
     </group>
 </menu>

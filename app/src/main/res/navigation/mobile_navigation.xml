@@ -25,6 +25,26 @@
     <fragment
         android:id="@+id/inicioFragment"
         android:name="com.escom.gestorpro.InicioFragment"
-        android:label="fragment_inicio"
+        android:label="Inicio"
         tools:layout="@layout/fragment_inicio" />
+    <fragment
+        android:id="@+id/responsablesFragment"
+        android:name="com.escom.gestorpro.ResponsablesFragment"
+        android:label="Responsables"
+        tools:layout="@layout/fragment_responsables" />
+    <fragment
+        android:id="@+id/lineaTiempoFragment"
+        android:name="com.escom.gestorpro.LineaTiempoFragment"
+        android:label="Linea de tiempo"
+        tools:layout="@layout/fragment_linea_tiempo" />
+    <fragment
+        android:id="@+id/clienteFragment"
+        android:name="com.escom.gestorpro.ClienteFragment"
+        android:label="Cliente"
+        tools:layout="@layout/fragment_cliente" />
+    <fragment
+        android:id="@+id/estrategiasFragment"
+        android:name="com.escom.gestorpro.EstrategiasFragment"
+        android:label="Estrategias"
+        tools:layout="@layout/fragment_estrategias" />
 </navigation>

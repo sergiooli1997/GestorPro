@@ -13,4 +13,14 @@
     <string name="menu_slideshow">Slideshow</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ingrese_password">Ingrese contraseña</string>
+    <string name="ingresar">Ingresar</string>
+    <string name="sin_registro">Si aun no esta registrado ingrese aqui</string>
+    <string name="bienvenida">¡Te damos la bienvenida!</string>
+    <string name="logo">Logo</string>
+    <string name="registrate_ahora">REGISTRATE AHORA</string>
+    <string name="ingrese_usuario">Ingrese usuario</string>
+    <string name="correo_electronico">Correo electronico</string>
+    <string name="confirmar_contrase_a">Confirmar Contraseña</string>
+    <string name="registrarse">Registrarse</string>
 </resources>

@@ -14,34 +14,80 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/logo1"
-        android:contentDescription="Logo"/>
+        android:contentDescription="@string/logo"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="¡Te damos la bienvenida!"
+        android:text="@string/bienvenida"
         android:gravity="center"
         android:textSize="30sp"
         android:textColor="@color/white"
         />
-    <EditText
-        android:id="@+id/txtUsuario"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:hint="Ingrese usuario"
-        android:textColorHint="@color/white"
-        android:textColor="@color/white"
-        />
-    <EditText
-        android:id="@+id/txtPassword"
+        android:orientation="horizontal"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="40dp">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_person_pin"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="5dp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtUsuario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/ingrese_usuario"
+                android:inputType="textEmailAddress" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:layout_margin="20dp"
-        android:hint="Ingrese contraseña"
-        android:textColorHint="@color/white"
-        android:textColor="@color/white"/>
+        android:orientation="horizontal"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="5dp">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_https_black_24dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="5dp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/ingrese_password"
+                android:inputType="textPassword" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/btnIngresar"
@@ -49,16 +95,18 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="#818080"
-        android:text="Ingresar"
+        android:text="@string/ingresar"
         android:layout_marginTop="50dp"
-        android:textStyle="bold"
-        android:onClick="onClick"/>
+        android:textStyle="bold"/>
     <TextView
+        android:id="@+id/textViewRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Si aun no esta registrado ingrese aqui"
-        android:layout_marginTop="60dp"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:text="@string/sin_registro"
+        android:layout_marginTop="35dp"
         android:textColor="@color/white"/>
 
 

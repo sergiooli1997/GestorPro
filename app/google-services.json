@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1075966399886",
+    "project_id": "gestorpro-5ccf9",
+    "storage_bucket": "gestorpro-5ccf9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1075966399886:android:d8e0a7f05a83c6e60c00df",
+        "android_client_info": {
+          "package_name": "com.escom.gestorpro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1075966399886-6ovf5sb18nb91uvtuu3se52s22tpn2kg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.escom.gestorpro",
+            "certificate_hash": "01b145ceb06be15df85b957fb71bef12d88c0b54"
+          }
+        },
+        {
+          "client_id": "1075966399886-l38q4pln6rv91f6v07njgefftcgkesmn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCM_F47LN5srWz4uZJ8LT14pxOCAI73HzU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1075966399886-l38q4pln6rv91f6v07njgefftcgkesmn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

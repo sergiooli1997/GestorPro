@@ -23,6 +23,7 @@
     <string name="correo_electronico">Correo electronico</string>
     <string name="confirmar_contrase_a">Confirmar Contraseña</string>
     <string name="registrarse">Registrarse</string>
+    <string name="registrar_tarea">Registrar tarea</string>
     <string name="title_activity_registro_tarea">RegistroTarea</string>
     <!--
     This string is used for square devices and overridden by hello_world in

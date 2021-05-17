@@ -6,12 +6,18 @@
     android:background="@drawable/background"
     tools:context=".LineaTiempoFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ImageView
+        android:id="@+id/imgTarea"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textColor="@color/white"
-        android:layout_margin="30dp"
-        android:text="Linea de tiempo Fragment" />
+        android:src="@drawable/eventos"
+        />
+
+    <Button
+        android:id="@+id/btnRegistroTarea"
+        android:layout_width="50dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="570dp"
+        android:layout_marginLeft="340dp"/>
 
 </FrameLayout>

@@ -6,12 +6,11 @@
     android:background="@drawable/background"
     tools:context=".ResponsablesFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RecyclerResponsable"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textColor="@color/white"
-        android:layout_margin="30dp"
-        android:text="Responsables Fragment" />
+        android:layout_marginTop="80dp"
+        android:layout_marginLeft="10dp"/>
 
 </FrameLayout>

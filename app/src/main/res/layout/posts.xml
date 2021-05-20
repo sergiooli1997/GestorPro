@@ -10,13 +10,14 @@
     app:cardUseCompatPadding="true">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="370dp"
+        android:layout_height="350dp"
         android:animateLayoutChanges="true"
+        android:layout_margin="10dp"
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -26,20 +27,32 @@
                 android:layout_height="50dp"
                 android:layout_margin="10dp"
                 android:src="@drawable/ic_clientes"
-                android:scaleType="centerCrop"/>
-            <TextView
-                android:id="@+id/horapost"
+                android:scaleType="centerCrop" />
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="21:30"
-                android:layout_margin="20dp"/>
+                android:orientation="vertical">
 
             <TextView
                 android:id="@+id/usuarioname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nombre de usuario"
-                android:layout_margin="20dp"/>
+                android:layout_margin="10dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="20sp"/>
+
+                <TextView
+                    android:id="@+id/horapost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="21:30"
+                    android:layout_marginLeft="10dp"/>
+        </LinearLayout>
+
+
 
         </LinearLayout>
 
@@ -48,18 +61,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Texto"
-            android:paddingTop="10dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            android:layout_margin="10dp"
             android:textSize="16sp"
-            android:maxLines="1"
             android:textColor="@color/black"/>
 
         <ImageView
             android:id="@+id/imageViewPostCard"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:src="@drawable/background"
+            android:src="@drawable/oficina"
             android:scaleType="centerCrop"/>
 
     <LinearLayout

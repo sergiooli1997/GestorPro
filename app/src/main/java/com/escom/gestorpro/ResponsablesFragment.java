@@ -83,6 +83,7 @@ public class ResponsablesFragment extends Fragment {
         listaResponsables.add(new ResponsablesCardElement("César Olivares Solano"));
         listaResponsables.add(new ResponsablesCardElement("Héctor García Estrada"));
         listaResponsables.add(new ResponsablesCardElement("Luis Hernández García"));
+        listaResponsables.add(new ResponsablesCardElement("Rocío Lozornio Olivares"));
         listaResponsables.add(new ResponsablesCardElement("Sergio Lozornio Olivares"));
 
     }

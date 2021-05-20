@@ -82,10 +82,10 @@ public class InicioFragment extends Fragment {
     }
 
     private void llenarlista() {
-        listaPost.add(new CardElement("Sergio", "12/02/21", "Hola"));
-        listaPost.add(new CardElement("Rocio", "12/02/21", "Me gusta mucho"));
-        listaPost.add(new CardElement("Norma", "12/02/21", "Saludos"));
-        listaPost.add(new CardElement("Lola", "12/02/21", "excelente trabajo"));
+        listaPost.add(new CardElement("Sergio", "13:30", "Primer día. ¡Qué emoción!"));
+        listaPost.add(new CardElement("Rocio", "12:55", "Ánimo equipo."));
+        listaPost.add(new CardElement("Norma", "11:34", "Hoy en la reunión hubo muchas ideas."));
+        listaPost.add(new CardElement("Lola", "11:30", "Excelente trabajo. Nos felicitaron."));
 
     }
 }

@@ -4,27 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context=".InicioFragment">
+    tools:context=".proyectosFragment">
 
-    <TextView
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textColor="@color/white"
-        android:gravity="right"
-        android:textSize="30sp"
+        android:layout_height="222dp"
         android:layout_margin="20dp"
-        android:text="¿Qué harás hoy?" />
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/RecyclerPost"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="80dp"
-        android:layout_marginLeft="10dp"/>
+        android:src="@drawable/proyectos" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/newPost"
+        android:id="@+id/newProyecto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"

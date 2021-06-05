@@ -3,7 +3,6 @@
     package="com.escom.gestorpro">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -13,12 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GestorPro">
+        <activity android:name=".nuevoProyectoActivity"></activity>
+        <activity android:name=".NuevoPost" />
         <activity
             android:name=".RegistroTarea"
-            android:label="@string/title_activity_registro_tarea">
-        </activity>
-
-
+            android:label="@string/title_activity_registro_tarea" />
         <!--
                Set to true if your app is Standalone, that is, it does not require the handheld
                app to run.

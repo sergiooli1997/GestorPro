@@ -12,62 +12,50 @@
         android:orientation="vertical"
 
         android:layout_margin="20dp">
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="BUENAS PRÁCTICAS"
+            android:text="Selecciona una de las opciones debajo y
+empieza a mejorar tu calidad de trabajo."
+            android:textColor="@color/white"
             android:textSize="20sp"
-            android:gravity="left"
-            android:textColor="@color/white"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Aquí encontrarás las buenas prácticas
-que puedes seguir en el desarrollo de tu proyecto."
-            android:textSize="10sp"
-            android:gravity="left"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:layout_marginTop="20dp"/>
-
+            android:gravity="center"
+            android:layout_marginBottom="20dp"/>
         <Button
-            android:id="@+id/btnBuenasPracticas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="30dp"
-            android:text="Vamos allá..."/>
+            android:text="Estrategias empresariales"
+            android:layout_margin="10dp"
+            />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Buenas prácticas"
+            android:layout_margin="10dp"
+            />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Conceptos fundamentales del desarrollo"
+            android:layout_margin="10dp"
+            />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="ESTRATEGIAS EMPRESARIALES"
-            android:textSize="20sp"
-            android:gravity="left"
+            android:text="Selecciona esta opción para realizar un análsis
+de las tendencias"
             android:textColor="@color/white"
-            android:textStyle="bold"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:layout_marginBottom="20dp"
             android:layout_marginTop="80dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Aquí encontrarás un análisis del mercado
-al momento con base en nuestra información recopilada."
-            android:textSize="10sp"
-            android:gravity="left"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:layout_marginTop="20dp"/>
-
         <Button
-            android:id="@+id/btnEstrategias"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="30dp"
-            android:text="Vamos allá..."/>
-
+            android:text="Análisis de datos"
+            android:layout_margin="10dp"
+            />
     </LinearLayout>
 
 </FrameLayout>

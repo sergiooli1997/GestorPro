@@ -9,13 +9,17 @@
             android:icon="@drawable/ic_home"
             android:title="Inicio" />
         <item
+            android:id="@+id/proyectosFragment"
+            android:icon="@drawable/ic_baseline_assessment"
+            android:title="Proyectos" />
+        <item
             android:id="@+id/responsablesFragment"
             android:icon="@drawable/ic_responsables"
-            android:title="Responsables" />
+            android:title="Miembros del equipo" />
         <item
             android:id="@+id/lineaTiempoFragment"
             android:icon="@drawable/ic_eventos"
-            android:title="Eventos" />
+            android:title="Tareas" />
         <item
             android:id="@+id/clienteFragment"
             android:icon="@drawable/ic_clientes"

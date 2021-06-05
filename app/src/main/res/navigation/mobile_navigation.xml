@@ -47,4 +47,9 @@
         android:name="com.escom.gestorpro.EstrategiasFragment"
         android:label="Estrategias"
         tools:layout="@layout/fragment_estrategias" />
+    <fragment
+        android:id="@+id/proyectosFragment"
+        android:name="com.escom.gestorpro.proyectosFragment"
+        android:label="fragment_proyectos"
+        tools:layout="@layout/fragment_proyectos" />
 </navigation>

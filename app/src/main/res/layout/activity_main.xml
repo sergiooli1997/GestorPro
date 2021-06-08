@@ -91,7 +91,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="¿Olvidaste tu contraseña"
+        android:text="¿Olvidaste tu contraseña?"
         android:textColor="@color/white"
         android:gravity="center"
         android:layout_marginTop="20dp"
@@ -104,17 +104,17 @@
         android:layout_gravity="center"
         android:background="#818080"
         android:text="@string/ingresar"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:textStyle="bold"/>
     <TextView
         android:id="@+id/textViewRegister"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center"
         android:textStyle="bold"
         android:textSize="22sp"
         android:text="@string/sin_registro"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:textColor="@color/white"/>
 
 

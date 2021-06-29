@@ -3,6 +3,7 @@ package com.escom.gestorpro;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
     CircleImageView mCircleImageViewBack;
     TextInputEditText mTextInputUsername;
     TextInputEditText mTextInputEmail;
+    TextInputEditText mTextInputCel;
     TextInputEditText mTextInputPassword;
     TextInputEditText mTextInputConfirmPassword;
     Button mButtonRegister;
@@ -40,6 +42,7 @@ public class RegisterActivity extends AppCompatActivity {
         mCircleImageViewBack = findViewById(R.id.circleImageBack);
         mTextInputEmail = findViewById(R.id.textInputEmail);
         mTextInputUsername = findViewById(R.id.textInputUsername);
+        mTextInputCel = findViewById(R.id.textInputCel);
         mTextInputPassword = findViewById(R.id.textInputPassword);
         mTextInputConfirmPassword = findViewById(R.id.textInputConfirmPassword);
         mButtonRegister = findViewById(R.id.btnRegister);
@@ -65,6 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void register() {
         String username = mTextInputUsername.getText().toString();
         String email = mTextInputEmail.getText().toString();
+        String cel = mTextInputCel.getText().toString();
         String password  = mTextInputPassword.getText().toString();
         String confirmPassword = mTextInputConfirmPassword.getText().toString();
 
@@ -72,7 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
             if (isEmailValid(email)) {
                 if (password.length() >= 6)
                 {
-                    createUser(username, email, password);
+                    createUser(username, email, cel, password);
                 }
                 else
                 {
@@ -88,7 +92,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
     
-    private void createUser (final String usuario, final String email, String password){
+    private void createUser (final String usuario, final String email, String cel, String password){
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -97,11 +101,15 @@ public class RegisterActivity extends AppCompatActivity {
                     Map<String, Object> map = new HashMap<>();
                     map.put("usuario", usuario);
                     map.put("email", email);
+                    map.put("celular", cel);
                     mFirestore.collection("Usuarios").document(id).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()){
                                 Toast.makeText(RegisterActivity.this, "Usuario registrado correctamente", Toast.LENGTH_LONG).show();
+                                Intent miIntent = new Intent(RegisterActivity.this, MainActivity.class);
+                                startActivity(miIntent);
+
                             }
                             else{
                                 Toast.makeText(RegisterActivity.this, "No se pudo registrar usuario", Toast.LENGTH_LONG).show();

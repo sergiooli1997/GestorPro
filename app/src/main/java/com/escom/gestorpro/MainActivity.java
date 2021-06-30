@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()){
-                                Intent miIntent = new Intent(MainActivity.this, MenuActivity.class);
+                                Intent miIntent = new Intent(MainActivity.this, CompleteProfileActivity.class);
                                 startActivity(miIntent);
                             }
                             else{

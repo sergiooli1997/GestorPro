@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GestorPro">
-        <activity android:name=".nuevoProyectoActivity"></activity>
+        <activity android:name=".CompleteProfileActivity"></activity>
+        <activity android:name=".nuevoProyectoActivity" />
         <activity android:name=".NuevoPost" />
         <activity
             android:name=".RegistroTarea"

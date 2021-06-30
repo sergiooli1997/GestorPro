@@ -1,4 +1,4 @@
-package com.escom.gestorpro;
+package com.escom.gestorpro.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,27 +9,26 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.escom.gestorpro.R;
+import com.escom.gestorpro.models.Users;
+import com.escom.gestorpro.providers.AuthProvider;
+import com.escom.gestorpro.providers.UserProvider;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CompleteProfileActivity extends AppCompatActivity {
 
     TextInputEditText mTextInputUsername;
     TextInputEditText mTextInputCel;
     Button mButtonRegister;
-    FirebaseAuth mAuth;
-    FirebaseFirestore mFirestore;
+    AuthProvider mAuthProvider;
+    UserProvider mUsersProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +38,8 @@ public class CompleteProfileActivity extends AppCompatActivity {
         mTextInputCel = findViewById(R.id.textInputCel);
         mButtonRegister = findViewById(R.id.btConfirm);
 
-        mAuth = FirebaseAuth.getInstance();
-        mFirestore = FirebaseFirestore.getInstance();
+        mAuthProvider = new AuthProvider();
+        mUsersProvider = new UserProvider();
 
         mButtonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,11 +63,12 @@ public class CompleteProfileActivity extends AppCompatActivity {
     }
 
     private void updateUser (final String usuario, String cel){
-        String id = mAuth.getCurrentUser().getUid();
-        Map<String, Object> map = new HashMap<>();
-        map.put("usuario", usuario);
-        map.put("celular", cel);
-        mFirestore.collection("Usuarios").document(id).update(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+        String id = mAuthProvider.getUid();
+        Users user = new Users();
+        user.setUsuario(usuario);
+        user.setCelular(cel);
+        user.setId(id);
+        mUsersProvider.update(user).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){

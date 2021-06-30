@@ -1,9 +1,10 @@
-package com.escom.gestorpro;
+package com.escom.gestorpro.activities;
 
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
 
+import com.escom.gestorpro.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;

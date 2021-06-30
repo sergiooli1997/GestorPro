@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GestorPro">
-        <activity android:name=".CompleteProfileActivity"></activity>
+        <activity android:name=".activities.CompleteProfileActivity"></activity>
         <activity android:name=".nuevoProyectoActivity" />
         <activity android:name=".NuevoPost" />
         <activity
@@ -26,12 +26,12 @@
             android:name="com.google.android.wearable.standalone"
             android:value="true" />
 
-        <activity android:name=".RegisterActivity" />
+        <activity android:name=".activities.RegisterActivity" />
         <activity
-            android:name=".MenuActivity"
+            android:name=".activities.MenuActivity"
             android:label="@string/title_activity_menu"
             android:theme="@style/Theme.GestorPro.NoActionBar" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

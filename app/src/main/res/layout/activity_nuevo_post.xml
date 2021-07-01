@@ -5,13 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context=".NuevoPost">
+    tools:context=".activities.NuevoPost">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
-        android:background="@color/white"
         android:orientation="vertical">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -49,7 +48,7 @@
                     android:text="Nombre de usuario"
                     android:layout_margin="10dp"
                     android:textStyle="bold"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="20sp"/>
 
             </LinearLayout>
@@ -58,19 +57,39 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/textPost"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="¿Qué estas pensando?"
-            android:layout_margin="10dp"
-            android:textSize="50sp"
-            android:textColor="#BCB3B3"/>
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputPost"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="¿Qué estas pensando?"
+                android:textSize="30sp"
+                android:inputType="textEmailAddress" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:text="Subir una imagen"
+                android:gravity="center"
+                android:textSize="30sp"
+                android:textColor="@color/white" />
+            <ImageView
+                android:id="@+id/subirImagen"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:src="@drawable/ic_baseline_cloud_upload_24"/>
 
 
 
     </LinearLayout>
     <Button
+        android:id="@+id/btnPublicar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

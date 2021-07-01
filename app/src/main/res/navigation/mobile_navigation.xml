@@ -24,7 +24,7 @@
         tools:layout="@layout/fragment_slideshow" />
     <fragment
         android:id="@+id/inicioFragment"
-        android:name="com.escom.gestorpro.InicioFragment"
+        android:name="com.escom.gestorpro.fragments.InicioFragment"
         android:label="Inicio"
         tools:layout="@layout/fragment_inicio" />
     <fragment

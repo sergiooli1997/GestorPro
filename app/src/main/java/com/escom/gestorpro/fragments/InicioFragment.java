@@ -1,4 +1,4 @@
-package com.escom.gestorpro;
+package com.escom.gestorpro.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,10 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.escom.gestorpro.CardElement;
+import com.escom.gestorpro.activities.NuevoPost;
+import com.escom.gestorpro.PostAdapter;
+import com.escom.gestorpro.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.

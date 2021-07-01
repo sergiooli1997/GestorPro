@@ -187,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
                     mDialog.dismiss();
                     if (task.isSuccessful()){
                         Intent miIntent = new Intent(MainActivity.this, MenuActivity.class);
+                        miIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(miIntent);
                     }
                     else{

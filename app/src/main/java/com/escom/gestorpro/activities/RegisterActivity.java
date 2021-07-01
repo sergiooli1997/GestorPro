@@ -123,7 +123,8 @@ public class RegisterActivity extends AppCompatActivity {
                             mDialog.dismiss();
                             if (task.isSuccessful()){
                                 Toast.makeText(RegisterActivity.this, "Usuario registrado correctamente", Toast.LENGTH_LONG).show();
-                                Intent miIntent = new Intent(RegisterActivity.this, MainActivity.class);
+                                Intent miIntent = new Intent(RegisterActivity.this, MenuActivity.class);
+                                miIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(miIntent);
 
                             }

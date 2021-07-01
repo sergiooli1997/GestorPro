@@ -3,6 +3,7 @@ package com.escom.gestorpro.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -22,11 +23,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import dmax.dialog.SpotsDialog;
+
 public class CompleteProfileActivity extends AppCompatActivity {
 
     TextInputEditText mTextInputUsername;
     TextInputEditText mTextInputCel;
     Button mButtonRegister;
+    AlertDialog mDialog;
+
     AuthProvider mAuthProvider;
     UserProvider mUsersProvider;
 
@@ -37,6 +42,11 @@ public class CompleteProfileActivity extends AppCompatActivity {
         mTextInputUsername = findViewById(R.id.textInputUsername);
         mTextInputCel = findViewById(R.id.textInputCel);
         mButtonRegister = findViewById(R.id.btConfirm);
+        mDialog = new SpotsDialog.Builder()
+                .setContext(this)
+                .setMessage("Espere un momento")
+                .setCancelable(false)
+                .build();
 
         mAuthProvider = new AuthProvider();
         mUsersProvider = new UserProvider();
@@ -68,11 +78,14 @@ public class CompleteProfileActivity extends AppCompatActivity {
         user.setUsuario(usuario);
         user.setCelular(cel);
         user.setId(id);
+        mDialog.show();
         mUsersProvider.update(user).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
+                mDialog.dismiss();
                 if (task.isSuccessful()){
                     Intent miIntent = new Intent(CompleteProfileActivity.this, MenuActivity.class);
+                    miIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(miIntent);
 
                 }

@@ -3,6 +3,7 @@ package com.escom.gestorpro.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +36,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import dmax.dialog.SpotsDialog;
+
 public class MainActivity extends AppCompatActivity {
     TextView textViewRegister;
     TextInputEditText txtInputEmail;
@@ -43,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     AuthProvider mauthProvider;
     UserProvider mUsersProvider;
     SignInButton signInButton;
+    AlertDialog mDialog;
+
     private GoogleSignInClient mGoogleSignInClient;
     private final int REQUEST_CODE_GOOGLE = 1;
 
@@ -57,6 +62,11 @@ public class MainActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnIngresar);
         mauthProvider = new AuthProvider();
         signInButton = findViewById(R.id.btnLoginGoogle);
+        mDialog = new SpotsDialog.Builder()
+                .setContext(this)
+                .setMessage("Espere un momento")
+                .setCancelable(false)
+                .build();
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -116,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        mDialog.show();
         mauthProvider.googleLogin(acct).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -123,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
                             String id = mauthProvider.getUid();
                             checkUserExist(id);
                         } else {
+                            mDialog.dismiss();
                             // If sign in fails, display a message to the user.
                             Log.w("ERROR", "signInWithCredential:failure", task.getException());
                             Toast.makeText(MainActivity.this, "No se pudo iniciar sesión con Google", Toast.LENGTH_LONG).show();
@@ -136,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()){
+                    mDialog.dismiss();
                     Intent miIntent = new Intent(MainActivity.this, MenuActivity.class);
                     startActivity(miIntent);
                 }
@@ -148,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
                     mUsersProvider.create(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
+                            mDialog.dismiss();
                             if (task.isSuccessful()){
                                 Intent miIntent = new Intent(MainActivity.this, CompleteProfileActivity.class);
                                 startActivity(miIntent);
@@ -166,11 +180,11 @@ public class MainActivity extends AppCompatActivity {
     private void login() {
             String email = txtInputEmail.getText().toString();
             String password = txtInputPassword.getText().toString();
-            Log.d("CAMPO", "email: " + email);
-            Log.d("CAMPO", "password: " + password);
+            mDialog.show();
             mauthProvider.login(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
+                    mDialog.dismiss();
                     if (task.isSuccessful()){
                         Intent miIntent = new Intent(MainActivity.this, MenuActivity.class);
                         startActivity(miIntent);

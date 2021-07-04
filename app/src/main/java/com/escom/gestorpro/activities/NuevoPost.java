@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -30,6 +31,7 @@ import com.google.firebase.storage.UploadTask;
 import java.io.File;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import dmax.dialog.SpotsDialog;
 
 public class NuevoPost extends AppCompatActivity {
     CircleImageView mCircleImageViewBack;
@@ -41,6 +43,7 @@ public class NuevoPost extends AppCompatActivity {
     AuthProvider mAuthProvider;
     TextInputEditText mTextInputDesc;
     TextView mTextViewUsuario;
+    AlertDialog mDialog;
 
     String descripcion = "";
 
@@ -54,6 +57,11 @@ public class NuevoPost extends AppCompatActivity {
         mImagePrivder = new ImageProvider();
         mPostProvider = new PostProvider();
         mAuthProvider = new AuthProvider();
+        mDialog = new SpotsDialog.Builder()
+                .setContext(this)
+                .setMessage("Espere un momento")
+                .setCancelable(false)
+                .build();
 
         mCircleImageViewBack = findViewById(R.id.circleImageBack);
         mImageViewPost = findViewById(R.id.subirImagen);
@@ -91,6 +99,7 @@ public class NuevoPost extends AppCompatActivity {
     }
 
     private void saveImage() {
+        mDialog.show();
         mImagePrivder.save(NuevoPost.this, mImageFile).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
@@ -107,6 +116,7 @@ public class NuevoPost extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> taskSave) {
                                     if (taskSave.isSuccessful()){
+                                        mDialog.dismiss();
                                         Intent intent = new Intent(NuevoPost.this, MenuActivity.class);
                                         startActivity(intent);
                                         Toast.makeText(NuevoPost.this, "La información se almacenó correctamente", Toast.LENGTH_LONG).show();
@@ -120,6 +130,7 @@ public class NuevoPost extends AppCompatActivity {
                     });
                 }
                 else{
+                    mDialog.dismiss();
                     Toast.makeText(NuevoPost.this, "Hubo un error al amacenar la imagen", Toast.LENGTH_LONG).show();
                 }
             }

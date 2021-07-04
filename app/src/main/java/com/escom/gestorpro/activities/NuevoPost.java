@@ -3,12 +3,16 @@ package com.escom.gestorpro.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -27,8 +31,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import dmax.dialog.SpotsDialog;
@@ -44,10 +51,16 @@ public class NuevoPost extends AppCompatActivity {
     TextInputEditText mTextInputDesc;
     TextView mTextViewUsuario;
     AlertDialog mDialog;
+    AlertDialog.Builder mBuilderSelector;
+    CharSequence options[];
 
     String descripcion = "";
+    String mAbsolutePhotoPath;
+    String mPhotoPath;
+    File mPhotoFile;
 
     private final int GALLERY_REQUEST_CODE = 1;
+    private final int PHOTO_REQUEST_CODE = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +75,10 @@ public class NuevoPost extends AppCompatActivity {
                 .setMessage("Espere un momento")
                 .setCancelable(false)
                 .build();
+
+        mBuilderSelector = new AlertDialog.Builder(this);
+        mBuilderSelector.setTitle("Selecciona una opción");
+        options = new CharSequence[] {"Imagen de galeria", "Tomar foto"};
 
         mCircleImageViewBack = findViewById(R.id.circleImageBack);
         mImageViewPost = findViewById(R.id.subirImagen);
@@ -79,7 +96,7 @@ public class NuevoPost extends AppCompatActivity {
         mImageViewPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openGallery();
+                selectOptionImage(GALLERY_REQUEST_CODE);
             }
         });
 
@@ -91,16 +108,70 @@ public class NuevoPost extends AppCompatActivity {
         });
     }
 
-    private void clickPost() {
-        descripcion = mTextInputDesc.getText().toString();
-        if (mImageFile != null){
-            saveImage();
+    private void selectOptionImage(int requestCode) {
+        mBuilderSelector.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                if (i == 0 ){
+                    openGallery(requestCode);
+                }
+                else if (i == 1){
+                    takePhoto();
+                }
+            }
+        });
+
+        mBuilderSelector.show();
+    }
+
+    private void takePhoto() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = createPhotoFile();
+            } catch(Exception e) {
+                Toast.makeText(this, "Hubo un error con el archivo " + e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+
+            if (photoFile != null) {
+                Uri photoUri = FileProvider.getUriForFile(NuevoPost.this, "com.escom.gestorpro", photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                startActivityForResult(takePictureIntent, PHOTO_REQUEST_CODE);
+            }
         }
     }
 
-    private void saveImage() {
+    private File createPhotoFile() throws IOException {
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File photoFile = File.createTempFile(
+                new Date() + "_photo",
+                ".jpg",
+                storageDir
+        );
+        mPhotoPath = "file:" + photoFile.getAbsolutePath();
+        mAbsolutePhotoPath = photoFile.getAbsolutePath();
+        return photoFile;
+    }
+
+    private void clickPost() {
+        descripcion = mTextInputDesc.getText().toString();
+        //SELECCIONO FOTO DE GALERIA
+        if (mImageFile != null){
+            saveImage(mImageFile);
+        }
+        //TOMO FOTO DESDE CAMARA
+        else if (mPhotoFile != null){
+            saveImage(mPhotoFile);
+        }
+        else{
+            Toast.makeText(NuevoPost.this, "Hubo un error al amacenar la imagen", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void saveImage(File imageFile) {
         mDialog.show();
-        mImagePrivder.save(NuevoPost.this, mImageFile).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+        mImagePrivder.save(NuevoPost.this, imageFile).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                 if (task.isSuccessful()){
@@ -137,10 +208,10 @@ public class NuevoPost extends AppCompatActivity {
         });
     }
 
-    private void openGallery() {
+    private void openGallery(int requestCode) {
         Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
         galleryIntent.setType("image/*");
-        startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE);
+        startActivityForResult(galleryIntent, requestCode);
     }
 
     @Override
@@ -148,6 +219,7 @@ public class NuevoPost extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK){
             try{
+                mPhotoFile = null;
                 mImageFile = FileUtil.from(this, data.getData());
                 mImageViewPost.setImageBitmap(BitmapFactory.decodeFile(mImageFile.getAbsolutePath()));
             }
@@ -155,6 +227,14 @@ public class NuevoPost extends AppCompatActivity {
                 Log.d("ERROR", "Se produjo un error " + e.getMessage());
                 Toast.makeText(this, "Se produjo un error" + e.getMessage(), Toast.LENGTH_LONG).show();
             }
+        }
+        /**
+         * SELECCION DE FOTOGRAFIA
+         */
+        if (requestCode == PHOTO_REQUEST_CODE && resultCode == RESULT_OK) {
+            mPhotoFile = new File(mAbsolutePhotoPath);
+            mImageFile = null;
+            Picasso.with(NuevoPost.this).load(mPhotoPath).into(mImageViewPost);
         }
     }
 }

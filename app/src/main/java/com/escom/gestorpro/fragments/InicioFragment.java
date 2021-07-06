@@ -11,13 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.escom.gestorpro.CardElement;
 import com.escom.gestorpro.activities.NuevoPost;
-import com.escom.gestorpro.PostAdapter;
 import com.escom.gestorpro.R;
+import com.escom.gestorpro.adapters.PostsAdapter;
+import com.escom.gestorpro.models.Post;
+import com.escom.gestorpro.providers.PostProvider;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.ArrayList;
+import com.google.firebase.firestore.Query;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,8 +37,9 @@ public class InicioFragment extends Fragment {
     private String mParam2;
 
 
-    RecyclerView recyclerView;
-    ArrayList<CardElement> listaPost;
+    RecyclerView mRecyclerView;
+    PostProvider mPostProvider;
+    PostsAdapter mPostAdapter;
     public InicioFragment() {
         // Required empty public constructor
     }
@@ -77,12 +79,11 @@ public class InicioFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View vista = inflater.inflate(R.layout.fragment_inicio, container, false);
-        listaPost = new ArrayList<>();
-        recyclerView = (RecyclerView) vista.findViewById(R.id.RecyclerPost);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        llenarlista();
-        PostAdapter adapter = new PostAdapter(listaPost, getContext());
-        recyclerView.setAdapter(adapter);
+        mPostProvider = new PostProvider();
+
+        mRecyclerView =  vista.findViewById(R.id.RecyclerPost);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(linearLayoutManager);
 
         FloatingActionButton fab = vista.findViewById(R.id.newPost);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -96,11 +97,22 @@ public class InicioFragment extends Fragment {
         return vista;
     }
 
-    private void llenarlista() {
-        listaPost.add(new CardElement("Sergio", "13:30", "Primer día. ¡Qué emoción!"));
-        listaPost.add(new CardElement("Rocio", "12:55", "Ánimo equipo."));
-        listaPost.add(new CardElement("Norma", "11:34", "Hoy en la reunión hubo muchas ideas."));
-        listaPost.add(new CardElement("Lola", "11:30", "Excelente trabajo. Nos felicitaron."));
+    @Override
+    public void onStart() {
+        super.onStart();
+        Query query = mPostProvider.getAll();
+        FirestoreRecyclerOptions<Post> options = new FirestoreRecyclerOptions.Builder<Post>()
+                .setQuery(query, Post.class)
+                .build();
 
+        mPostAdapter = new PostsAdapter(options, getContext());
+        mRecyclerView.setAdapter(mPostAdapter);
+        mPostAdapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mPostAdapter.stopListening();
     }
 }

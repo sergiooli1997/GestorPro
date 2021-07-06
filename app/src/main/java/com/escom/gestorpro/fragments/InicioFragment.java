@@ -3,18 +3,24 @@ package com.escom.gestorpro.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.escom.gestorpro.activities.MainActivity;
 import com.escom.gestorpro.activities.NuevoPost;
 import com.escom.gestorpro.R;
 import com.escom.gestorpro.adapters.PostsAdapter;
 import com.escom.gestorpro.models.Post;
+import com.escom.gestorpro.providers.AuthProvider;
 import com.escom.gestorpro.providers.PostProvider;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -40,6 +46,7 @@ public class InicioFragment extends Fragment {
     RecyclerView mRecyclerView;
     PostProvider mPostProvider;
     PostsAdapter mPostAdapter;
+    AuthProvider mAuthProvider;
     public InicioFragment() {
         // Required empty public constructor
     }
@@ -80,10 +87,12 @@ public class InicioFragment extends Fragment {
         // Inflate the layout for this fragment
         View vista = inflater.inflate(R.layout.fragment_inicio, container, false);
         mPostProvider = new PostProvider();
+        mAuthProvider = new AuthProvider();
 
         mRecyclerView =  vista.findViewById(R.id.RecyclerPost);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(linearLayoutManager);
+        setHasOptionsMenu(true);
 
         FloatingActionButton fab = vista.findViewById(R.id.newPost);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -114,5 +123,25 @@ public class InicioFragment extends Fragment {
     public void onStop() {
         super.onStop();
         mPostAdapter.stopListening();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.item_logout){
+            logout();
+        }
+        return true;
+    }
+
+    private void logout() {
+        mAuthProvider.logout();
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }

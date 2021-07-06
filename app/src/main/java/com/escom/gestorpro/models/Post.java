@@ -3,14 +3,14 @@ package com.escom.gestorpro.models;
 public class Post {
     private String id;
     private String usuario;
-    private String fecha;
+    private long fecha;
     private String texto;
     private String image;
 
     public Post(){
 
     }
-    public Post(String id, String usuario, String fecha, String texto, String image) {
+    public Post(String id, String usuario, long fecha, String texto, String image) {
         this.id = id;
         this.usuario = usuario;
         this.fecha = fecha;
@@ -34,11 +34,11 @@ public class Post {
         this.usuario = usuario;
     }
 
-    public String getFecha() {
+    public long getFecha() {
         return fecha;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(long fecha) {
         this.fecha = fecha;
     }
 

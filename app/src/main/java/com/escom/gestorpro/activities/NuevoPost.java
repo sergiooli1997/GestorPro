@@ -183,6 +183,7 @@ public class NuevoPost extends AppCompatActivity {
                             post.setImage(url);
                             post.setTexto(descripcion);
                             post.setUsuario(mAuthProvider.getUid());
+                            post.setFecha(new Date().getTime());
                             mPostProvider.save(post).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> taskSave) {

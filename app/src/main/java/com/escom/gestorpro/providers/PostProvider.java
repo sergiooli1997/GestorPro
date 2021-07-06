@@ -19,6 +19,6 @@ public class PostProvider {
     }
 
     public Query getAll() {
-        return mCollection.orderBy("texto", Query.Direction.DESCENDING);
+        return mCollection.orderBy("fecha", Query.Direction.DESCENDING);
     }
 }

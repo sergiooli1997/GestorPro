@@ -29,27 +29,27 @@
         tools:layout="@layout/fragment_inicio" />
     <fragment
         android:id="@+id/responsablesFragment"
-        android:name="com.escom.gestorpro.ResponsablesFragment"
+        android:name="com.escom.gestorpro.fragments.ResponsablesFragment"
         android:label="Miembros del equipo"
         tools:layout="@layout/fragment_responsables" />
     <fragment
         android:id="@+id/lineaTiempoFragment"
-        android:name="com.escom.gestorpro.LineaTiempoFragment"
+        android:name="com.escom.gestorpro.fragments.LineaTiempoFragment"
         android:label="Linea de tiempo"
         tools:layout="@layout/fragment_linea_tiempo" />
     <fragment
         android:id="@+id/clienteFragment"
-        android:name="com.escom.gestorpro.ClienteFragment"
+        android:name="com.escom.gestorpro.fragments.ClienteFragment"
         android:label="Cliente"
         tools:layout="@layout/fragment_cliente" />
     <fragment
         android:id="@+id/estrategiasFragment"
-        android:name="com.escom.gestorpro.EstrategiasFragment"
+        android:name="com.escom.gestorpro.fragments.EstrategiasFragment"
         android:label="Estrategias"
         tools:layout="@layout/fragment_estrategias" />
     <fragment
         android:id="@+id/proyectosFragment"
-        android:name="com.escom.gestorpro.proyectosFragment"
+        android:name="com.escom.gestorpro.fragments.proyectosFragment"
         android:label="Proyectos"
         tools:layout="@layout/fragment_proyectos" />
 </navigation>

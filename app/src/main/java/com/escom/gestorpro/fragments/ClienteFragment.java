@@ -1,4 +1,4 @@
-package com.escom.gestorpro;
+package com.escom.gestorpro.fragments;
 
 import android.os.Bundle;
 
@@ -8,23 +8,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.escom.gestorpro.R;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link EstrategiasFragment#newInstance} factory method to
+ * Use the {@link ClienteFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EstrategiasFragment extends Fragment {
+public class ClienteFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
+    // TODO: Agregar logout al action bar
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    public EstrategiasFragment() {
+    public ClienteFragment() {
         // Required empty public constructor
     }
 
@@ -34,11 +35,10 @@ public class EstrategiasFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment EstrategiasFragment.
+     * @return A new instance of fragment ClienteFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static EstrategiasFragment newInstance(String param1, String param2) {
-        EstrategiasFragment fragment = new EstrategiasFragment();
+    public static ClienteFragment newInstance(String param1, String param2) {
+        ClienteFragment fragment = new ClienteFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,6 +59,6 @@ public class EstrategiasFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_estrategias, container, false);
+        return inflater.inflate(R.layout.fragment_cliente, container, false);
     }
 }

@@ -1,6 +1,5 @@
-package com.escom.gestorpro;
+package com.escom.gestorpro.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,25 +8,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.escom.gestorpro.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link proyectosFragment#newInstance} factory method to
+ * Use the {@link EstrategiasFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class proyectosFragment extends Fragment {
+public class EstrategiasFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
+    // TODO: Agregar logout al action bar
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    public proyectosFragment() {
+    public EstrategiasFragment() {
         // Required empty public constructor
     }
 
@@ -37,11 +35,10 @@ public class proyectosFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment proyectosFragment.
+     * @return A new instance of fragment EstrategiasFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static proyectosFragment newInstance(String param1, String param2) {
-        proyectosFragment fragment = new proyectosFragment();
+    public static EstrategiasFragment newInstance(String param1, String param2) {
+        EstrategiasFragment fragment = new EstrategiasFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -62,17 +59,6 @@ public class proyectosFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View vista = inflater.inflate(R.layout.fragment_proyectos, container, false);
-        FloatingActionButton fab = vista.findViewById(R.id.newProyecto);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent miIntent = new Intent(getActivity(), nuevoProyectoActivity.class);
-                startActivity(miIntent);
-            }
-        });
-
-
-        return vista;
+        return inflater.inflate(R.layout.fragment_estrategias, container, false);
     }
 }

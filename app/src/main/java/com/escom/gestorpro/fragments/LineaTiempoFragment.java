@@ -1,4 +1,4 @@
-package com.escom.gestorpro;
+package com.escom.gestorpro.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
+
+import com.escom.gestorpro.R;
+import com.escom.gestorpro.activities.RegistroTarea;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,12 +20,11 @@ import android.widget.ImageView;
  */
 public class LineaTiempoFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
+    // TODO: Agregar logout al action bar
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -41,7 +42,6 @@ public class LineaTiempoFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment LineaTiempoFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static LineaTiempoFragment newInstance(String param1, String param2) {
         LineaTiempoFragment fragment = new LineaTiempoFragment();
         Bundle args = new Bundle();

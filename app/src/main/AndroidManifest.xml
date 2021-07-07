@@ -29,10 +29,10 @@
         </provider>
 
         <activity android:name=".activities.CompleteProfileActivity"></activity>
-        <activity android:name=".nuevoProyectoActivity" />
+        <activity android:name=".activities.nuevoProyectoActivity" />
         <activity android:name=".activities.NuevoPost" />
         <activity
-            android:name=".RegistroTarea"
+            android:name=".activities.RegistroTarea"
             android:label="@string/title_activity_registro_tarea" />
         <!--
                Set to true if your app is Standalone, that is, it does not require the handheld

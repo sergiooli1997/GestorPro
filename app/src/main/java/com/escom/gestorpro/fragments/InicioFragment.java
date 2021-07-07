@@ -125,18 +125,6 @@ public class InicioFragment extends Fragment {
         mPostAdapter.stopListening();
     }
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.item_logout){
-            logout();
-        }
-        return true;
-    }
 
     private void logout() {
         mAuthProvider.logout();

@@ -5,17 +5,37 @@ public class Users {
     private String email;
     private String usuario;
     private String celular;
+    private String imageProfile;
+    private String imageCover;
 
 
     public Users() {
 
     }
 
-    public Users(String id, String email, String usuario, String celular) {
+    public Users(String id, String email, String usuario, String celular, String imageProfile ,String imageCover) {
         this.id = id;
         this.email = email;
         this.usuario = usuario;
         this.celular = celular;
+        this.imageProfile = imageProfile;
+        this.imageCover = imageCover;
+    }
+
+    public String getImageProfile() {
+        return imageProfile;
+    }
+
+    public void setImageProfile(String imageProfile) {
+        this.imageProfile = imageProfile;
+    }
+
+    public String getImageCover() {
+        return imageCover;
+    }
+
+    public void setImageCover(String imageCover) {
+        this.imageCover = imageCover;
     }
 
     public String getId() {

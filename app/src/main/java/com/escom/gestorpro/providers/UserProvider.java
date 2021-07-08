@@ -28,6 +28,8 @@ public class UserProvider {
         Map<String, Object> map = new HashMap<>();
         map.put("usuario", user.getUsuario());
         map.put("celular", user.getCelular());
+        map.put("image_profile", user.getImageProfile());
+        map.put("image_cover", user.getImageCover());
         return mCollection.document(user.getId()).update(map);
     }
 }

@@ -5,46 +5,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".activities.RegisterActivity">
+    tools:context=".activities.EditProfileActivity">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/black" />
+
+    <ImageView
+        android:id="@+id/imageViewCover"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/oficina"
+        android:scaleType="centerCrop"
+        android:alpha="0.8"
+        app:layout_collapseMode="parallax"
+        android:transitionName="@string/transitionname_picture"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleImageProfile"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:src="@drawable/ic_person"
+        app:civ_circle_background_color="@color/white"
+        android:layout_marginTop="130dp"
+        app:civ_border_color="#AAAAAA"
+        app:civ_border_width="5dp"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-
-        <com.github.florent37.shapeofview.shapes.ArcView
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:elevation="4dp"
-            app:shape_arc_cropDirection="outside"
-            app:shape_arc_height="20dp"
-            app:shape_arc_position="bottom"
-            >
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#423E3E" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Completa tu información"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="22sp"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:src="@drawable/ic_person"
-                android:layout_gravity="center"
-                android:layout_marginTop="40dp" />
-
-        </com.github.florent37.shapeofview.shapes.ArcView>
+        android:orientation="vertical"
+        android:layout_marginTop="230dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -70,7 +63,7 @@
                     android:id="@+id/textInputUsername"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/ingrese_usuario"
+                    android:hint="Nombre de usuario"
                     android:inputType="text" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -78,12 +71,14 @@
 
         </LinearLayout>
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp">
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="10dp">
 
             <ImageView
                 android:layout_width="30dp"
@@ -98,28 +93,37 @@
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/textInputCel"
+                    android:id="@+id/textInputPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Ingrese celular de contacto"
+                    android:hint="Telefono"
                     android:inputType="numberSigned" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+
         </LinearLayout>
 
     </LinearLayout>
 
-
     <Button
-        android:id="@+id/btConfirm"
+        android:id="@+id/btnEditProfile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Confirmar"
-        android:layout_gravity="bottom"
+        android:text="Actualizar"
         android:textColor="@color/white"
-        android:layout_margin="20dp"/>
+        android:layout_gravity="bottom"
+        android:layout_margin="20dp" />
 
 
-
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleImageBack"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:src="@drawable/ic_arrow_left"
+        android:layout_margin="10dp"
+        android:scaleType="centerCrop"
+        app:civ_circle_background_color="@color/white"
+        />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

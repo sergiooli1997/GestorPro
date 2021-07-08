@@ -1,5 +1,6 @@
 package com.escom.gestorpro.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,8 +8,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.escom.gestorpro.R;
+import com.escom.gestorpro.activities.EditProfileActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +19,9 @@ import com.escom.gestorpro.R;
  * create an instance of this fragment.
  */
 public class profileFragment extends Fragment {
+
+    LinearLayout mLinearLayoutEditProfile;
+    View mView;
 
     // TODO: Agregar logout al action bar
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -59,6 +65,21 @@ public class profileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        mView = inflater.inflate(R.layout.fragment_profile, container, false);
+        mLinearLayoutEditProfile = mView.findViewById(R.id.linearLayoutEditProfile);
+        mLinearLayoutEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToEditProfile();
+            }
+        });
+
+
+        return mView;
+    }
+
+    private void goToEditProfile() {
+        Intent intent = new Intent(getContext(), EditProfileActivity.class);
+        startActivity(intent);
     }
 }

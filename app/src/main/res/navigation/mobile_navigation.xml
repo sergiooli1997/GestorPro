@@ -52,4 +52,9 @@
         android:name="com.escom.gestorpro.fragments.proyectosFragment"
         android:label="Proyectos"
         tools:layout="@layout/fragment_proyectos" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.escom.gestorpro.fragments.profileFragment"
+        android:label="Mi perfil"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

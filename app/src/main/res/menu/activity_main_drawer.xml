@@ -9,6 +9,10 @@
             android:icon="@drawable/ic_home"
             android:title="Inicio" />
         <item
+            android:id="@+id/profileFragment"
+            android:icon="@drawable/ic_person"
+            android:title="Mi perfil" />
+        <item
             android:id="@+id/proyectosFragment"
             android:icon="@drawable/ic_baseline_assessment"
             android:title="Proyectos" />

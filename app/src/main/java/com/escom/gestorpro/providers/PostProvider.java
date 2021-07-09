@@ -21,4 +21,8 @@ public class PostProvider {
     public Query getAll() {
         return mCollection.orderBy("fecha", Query.Direction.DESCENDING);
     }
+
+    public Query getPostByUser(String id) {
+        return mCollection.whereEqualTo("usuario", id);
+    }
 }

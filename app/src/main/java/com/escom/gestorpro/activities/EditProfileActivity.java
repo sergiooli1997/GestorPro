@@ -150,16 +150,16 @@ public class EditProfileActivity extends AppCompatActivity {
                         mPhone = documentSnapshot.getString("celular");
                         mTextInputPhone.setText(mPhone);
                     }
-                    if (documentSnapshot.contains("image_profile")) {
-                        mImageProfile = documentSnapshot.getString("image_profile");
+                    if (documentSnapshot.contains("imageProfile")) {
+                        mImageProfile = documentSnapshot.getString("imageProfile");
                         if (mImageProfile != null) {
                             if (!mImageProfile.isEmpty()) {
                                 Picasso.with(EditProfileActivity.this).load(mImageProfile).into(mCircleImageViewProfile);
                             }
                         }
                     }
-                    if (documentSnapshot.contains("image_cover")) {
-                        mImageCover = documentSnapshot.getString("image_cover");
+                    if (documentSnapshot.contains("imageCover")) {
+                        mImageCover = documentSnapshot.getString("imageCover");
                         if (mImageCover != null) {
                             if (!mImageCover.isEmpty()) {
                                 Picasso.with(EditProfileActivity.this).load(mImageCover).into(mImageViewCover);
@@ -302,6 +302,8 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 mDialog.dismiss();
                 if (task.isSuccessful()) {
+                    Intent miIntent = new Intent(EditProfileActivity.this, MenuActivity.class);
+                    startActivity(miIntent);
                     Toast.makeText(EditProfileActivity.this, "La informacion se actualizo correctamente", Toast.LENGTH_SHORT).show();
                 }
                 else {
@@ -351,7 +353,7 @@ public class EditProfileActivity extends AppCompatActivity {
             }
 
             if (photoFile != null) {
-                Uri photoUri = FileProvider.getUriForFile(EditProfileActivity.this, "com.optic.socialmediagamer", photoFile);
+                Uri photoUri = FileProvider.getUriForFile(EditProfileActivity.this, "com.escom.gestorpro", photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                 startActivityForResult(takePictureIntent, requestCode);
             }

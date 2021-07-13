@@ -3,6 +3,7 @@ package com.escom.gestorpro.providers;
 import com.escom.gestorpro.models.Post;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -24,5 +25,9 @@ public class PostProvider {
 
     public Query getPostByUser(String id) {
         return mCollection.whereEqualTo("usuario", id);
+    }
+
+    public Task<DocumentSnapshot> getPostById(String id) {
+        return mCollection.document(id).get();
     }
 }

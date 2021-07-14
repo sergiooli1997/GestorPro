@@ -2,10 +2,13 @@ package com.escom.gestorpro.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.escom.gestorpro.R;
 import com.escom.gestorpro.providers.PostProvider;
@@ -22,12 +25,14 @@ public class PostDetailActivity extends AppCompatActivity {
     UserProvider mUserProvider;
 
     String mExtraPostId;
+    String mIdUser = "";
 
     TextView textViewUsuario;
     TextView textViewCel;
     TextView textViewDesc;
     ImageView imageViewPost;
     CircleImageView circleImageViewProfile;
+    CircleImageView mCircleImageViewBack;
     Button btnVerPerfil;
 
     @Override
@@ -45,9 +50,36 @@ public class PostDetailActivity extends AppCompatActivity {
         textViewDesc = findViewById(R.id.textViewDescPD);
         imageViewPost = findViewById(R.id.imageViewPD);
         circleImageViewProfile = findViewById(R.id.circleImageProfileDetail);
+        mCircleImageViewBack = findViewById(R.id.circleImageBack);
         btnVerPerfil = findViewById(R.id.btnVerPerfil);
 
         getPost();
+
+        mCircleImageViewBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        btnVerPerfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToShowProfile();
+            }
+        });
+    }
+
+    private void goToShowProfile() {
+        if (!mIdUser.equals("")){
+            Intent intent = new Intent(PostDetailActivity.this, UserProfileActivity.class);
+            intent.putExtra("usuario", mIdUser);
+            startActivity(intent);
+        }
+        else{
+            Toast.makeText(this, "El id del usuario aún no se carga", Toast.LENGTH_LONG).show();
+        }
+
     }
 
     private void getPost() {
@@ -65,9 +97,9 @@ public class PostDetailActivity extends AppCompatActivity {
                         textViewDesc.setText(texto);
                     }
                     if (documentSnapshot.contains("usuario")) {
-                        String idUser = documentSnapshot.getString("usuario");
-                        getUserInfo(idUser);
-                    }|
+                        mIdUser = documentSnapshot.getString("usuario");
+                        getUserInfo(mIdUser);
+                    }
 
                 }
             }

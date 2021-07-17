@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.escom.gestorpro">
+
+    <uses-sdk android:targetSdkVersion="28" android:minSdkVersion="22" tools:overrideLibrary="androidx.wear"/>
 
     <uses-feature
         android:name="android.hardware.camera2"

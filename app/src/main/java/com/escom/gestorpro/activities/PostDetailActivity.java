@@ -2,6 +2,8 @@ package com.escom.gestorpro.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -17,17 +19,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.escom.gestorpro.R;
+import com.escom.gestorpro.adapters.CommentAdapter;
+import com.escom.gestorpro.adapters.PostsAdapter;
 import com.escom.gestorpro.models.Comment;
 import com.escom.gestorpro.models.Post;
 import com.escom.gestorpro.providers.AuthProvider;
 import com.escom.gestorpro.providers.CommentProvider;
 import com.escom.gestorpro.providers.PostProvider;
 import com.escom.gestorpro.providers.UserProvider;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Query;
 import com.squareup.picasso.Picasso;
 
 import java.util.Date;
@@ -40,6 +46,7 @@ public class PostDetailActivity extends AppCompatActivity {
     UserProvider mUserProvider;
     CommentProvider mCommentProvider;
     AuthProvider mAuthProvider;
+    CommentAdapter mCommentAdapter;
 
     String mExtraPostId;
     String mIdUser = "";
@@ -52,6 +59,7 @@ public class PostDetailActivity extends AppCompatActivity {
     CircleImageView mCircleImageViewBack;
     Button btnVerPerfil;
     FloatingActionButton mFabComment;
+    RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +81,10 @@ public class PostDetailActivity extends AppCompatActivity {
         mCircleImageViewBack = findViewById(R.id.circleImageBack);
         btnVerPerfil = findViewById(R.id.btnVerPerfil);
         mFabComment = findViewById(R.id.fabComment);
+        mRecyclerView = findViewById(R.id.RecyclerViewComments);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(PostDetailActivity.this);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
 
         getPost();
 
@@ -96,6 +108,26 @@ public class PostDetailActivity extends AppCompatActivity {
                 goToShowProfile();
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Query query = mCommentProvider.getCommentsByPost(mExtraPostId);
+        FirestoreRecyclerOptions<Comment> options = new FirestoreRecyclerOptions.Builder<Comment>()
+                .setQuery(query, Comment.class)
+                .build();
+
+        mCommentAdapter = new CommentAdapter(options, PostDetailActivity.this);
+        mRecyclerView.setAdapter(mCommentAdapter);
+        mCommentAdapter.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mCommentAdapter.stopListening();
     }
 
     private void showDialogComment() {

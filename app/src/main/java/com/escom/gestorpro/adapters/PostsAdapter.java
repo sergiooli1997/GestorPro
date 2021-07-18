@@ -15,6 +15,7 @@ import com.escom.gestorpro.R;
 import com.escom.gestorpro.activities.PostDetailActivity;
 import com.escom.gestorpro.models.Post;
 import com.escom.gestorpro.providers.AuthProvider;
+import com.escom.gestorpro.providers.PostProvider;
 import com.escom.gestorpro.providers.UserProvider;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -26,10 +27,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.ViewHolder> {
     Context context;
+    UserProvider mUserProvider;
 
     public PostsAdapter(FirestoreRecyclerOptions<Post> options, Context context) {
         super(options);
         this.context = context;
+        mUserProvider = new UserProvider();
     }
 
     @Override
@@ -52,6 +55,22 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
                 context.startActivity(intent);
             }
         });
+
+        getUserInfo(post.getUsuario(), holder);
+    }
+
+    private void getUserInfo(String usuario, final ViewHolder holder) {
+        mUserProvider.getUser(usuario).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()){
+                    if (documentSnapshot.contains("usuario")){
+                        String username = documentSnapshot.getString("usuario");
+                        holder.textViewUsername.setText(username);
+                    }
+                }
+            }
+        });
     }
 
     @NonNull
@@ -63,6 +82,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView textViewDesc;
+        TextView textViewUsername;
         ImageView imageViewPost;
         View viewHolder;
 
@@ -71,6 +91,7 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
 
             textViewDesc = view.findViewById(R.id.textPost);
             imageViewPost = view.findViewById(R.id.imageViewPostCard);
+            textViewUsername = view.findViewById(R.id.textViewUsernamePostCard);
             viewHolder = view;
         }
     }

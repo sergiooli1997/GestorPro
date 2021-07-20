@@ -1,6 +1,7 @@
 package com.escom.gestorpro.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,15 +26,20 @@ import com.escom.gestorpro.models.Comment;
 import com.escom.gestorpro.models.Post;
 import com.escom.gestorpro.providers.AuthProvider;
 import com.escom.gestorpro.providers.CommentProvider;
+import com.escom.gestorpro.providers.LikesProvider;
 import com.escom.gestorpro.providers.PostProvider;
 import com.escom.gestorpro.providers.UserProvider;
+import com.escom.gestorpro.utils.RelativeTime;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.util.Date;
@@ -47,6 +53,7 @@ public class PostDetailActivity extends AppCompatActivity {
     CommentProvider mCommentProvider;
     AuthProvider mAuthProvider;
     CommentAdapter mCommentAdapter;
+    LikesProvider mLikesProvider;
 
     String mExtraPostId;
     String mIdUser = "";
@@ -54,6 +61,8 @@ public class PostDetailActivity extends AppCompatActivity {
     TextView textViewUsuario;
     TextView textViewCel;
     TextView textViewDesc;
+    TextView textViewRelativeTime;
+    TextView textViewLikes;
     ImageView imageViewPost;
     CircleImageView circleImageViewProfile;
     CircleImageView mCircleImageViewBack;
@@ -70,12 +79,15 @@ public class PostDetailActivity extends AppCompatActivity {
         mUserProvider = new UserProvider();
         mCommentProvider = new CommentProvider();
         mAuthProvider = new AuthProvider();
+        mLikesProvider = new LikesProvider();
 
         mExtraPostId = getIntent().getStringExtra("id");
 
         textViewUsuario = findViewById(R.id.textViewUsuarioPD);
         textViewCel = findViewById(R.id.textViewCelPD);
         textViewDesc = findViewById(R.id.textViewDescPD);
+        textViewRelativeTime = findViewById(R.id.textViewRelativeTime);
+        textViewLikes = findViewById(R.id.textViewLikes);
         imageViewPost = findViewById(R.id.imageViewPD);
         circleImageViewProfile = findViewById(R.id.circleImageProfileDetail);
         mCircleImageViewBack = findViewById(R.id.circleImageBack);
@@ -86,7 +98,6 @@ public class PostDetailActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(PostDetailActivity.this);
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
-        getPost();
 
         mFabComment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,6 +117,24 @@ public class PostDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 goToShowProfile();
+            }
+        });
+
+        getPost();
+        getNumberLikes();
+    }
+
+    private void getNumberLikes() {
+        mLikesProvider.getLikesByPost(mExtraPostId).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                int numberLikes = queryDocumentSnapshots.size();
+                if (numberLikes == 1){
+                    textViewLikes.setText(numberLikes + " Me gusta");
+                }
+                else{
+                    textViewLikes.setText(numberLikes + " Me gustas");
+                }
             }
         });
     }
@@ -225,6 +254,11 @@ public class PostDetailActivity extends AppCompatActivity {
                     if (documentSnapshot.contains("usuario")) {
                         mIdUser = documentSnapshot.getString("usuario");
                         getUserInfo(mIdUser);
+                    }
+                    if (documentSnapshot.contains("fecha")) {
+                        long timestamp = documentSnapshot.getLong("fecha");
+                        String relativeTime = RelativeTime.getTimeAgo(timestamp, PostDetailActivity.this);
+                        textViewRelativeTime.setText(relativeTime);
                     }
 
                 }

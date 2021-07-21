@@ -3,7 +3,10 @@ package com.escom.gestorpro.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +17,18 @@ import android.widget.TextView;
 
 import com.escom.gestorpro.R;
 import com.escom.gestorpro.activities.EditProfileActivity;
+import com.escom.gestorpro.adapters.MyPostsAdapter;
+import com.escom.gestorpro.adapters.PostsAdapter;
+import com.escom.gestorpro.models.Post;
 import com.escom.gestorpro.providers.AuthProvider;
 import com.escom.gestorpro.providers.PostProvider;
 import com.escom.gestorpro.providers.UserProvider;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
@@ -37,12 +47,15 @@ public class profileFragment extends Fragment {
     TextView mTextViewPhone;
     TextView mTextViewEmail;
     TextView mTextViewPostNumber;
+    TextView mTextViewPostExist;
     ImageView mImageViewCover;
     CircleImageView mCircleImageProfile;
+    RecyclerView recyclerViewMyPost;
 
     UserProvider mUsersProvider;
     AuthProvider mAuthProvider;
     PostProvider mPostProvider;
+    MyPostsAdapter mAdapter;
 
 
     // TODO: Agregar logout al action bar
@@ -95,6 +108,12 @@ public class profileFragment extends Fragment {
         mTextViewPostNumber = mView.findViewById(R.id.textViewPostNumber);
         mCircleImageProfile = mView.findViewById(R.id.circleImageProfile);
         mImageViewCover = mView.findViewById(R.id.imageViewCover);
+        recyclerViewMyPost = mView.findViewById(R.id.recyclerViewMyPost);
+        mTextViewPostExist = mView.findViewById(R.id.textViewPostExist);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerViewMyPost.setLayoutManager(linearLayoutManager);
+
         mLinearLayoutEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,7 +127,42 @@ public class profileFragment extends Fragment {
 
         getUser();
         getPostNumber();
+        checkIfExistPost();
         return mView;
+    }
+
+    private void checkIfExistPost() {
+        mPostProvider.getPostByUser(mAuthProvider.getUid()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                int numberPost = queryDocumentSnapshots.size();
+                if (numberPost > 0){
+                    mTextViewPostExist.setText("Publicaciones");
+                }
+                else{
+                    mTextViewPostExist.setText("No hay publicaciones");
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Query query = mPostProvider.getPostByUser(mAuthProvider.getUid());
+        FirestoreRecyclerOptions<Post> options = new FirestoreRecyclerOptions.Builder<Post>()
+                .setQuery(query, Post.class)
+                .build();
+
+        mAdapter = new MyPostsAdapter(options, getContext());
+        recyclerViewMyPost.setAdapter(mAdapter);
+        mAdapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mAdapter.stopListening();
     }
 
     private void goToEditProfile() {

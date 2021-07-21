@@ -1,12 +1,22 @@
 package com.escom.gestorpro.activities;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.escom.gestorpro.R;
+import com.escom.gestorpro.adapters.MyPostsAdapter;
+import com.escom.gestorpro.models.Post;
 import com.escom.gestorpro.providers.AuthProvider;
 import com.escom.gestorpro.providers.PostProvider;
 import com.escom.gestorpro.providers.UserProvider;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.auth.User;
 import com.squareup.picasso.Picasso;
@@ -27,13 +37,17 @@ public class UserProfileActivity extends AppCompatActivity {
     TextView mTextViewPhone;
     TextView mTextViewEmail;
     TextView mTextViewPostNumber;
+    TextView mTextViewPostExist;
     ImageView mImageViewCover;
     CircleImageView mCircleImageProfile;
     CircleImageView mCircleImageViewBack;
+    RecyclerView recyclerViewMyPost;
 
     UserProvider mUsersProvider;
     AuthProvider mAuthProvider;
     PostProvider mPostProvider;
+
+    MyPostsAdapter mAdapter;
 
     String mExtraIdUser;
 
@@ -50,6 +64,12 @@ public class UserProfileActivity extends AppCompatActivity {
         mCircleImageProfile = findViewById(R.id.circleImageProfile);
         mCircleImageViewBack = findViewById(R.id.circleImageBack);
         mImageViewCover = findViewById(R.id.imageViewCover);
+        mTextViewPostExist = findViewById(R.id.textViewPostExist);
+
+        recyclerViewMyPost = findViewById(R.id.recyclerViewMyPost);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(UserProfileActivity.this);
+        recyclerViewMyPost.setLayoutManager(linearLayoutManager);
 
         mUsersProvider = new UserProvider();
         mAuthProvider = new AuthProvider();
@@ -59,6 +79,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         getUser();
         getPostNumber();
+        checkIfExistPost();
 
         mCircleImageViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +87,40 @@ public class UserProfileActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void checkIfExistPost() {
+        mPostProvider.getPostByUser(mExtraIdUser).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                int numberPost = queryDocumentSnapshots.size();
+                if (numberPost > 0){
+                    mTextViewPostExist.setText("Publicaciones");
+                }
+                else{
+                    mTextViewPostExist.setText("No hay publicaciones");
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Query query = mPostProvider.getPostByUser(mExtraIdUser);
+        FirestoreRecyclerOptions<Post> options = new FirestoreRecyclerOptions.Builder<Post>()
+                .setQuery(query, Post.class)
+                .build();
+
+        mAdapter = new MyPostsAdapter(options, UserProfileActivity.this);
+        recyclerViewMyPost.setAdapter(mAdapter);
+        mAdapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mAdapter.stopListening();
     }
 
     private void getPostNumber() {

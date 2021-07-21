@@ -2,6 +2,7 @@ package com.escom.gestorpro.activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,6 +23,7 @@ import com.google.firebase.firestore.auth.User;
 import com.squareup.picasso.Picasso;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -40,8 +42,8 @@ public class UserProfileActivity extends AppCompatActivity {
     TextView mTextViewPostExist;
     ImageView mImageViewCover;
     CircleImageView mCircleImageProfile;
-    CircleImageView mCircleImageViewBack;
     RecyclerView recyclerViewMyPost;
+    Toolbar toolbar;
 
     UserProvider mUsersProvider;
     AuthProvider mAuthProvider;
@@ -62,11 +64,15 @@ public class UserProfileActivity extends AppCompatActivity {
         mTextViewPhone = findViewById(R.id.textViewphone);
         mTextViewPostNumber = findViewById(R.id.textViewPostNumber);
         mCircleImageProfile = findViewById(R.id.circleImageProfile);
-        mCircleImageViewBack = findViewById(R.id.circleImageBack);
         mImageViewCover = findViewById(R.id.imageViewCover);
         mTextViewPostExist = findViewById(R.id.textViewPostExist);
 
         recyclerViewMyPost = findViewById(R.id.recyclerViewMyPost);
+
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(UserProfileActivity.this);
         recyclerViewMyPost.setLayoutManager(linearLayoutManager);
@@ -80,13 +86,6 @@ public class UserProfileActivity extends AppCompatActivity {
         getUser();
         getPostNumber();
         checkIfExistPost();
-
-        mCircleImageViewBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
     }
 
     private void checkIfExistPost() {
@@ -169,5 +168,13 @@ public class UserProfileActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            finish();
+        }
+        return true;
     }
 }

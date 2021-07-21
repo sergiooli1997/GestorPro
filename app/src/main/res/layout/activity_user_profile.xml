@@ -16,11 +16,14 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:contentScrim="@color/black">
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:transitionName="@string/transitionname_picture"
+                app:layout_collapseMode="parallax">
 
                 <View
                     android:layout_width="match_parent"
@@ -34,9 +37,7 @@
                     android:layout_height="200dp"
                     android:src="@drawable/oficina"
                     android:scaleType="centerCrop"
-                    android:alpha="0.8"
-                    android:transitionName="@string/transitionname_picture"
-                    app:layout_collapseMode="parallax"/>
+                    android:alpha="0.8" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/circleImageProfile"
@@ -134,6 +135,12 @@
 
             </FrameLayout>
 
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"/>
+
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -171,14 +178,5 @@
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/circleImageBack"
-        android:layout_width="37dp"
-        android:layout_height="40dp"
-        android:layout_margin="15dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_arrow_left"
-        app:civ_circle_background_color="@color/white" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

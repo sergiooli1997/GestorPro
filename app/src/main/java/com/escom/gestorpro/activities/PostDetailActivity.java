@@ -3,6 +3,7 @@ package com.escom.gestorpro.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -65,10 +66,10 @@ public class PostDetailActivity extends AppCompatActivity {
     TextView textViewLikes;
     ImageView imageViewPost;
     CircleImageView circleImageViewProfile;
-    CircleImageView mCircleImageViewBack;
     Button btnVerPerfil;
     FloatingActionButton mFabComment;
     RecyclerView mRecyclerView;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,10 +91,13 @@ public class PostDetailActivity extends AppCompatActivity {
         textViewLikes = findViewById(R.id.textViewLikes);
         imageViewPost = findViewById(R.id.imageViewPD);
         circleImageViewProfile = findViewById(R.id.circleImageProfileDetail);
-        mCircleImageViewBack = findViewById(R.id.circleImageBack);
         btnVerPerfil = findViewById(R.id.btnVerPerfil);
         mFabComment = findViewById(R.id.fabComment);
         mRecyclerView = findViewById(R.id.RecyclerViewComments);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(PostDetailActivity.this);
         mRecyclerView.setLayoutManager(linearLayoutManager);
@@ -103,13 +107,6 @@ public class PostDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showDialogComment();
-            }
-        });
-
-        mCircleImageViewBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
             }
         });
 

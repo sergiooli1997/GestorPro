@@ -1,20 +1,27 @@
 package com.escom.gestorpro.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.escom.gestorpro.R;
-import com.escom.gestorpro.ResponsablesAdapter;
-import com.escom.gestorpro.ResponsablesCardElement;
+import com.escom.gestorpro.activities.MainActivity;
+import com.escom.gestorpro.adapters.ResponsablesAdapter;
+import com.escom.gestorpro.models.Users;
+import com.escom.gestorpro.providers.AuthProvider;
+import com.escom.gestorpro.providers.UserProvider;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.Query;
 
-import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,8 +38,10 @@ public class ResponsablesFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    RecyclerView recyclerView;
-    ArrayList<ResponsablesCardElement> listaResponsables;
+    RecyclerView mRecyclerView;
+    ResponsablesAdapter mResponsablesAdapter;
+    UserProvider mUserProvider;
+    AuthProvider mAuthProvider;
 
     public ResponsablesFragment() {
         // Required empty public constructor
@@ -69,24 +78,50 @@ public class ResponsablesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View vista = inflater.inflate(R.layout.fragment_responsables, container, false);
-        listaResponsables = new ArrayList<>();
-        recyclerView = (RecyclerView) vista.findViewById(R.id.RecyclerResponsable);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        llenarlista();
-        ResponsablesAdapter adapter = new ResponsablesAdapter(listaResponsables, getContext());
-        recyclerView.setAdapter(adapter);
+
+        mUserProvider = new UserProvider();
+        mAuthProvider = new AuthProvider();
+
+        mRecyclerView = vista.findViewById(R.id.RecyclerResponsable);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        setHasOptionsMenu(true);
 
         return vista;
     }
 
-    private void llenarlista() {
+    @Override
+    public void onStart() {
+        super.onStart();
+        Query query = mUserProvider.getAllUser();
+        FirestoreRecyclerOptions<Users> options = new FirestoreRecyclerOptions.Builder<Users>()
+                .setQuery(query, Users.class)
+                .build();
 
-        listaResponsables.add(new ResponsablesCardElement("Andrea López Hernández"));
-        listaResponsables.add(new ResponsablesCardElement("César Olivares Solano"));
-        listaResponsables.add(new ResponsablesCardElement("Héctor García Estrada"));
-        listaResponsables.add(new ResponsablesCardElement("Luis Hernández García"));
-        listaResponsables.add(new ResponsablesCardElement("Rocío Lozornio Olivares"));
-        listaResponsables.add(new ResponsablesCardElement("Sergio Lozornio Olivares"));
+        mResponsablesAdapter = new ResponsablesAdapter(options, getContext());
+        mRecyclerView.setAdapter(mResponsablesAdapter);
+        mResponsablesAdapter.startListening();
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        mResponsablesAdapter.stopListening();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.item_logout) {
+            logout();
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
+
+    private void logout() {
+        mAuthProvider.logout();
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }

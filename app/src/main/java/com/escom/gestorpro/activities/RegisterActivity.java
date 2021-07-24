@@ -7,7 +7,10 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.escom.gestorpro.R;
@@ -38,10 +41,13 @@ public class RegisterActivity extends AppCompatActivity {
     TextInputEditText mTextInputPassword;
     TextInputEditText mTextInputConfirmPassword;
     Button mButtonRegister;
+    Spinner spinnerRoles;
     AlertDialog mDialog;
 
     AuthProvider mAuthProvider;
     UserProvider mUsersProvider;
+
+    String rol_seleccionado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +60,13 @@ public class RegisterActivity extends AppCompatActivity {
         mTextInputPassword = findViewById(R.id.textInputPassword);
         mTextInputConfirmPassword = findViewById(R.id.textInputConfirmPassword);
         mButtonRegister = findViewById(R.id.btnRegister);
+        spinnerRoles = (Spinner)findViewById(R.id.spinerRoles);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.roles, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerRoles.setAdapter(adapter);
+
         mDialog = new SpotsDialog.Builder()
                 .setContext(this)
                 .setMessage("Espere un momento")
@@ -76,6 +89,18 @@ public class RegisterActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        spinnerRoles.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                rol_seleccionado = spinnerRoles.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                rol_seleccionado = "Sin rol";
+            }
+        });
     }
 
     private void register() {
@@ -89,7 +114,7 @@ public class RegisterActivity extends AppCompatActivity {
             if (isEmailValid(email)) {
                 if (password.length() >= 6)
                 {
-                    createUser(username, email, cel, password);
+                    createUser(username, email, cel, password, rol_seleccionado);
                 }
                 else
                 {
@@ -105,7 +130,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
     
-    private void createUser (final String usuario, final String email, String cel, String password){
+    private void createUser (final String usuario, final String email, String cel, String password, String rol){
         mDialog.show();
         mAuthProvider.register(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -117,6 +142,7 @@ public class RegisterActivity extends AppCompatActivity {
                     user.setEmail(email);
                     user.setUsuario(usuario);
                     user.setCelular(cel);
+                    user.setRol(rol);
                     mUsersProvider.create(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

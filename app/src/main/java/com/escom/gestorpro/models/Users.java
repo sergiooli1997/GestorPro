@@ -5,6 +5,7 @@ public class Users {
     private String email;
     private String usuario;
     private String celular;
+    private String rol;
     private String imageProfile;
     private String imageCover;
 
@@ -13,11 +14,12 @@ public class Users {
 
     }
 
-    public Users(String id, String email, String usuario, String celular, String imageProfile ,String imageCover) {
+    public Users(String id, String email, String usuario, String celular, String rol, String imageProfile, String imageCover) {
         this.id = id;
         this.email = email;
         this.usuario = usuario;
         this.celular = celular;
+        this.rol = rol;
         this.imageProfile = imageProfile;
         this.imageCover = imageCover;
     }
@@ -68,5 +70,13 @@ public class Users {
 
     public void setCelular(String celular) {
         this.celular = celular;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 }

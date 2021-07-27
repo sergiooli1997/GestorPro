@@ -104,6 +104,30 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="5dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_person_pin"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="5dp"/>
+
+            <Spinner
+                android:id="@+id/spinerRoles"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                />
+
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <Button

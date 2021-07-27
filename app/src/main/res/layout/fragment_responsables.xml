@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background"
     tools:context=".fragments.ResponsablesFragment">
 
-    <androidx.core.widget.NestedScrollView
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_marginTop="10dp">
+        android:textColor="@color/white"
+        android:gravity="right"
+        android:textSize="30sp"
+        android:layout_margin="20dp"
+        android:text="Conoce a tu equipo" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/RecyclerResponsable"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="80dp"
-            android:layout_marginLeft="10dp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RecyclerResponsable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="80dp"
+        android:layout_marginLeft="10dp"/>
 
-    </androidx.core.widget.NestedScrollView>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</FrameLayout>

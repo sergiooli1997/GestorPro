@@ -22,7 +22,7 @@ public class UserProvider {
     }
 
     public Query getAllUser() {
-        return mCollection.orderBy("usuario", Query.Direction.ASCENDING);
+        return mCollection.orderBy("usuario");
     }
 
     public Task<Void> create(Users user) {
@@ -33,6 +33,7 @@ public class UserProvider {
         Map<String, Object> map = new HashMap<>();
         map.put("usuario", user.getUsuario());
         map.put("celular", user.getCelular());
+        map.put("rol", user.getRol());
         map.put("imageProfile", user.getImageProfile());
         map.put("imageCover", user.getImageCover());
         return mCollection.document(user.getId()).update(map);

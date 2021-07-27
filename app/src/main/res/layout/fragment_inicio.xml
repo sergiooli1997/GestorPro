@@ -15,7 +15,6 @@
         android:layout_margin="20dp"
         android:text="¿Qué harás hoy?" />
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RecyclerPost"
         android:layout_width="match_parent"

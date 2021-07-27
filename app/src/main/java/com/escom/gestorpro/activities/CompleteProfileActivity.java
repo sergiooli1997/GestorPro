@@ -7,7 +7,10 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.escom.gestorpro.R;
@@ -30,10 +33,13 @@ public class CompleteProfileActivity extends AppCompatActivity {
     TextInputEditText mTextInputUsername;
     TextInputEditText mTextInputCel;
     Button mButtonRegister;
+    Spinner spinnerRoles;
     AlertDialog mDialog;
 
     AuthProvider mAuthProvider;
     UserProvider mUsersProvider;
+
+    String rol_seleccionado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +48,13 @@ public class CompleteProfileActivity extends AppCompatActivity {
         mTextInputUsername = findViewById(R.id.textInputUsername);
         mTextInputCel = findViewById(R.id.textInputCel);
         mButtonRegister = findViewById(R.id.btConfirm);
+        spinnerRoles = (Spinner)findViewById(R.id.spinerRoles);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.roles, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerRoles.setAdapter(adapter);
+
         mDialog = new SpotsDialog.Builder()
                 .setContext(this)
                 .setMessage("Espere un momento")
@@ -58,6 +71,19 @@ public class CompleteProfileActivity extends AppCompatActivity {
             }
         });
 
+        spinnerRoles.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // TODO: Comprobar que sea de la opcion 1 a 3
+                rol_seleccionado = spinnerRoles.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                rol_seleccionado = "Sin rol";
+            }
+        });
+
     }
 
     private void register() {
@@ -65,19 +91,20 @@ public class CompleteProfileActivity extends AppCompatActivity {
         String cel = mTextInputCel.getText().toString();
 
         if (!username.isEmpty()) {
-            updateUser(username, cel);
+            updateUser(username, cel, rol_seleccionado);
         }
         else {
             Toast.makeText(this, "Revisa los campos", Toast.LENGTH_LONG).show();
         }
     }
 
-    private void updateUser (final String usuario, String cel){
+    private void updateUser (final String usuario, String cel, String rol){
         String id = mAuthProvider.getUid();
         Users user = new Users();
         user.setUsuario(usuario);
         user.setCelular(cel);
         user.setId(id);
+        user.setRol(rol);
         mDialog.show();
         mUsersProvider.update(user).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

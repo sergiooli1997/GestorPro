@@ -93,6 +93,7 @@ public class RegisterActivity extends AppCompatActivity {
         spinnerRoles.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // TODO: Comprobar que sea de la opcion 1 a 3
                 rol_seleccionado = spinnerRoles.getSelectedItem().toString();
             }
 

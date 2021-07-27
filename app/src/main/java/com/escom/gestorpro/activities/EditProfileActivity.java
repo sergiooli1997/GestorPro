@@ -15,8 +15,11 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.escom.gestorpro.R;
@@ -49,9 +52,11 @@ public class EditProfileActivity extends AppCompatActivity {
     TextInputEditText mTextInputUsername;
     TextInputEditText mTextInputPhone;
     Button mButtonEditProfile;
+    Spinner spinnerRoles;
 
     AlertDialog.Builder mBuilderSelector;
     CharSequence options[];
+    String rol_seleccionado;
     private final int GALLERY_REQUEST_CODE_PROFILE = 1;
     private final int GALLERY_REQUEST_CODE_COVER = 2;
     private final int PHOTO_REQUEST_CODE_PROFILE = 3;
@@ -74,6 +79,7 @@ public class EditProfileActivity extends AppCompatActivity {
     String mPhone = "";
     String mImageProfile = "";
     String mImageCover = "";
+    String mRol = "";
 
     AlertDialog mDialog;
 
@@ -96,6 +102,13 @@ public class EditProfileActivity extends AppCompatActivity {
         mBuilderSelector = new AlertDialog.Builder(this);
         mBuilderSelector.setTitle("Selecciona una opcion");
         options = new CharSequence[] {"Imagen de galeria", "Tomar foto"};
+
+        spinnerRoles = (Spinner)findViewById(R.id.spinerRoles);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.roles, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerRoles.setAdapter(adapter);
 
         mImageProvider = new ImageProvider();
         mUsersProvider = new UserProvider();
@@ -134,6 +147,19 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
+        spinnerRoles.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // TODO: Comprobar que sea de la opcion 1 a 3
+                rol_seleccionado = spinnerRoles.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                rol_seleccionado = "Sin rol";
+            }
+        });
+
         getUser();
     }
 
@@ -164,6 +190,25 @@ public class EditProfileActivity extends AppCompatActivity {
                             if (!mImageCover.isEmpty()) {
                                 Picasso.with(EditProfileActivity.this).load(mImageCover).into(mImageViewCover);
                             }
+                        }
+                    }
+                    if (documentSnapshot.contains("rol")){
+                        mRol = documentSnapshot.getString("rol");
+                        if (mRol.equals("Líder de proyecto")){
+                            spinnerRoles.setSelection(1);
+                            rol_seleccionado = "Líder de proyecto";
+                        }
+                        else if (mRol.equals("Miembro del equipo")){
+                            spinnerRoles.setSelection(2);
+                            rol_seleccionado = "Miembro del equipo";
+                        }
+                        else if (mRol.equals("Cliente")){
+                            spinnerRoles.setSelection(3);
+                            rol_seleccionado = "Cliente";
+                        }
+                        else{
+                            spinnerRoles.setSelection(0);
+                            rol_seleccionado = "Sin rol";
                         }
                     }
                 }
@@ -205,6 +250,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 user.setUsuario(mUsername);
                 user.setCelular(mPhone);
                 user.setId(mAuthProvider.getUid());
+                user.setRol(rol_seleccionado);
                 updateInfo(user);
             }
         }

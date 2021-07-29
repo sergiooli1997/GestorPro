@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.escom.gestorpro.R;
-import com.escom.gestorpro.activities.nuevoProyectoActivity;
+import com.escom.gestorpro.activities.NuevoProyectoActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
@@ -67,7 +67,7 @@ public class proyectosFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent miIntent = new Intent(getActivity(), nuevoProyectoActivity.class);
+                Intent miIntent = new Intent(getActivity(), NuevoProyectoActivity.class);
                 startActivity(miIntent);
             }
         });

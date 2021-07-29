@@ -39,7 +39,7 @@
         </provider>
 
         <activity android:name=".activities.CompleteProfileActivity" />
-        <activity android:name=".activities.nuevoProyectoActivity" />
+        <activity android:name=".activities.NuevoProyectoActivity" />
         <activity android:name=".activities.NuevoPost" />
         <activity
             android:name=".activities.RegistroTarea"

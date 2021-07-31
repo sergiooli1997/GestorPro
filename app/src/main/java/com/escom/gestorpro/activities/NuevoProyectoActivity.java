@@ -18,13 +18,16 @@ import com.escom.gestorpro.models.Proyecto;
 import com.escom.gestorpro.providers.AuthProvider;
 import com.escom.gestorpro.providers.ProyectoProvider;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import dmax.dialog.SpotsDialog;
@@ -34,6 +37,9 @@ public class NuevoProyectoActivity extends AppCompatActivity {
     private DatePickerDialog datePickerDialogFin;
     long fecha_inicio;
     long fecha_fin;
+    int randomNum = 0;
+    boolean existe = false;
+    String codigo = "";
     CircleImageView mCircleImageViewBack;
     TextView textViewTitle;
     Button btnFechaInicio;
@@ -93,7 +99,13 @@ public class NuevoProyectoActivity extends AppCompatActivity {
         btnCrear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                crearProyecto();
+                if (!textViewTitle.getText().toString().isEmpty()){
+                    crearProyecto();
+                }
+                else{
+                    Toast.makeText(NuevoProyectoActivity.this, "Nombre del proyecto es necesario", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -107,11 +119,23 @@ public class NuevoProyectoActivity extends AppCompatActivity {
         String[] usuarioArray = idUsuario.split("\\s*,\\s*");
         List<String> usuarios = Arrays.asList(usuarioArray);
 
+        int min_val = 0;
+        int max_val = 1000;
+        Random ran = new Random();
+        int randomNum = ran.nextInt(max_val) + min_val;
+        codigo = nombre.replaceAll("\\s+","") + String.valueOf(randomNum);
+
+        while (checkIfExists(codigo)){
+            randomNum += 1;
+            codigo = nombre.replaceAll("\\s+","") + String.valueOf(randomNum);
+        }
+
         Proyecto proyecto = new Proyecto();
         proyecto.setNombre(nombre);
         proyecto.setFecha_inicio(fecha_inicio);
         proyecto.setFecha_fin(fecha_fin);
         proyecto.setEquipo(usuarios);
+        proyecto.setCodigo(codigo);
         mDialog.show();
         mProyectoProvider.save(proyecto).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -129,6 +153,20 @@ public class NuevoProyectoActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private boolean checkIfExists(String cod) {
+        final boolean[] exists = {false};
+        mProyectoProvider.getCodigo(cod).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                int numberDocuments = queryDocumentSnapshots.size();
+                if (numberDocuments > 0){
+                    exists[0] = true;
+                }
+            }
+        });
+        return exists[0];
     }
 
     private String getTodaysDate()

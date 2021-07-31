@@ -3,6 +3,7 @@ package com.escom.gestorpro.providers;
 import com.escom.gestorpro.models.Post;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -16,7 +17,10 @@ public class PostProvider {
     }
 
     public Task<Void> save(Post post){
-        return mCollection.document().set(post);
+        DocumentReference document = mCollection.document();
+        String id = document.getId();
+        post.setId(id);
+        return document.set(post);
     }
 
     public Query getAll() {

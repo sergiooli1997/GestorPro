@@ -99,7 +99,7 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
         new AlertDialog.Builder(context)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle("Eliminar publicación")
-                .setMessage("¿¿Estas seguro de realizar esta acción?")
+                .setMessage("¿Estas seguro de realizar esta acción?")
                 .setPositiveButton("SI", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

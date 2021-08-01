@@ -4,6 +4,7 @@ import com.escom.gestorpro.models.Proyecto;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -13,6 +14,10 @@ public class ProyectoProvider {
 
     public ProyectoProvider(){
         mCollection = FirebaseFirestore.getInstance().collection("Proyectos");
+    }
+
+    public Query getProyectoByUser(String id) {
+        return mCollection.whereArrayContains("equipo", id);
     }
 
     public Query getCodigo(String codigo) {

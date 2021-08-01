@@ -29,10 +29,16 @@ import com.escom.gestorpro.providers.AuthProvider;
 import com.escom.gestorpro.providers.ProyectoProvider;
 import com.escom.gestorpro.providers.UserProvider;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import dmax.dialog.SpotsDialog;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,7 +47,7 @@ import com.google.firebase.firestore.Query;
  */
 public class proyectosFragment extends Fragment {
 
-    // TODO: Agregar logout al action bar
+    // TODO: Agregar acción al onClick de View
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -50,6 +56,8 @@ public class proyectosFragment extends Fragment {
     private String mParam2;
 
     RecyclerView mRecyclerView;
+    AlertDialog mDialog;
+
     UserProvider mUserProvider;
     ProyectosAdapter mProyectosAdapter;
     ProyectoProvider mProyectosProvider;
@@ -95,6 +103,12 @@ public class proyectosFragment extends Fragment {
 
         View vista = inflater.inflate(R.layout.fragment_proyectos, container, false);
         FloatingActionButton fab = vista.findViewById(R.id.newProyecto);
+
+        mDialog = new SpotsDialog.Builder()
+                .setContext(getActivity())
+                .setMessage("Espere un momento")
+                .setCancelable(false)
+                .build();
 
         mRecyclerView =  vista.findViewById(R.id.RecyclerProyecto);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -154,7 +168,7 @@ public class proyectosFragment extends Fragment {
         alert.setMessage("Ingresa el codigo para unirte a un proyecto");
 
         final EditText editText = new EditText(getActivity());
-        editText.setHint("Escribe un comentario");
+        editText.setHint("Escribe un codigo");
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -177,6 +191,7 @@ public class proyectosFragment extends Fragment {
                 String value = editText.getText().toString();
                 if (!value.isEmpty()){
                     unirProyecto(value);
+
                 }
                 else{
                     Toast.makeText(getActivity(), "Debe ingresar codigo", Toast.LENGTH_LONG).show();
@@ -195,8 +210,49 @@ public class proyectosFragment extends Fragment {
         alert.show();
     }
 
-    private void unirProyecto(String value) {
-        Toast.makeText(getActivity(), "Te uniste al proyecto " + value, Toast.LENGTH_SHORT).show();
+    private void unirProyecto(String codigo) {
+        mDialog.show();
+        final String[] idProyecto = new String[1];
+        mProyectosProvider.getIdByCode(codigo).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                mDialog.dismiss();
+                if (task.isSuccessful()){
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        if (document.exists()) {
+                            idProyecto[0] = document.get("id").toString();
+                            mProyectosProvider.addUser(idProyecto[0], mAuthProvider.getUid()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    mProyectosProvider.getProyectoById(idProyecto[0]).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                            if (documentSnapshot.exists()){
+                                                if (documentSnapshot.contains("nombre")){
+                                                    String nombre = documentSnapshot.getString("nombre");
+                                                    Toast.makeText(getActivity(), "Te uniste al proyecto " + nombre, Toast.LENGTH_LONG).show();
+                                                }
+                                            }
+                                            else{
+                                                Toast.makeText(getActivity(), "Proyecto inexsistente", Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                        else{
+                            mDialog.dismiss();
+                            Toast.makeText(getActivity(), "No existe el código", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+                else{
+                    Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        Toast.makeText(getActivity(), "No se encontro código", Toast.LENGTH_LONG).show();
     }
 
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

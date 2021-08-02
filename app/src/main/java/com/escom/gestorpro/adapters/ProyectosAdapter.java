@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.escom.gestorpro.R;
 import com.escom.gestorpro.activities.NuevoProyectoActivity;
 import com.escom.gestorpro.activities.PostDetailActivity;
+import com.escom.gestorpro.activities.ProyectoDetailActivity;
 import com.escom.gestorpro.models.Post;
 import com.escom.gestorpro.models.Proyecto;
 import com.escom.gestorpro.providers.AuthProvider;
@@ -38,6 +39,11 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProyectosAdapter extends FirestoreRecyclerAdapter<Proyecto, ProyectosAdapter.ViewHolder> {
@@ -53,23 +59,32 @@ public class ProyectosAdapter extends FirestoreRecyclerAdapter<Proyecto, Proyect
 
     @Override
     protected void onBindViewHolder(@NonNull final ViewHolder holder, int position, @NonNull final Proyecto proyecto) {
+        DocumentSnapshot document = getSnapshots().getSnapshot(position);
+        final String proyectoId = document.getId();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+
         String titulo = proyecto.getNombre();
         holder.textViewTitleProyecto.setText(titulo);
 
-        String fecha_inicio = RelativeTime.getTimeAgo(proyecto.getFecha_inicio(), context);
-        holder.textViewFechaInicio.setText(fecha_inicio);
+        long timestamp_inicio = proyecto.getFecha_inicio();
+        Date date1 = new Date(timestamp_inicio);
+        String fecha_inicio = formatter.format(date1);
+        holder.textViewFechaInicio.setText("Fecha inicio: " + fecha_inicio);
 
-        String fecha_fin = RelativeTime.getTimeAgo(proyecto.getFecha_fin(), context);
-        holder.textViewFechaInicio.setText(fecha_fin);
+        long timestamp_fin = proyecto.getFecha_fin();
+        Date date2 = new Date(timestamp_fin);
+        String fecha_fin = formatter.format(date2);
+        holder.textViewFechaFin.setText("Fecha fin: " + fecha_fin);
 
         holder.textViewAvance.setText("0 % de avance");
 
         holder.viewHolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent intent = new Intent(context, NuevoProyectoActivity.class);
-                intent.putExtra("id", postId);
-                context.startActivity(intent);*/
+                Intent intent = new Intent(context, ProyectoDetailActivity.class);
+                intent.putExtra("id", proyectoId);
+                context.startActivity(intent);
             }
         });
 

@@ -23,11 +23,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.TimeZone;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import dmax.dialog.SpotsDialog;
@@ -35,13 +38,12 @@ import dmax.dialog.SpotsDialog;
 public class NuevoProyectoActivity extends AppCompatActivity {
     private DatePickerDialog datePickerDialogInicio;
     private DatePickerDialog datePickerDialogFin;
-    long fecha_inicio;
-    long fecha_fin;
-    int randomNum = 0;
+    long fecha_inicio = 0;
+    long fecha_fin = 0;
     boolean existe = false;
     String codigo = "";
     CircleImageView mCircleImageViewBack;
-    TextView textViewTitle;
+    TextInputEditText textViewTitle;
     Button btnFechaInicio;
     Button btnFechaFin;
     Button btnCrear;
@@ -63,8 +65,6 @@ public class NuevoProyectoActivity extends AppCompatActivity {
         btnCrear = findViewById(R.id.btnAceptar);
         initDatePickerInicio();
         initDatePickerFin();
-        btnFechaInicio.setText(getTodaysDate());
-        btnFechaFin.setText(getTodaysDate());
 
         mAuthProvider = new AuthProvider();
         mProyectoProvider = new ProyectoProvider();
@@ -99,7 +99,7 @@ public class NuevoProyectoActivity extends AppCompatActivity {
         btnCrear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!textViewTitle.getText().toString().isEmpty()){
+                if (!textViewTitle.getText().toString().isEmpty() && fecha_inicio!= 0 && fecha_fin!= 0){
                     crearProyecto();
                 }
                 else{
@@ -113,7 +113,7 @@ public class NuevoProyectoActivity extends AppCompatActivity {
     }
 
     private void crearProyecto() {
-        String idUsuario = mAuthProvider.getUid().toString();
+        String idUsuario = mAuthProvider.getUid();
         String nombre = textViewTitle.getText().toString();
 
         String[] usuarioArray = idUsuario.split("\\s*,\\s*");
@@ -142,7 +142,8 @@ public class NuevoProyectoActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
                     mDialog.dismiss();
-                    Intent intent = new Intent(NuevoProyectoActivity.this, MenuActivity.class);
+                    Intent intent = new Intent(NuevoProyectoActivity.this, ProyectoDetailActivity.class);
+                    intent.putExtra("id", proyecto.getId());
                     startActivity(intent);
                     Toast.makeText(NuevoProyectoActivity.this, "La información se almacenó correctamente", Toast.LENGTH_LONG).show();
                 }
@@ -169,19 +170,9 @@ public class NuevoProyectoActivity extends AppCompatActivity {
         return exists[0];
     }
 
-    private String getTodaysDate()
-    {
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        month = month + 1;
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-        return makeDateString(day, month, year);
-    }
-
     private void initDatePickerInicio()
     {
-        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener()
+        DatePickerDialog.OnDateSetListener dateSetListener_inicio = new DatePickerDialog.OnDateSetListener()
         {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day)
@@ -189,18 +180,24 @@ public class NuevoProyectoActivity extends AppCompatActivity {
                 month = month + 1;
                 String date = makeDateString(day, month, year);
                 btnFechaInicio.setText(date);
+                SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+                try {
+                    Date date2 = (Date)formatter.parse(date);
+                    fecha_inicio = date2.getTime();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         };
 
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         int day = cal.get(Calendar.DAY_OF_MONTH);
 
-        int style = AlertDialog.THEME_HOLO_LIGHT;
+        int style = AlertDialog.THEME_DEVICE_DEFAULT_LIGHT;
 
-        datePickerDialogInicio = new DatePickerDialog(this, style, dateSetListener, year, month, day);
-        fecha_inicio = cal.getTimeInMillis();
+        datePickerDialogInicio = new DatePickerDialog(this, style, dateSetListener_inicio, year, month, day);
     }
 
     private void initDatePickerFin()
@@ -213,10 +210,17 @@ public class NuevoProyectoActivity extends AppCompatActivity {
                 month = month + 1;
                 String date = makeDateString(day, month, year);
                 btnFechaFin.setText(date);
+                SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+                try {
+                    Date date2 = (Date)formatter.parse(date);
+                    fecha_fin = date2.getTime();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         };
 
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         int day = cal.get(Calendar.DAY_OF_MONTH);
@@ -224,12 +228,11 @@ public class NuevoProyectoActivity extends AppCompatActivity {
         int style = AlertDialog.THEME_HOLO_LIGHT;
 
         datePickerDialogFin = new DatePickerDialog(this, style, dateSetListener, year, month, day);
-        fecha_fin = cal.getTimeInMillis();
     }
 
     private String makeDateString(int day, int month, int year)
     {
-        return getMonthFormat(month) + " " + day + " " + year;
+        return day + "-" + getMonthFormat(month) + "-" + year;
     }
 
     private String getMonthFormat(int month)

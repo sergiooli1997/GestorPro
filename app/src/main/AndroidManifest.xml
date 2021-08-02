@@ -3,7 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.escom.gestorpro">
 
-    <uses-sdk android:targetSdkVersion="28" android:minSdkVersion="22" tools:overrideLibrary="androidx.wear"/>
+    <uses-sdk
+        android:minSdkVersion="22"
+        android:targetSdkVersion="28"
+        tools:overrideLibrary="androidx.wear" />
 
     <uses-feature
         android:name="android.hardware.camera2"
@@ -20,12 +23,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GestorPro">
-        <activity android:name=".activities.UserProfileActivity"
-            android:parentActivityName=".activities.PostDetailActivity">
-
-        </activity>
-        <activity android:name=".activities.PostDetailActivity"
+        <activity
+            android:name=".activities.ProyectoDetailActivity"
             android:parentActivityName=".activities.MenuActivity"/>
+        <activity
+            android:name=".activities.UserProfileActivity"
+            android:parentActivityName=".activities.PostDetailActivity"/>
+        <activity
+            android:name=".activities.PostDetailActivity"
+            android:parentActivityName=".activities.MenuActivity" />
         <activity android:name=".activities.EditProfileActivity" />
 
         <provider

@@ -101,8 +101,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 style="?android:spinnerStyle"
-                android:text="ENE 01 2021"
-                android:textSize="30sp"
+                android:text="Selecciona una fecha de inicio"
+                android:textSize="20sp"
                 />
 
         </LinearLayout>
@@ -128,8 +128,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 style="?android:spinnerStyle"
-                android:text="ENE 01 2021"
-                android:textSize="30sp"
+                android:text="Selecciona una fecha de fin"
+                android:textSize="20sp"
                 />
 
         </LinearLayout>

@@ -21,8 +21,11 @@ import android.widget.Toast;
 
 import com.escom.gestorpro.R;
 import com.escom.gestorpro.activities.MainActivity;
+import com.escom.gestorpro.activities.MenuActivity;
 import com.escom.gestorpro.activities.NuevoProyectoActivity;
 import com.escom.gestorpro.activities.PostDetailActivity;
+import com.escom.gestorpro.activities.ProyectoDetailActivity;
+import com.escom.gestorpro.activities.RegisterActivity;
 import com.escom.gestorpro.adapters.ProyectosAdapter;
 import com.escom.gestorpro.models.Proyecto;
 import com.escom.gestorpro.providers.AuthProvider;
@@ -47,7 +50,7 @@ import dmax.dialog.SpotsDialog;
  */
 public class proyectosFragment extends Fragment {
 
-    // TODO: Agregar acción al onClick de View
+
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -230,6 +233,9 @@ public class proyectosFragment extends Fragment {
                                             if (documentSnapshot.exists()){
                                                 if (documentSnapshot.contains("nombre")){
                                                     String nombre = documentSnapshot.getString("nombre");
+                                                    Intent intent = new Intent(getActivity(), ProyectoDetailActivity.class);
+                                                    intent.putExtra("id", idProyecto[0]);
+                                                    startActivity(intent);
                                                     Toast.makeText(getActivity(), "Te uniste al proyecto " + nombre, Toast.LENGTH_LONG).show();
                                                 }
                                             }
@@ -243,7 +249,7 @@ public class proyectosFragment extends Fragment {
                         }
                         else{
                             mDialog.dismiss();
-                            Toast.makeText(getActivity(), "No existe el código", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "No existe el código", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }

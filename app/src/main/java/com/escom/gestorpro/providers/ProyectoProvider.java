@@ -45,6 +45,10 @@ public class ProyectoProvider {
         return mCollection.document(idProyecto).update("equipo", FieldValue.arrayUnion(usuario));
     }
 
-    public Task<Void> delete(String id){return mCollection.document(id).delete();}
+    public Task<Void> deleteProyecto(String id){return mCollection.document(id).delete();}
+
+    public Task<Void> deleteUsuarioFromProyecto(String idProyecto , String idUsuario){
+        return mCollection.document(idProyecto).update("equipo", FieldValue.arrayRemove("equipo", idUsuario));
+    }
 
 }

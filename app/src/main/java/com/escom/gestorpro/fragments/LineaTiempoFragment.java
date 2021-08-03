@@ -28,8 +28,6 @@ public class LineaTiempoFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    Button btnRegistroTarea;
-
     public LineaTiempoFragment() {
         // Required empty public constructor
     }
@@ -65,13 +63,6 @@ public class LineaTiempoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_linea_tiempo, container, false);
-        Button btnRegistroTarea = v.findViewById(R.id.btnRegistroTarea);
-        btnRegistroTarea.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                newTarea();
-            }
-        });
     return  v;
 
     }

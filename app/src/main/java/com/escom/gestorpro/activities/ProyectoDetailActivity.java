@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -31,7 +33,7 @@ import java.util.concurrent.TimeUnit;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProyectoDetailActivity extends AppCompatActivity {
-    // TODO: Eliminar proyecto / Abandonar
+    // TODO: Cliente califica proyecto
     String mExtraProyectoId;
     String mIdUser = "";
 
@@ -89,7 +91,7 @@ public class ProyectoDetailActivity extends AppCompatActivity {
         btnEliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteProyecto(mExtraProyectoId, mAuthProvider.getUid());
+                showConfirmDelete(mExtraProyectoId, mAuthProvider.getUid());
             }
         });
 
@@ -157,6 +159,20 @@ public class ProyectoDetailActivity extends AppCompatActivity {
                 }
             }
         });
+        mUserProvider.getUser(mAuthProvider.getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.contains("rol")){
+                    String rol = documentSnapshot.getString("rol");
+                    if (rol.equals("Líder de proyecto")){
+                        btnEliminar.setText("Eliminar proyecto");
+                    }
+                    else{
+                        btnEliminar.setText("Abandonar proyecto");
+                    }
+                }
+            }
+        });
     }
 
     private void goToShowProfile() {
@@ -171,6 +187,40 @@ public class ProyectoDetailActivity extends AppCompatActivity {
 
     }
 
+    private void showConfirmDelete(String idProyecto, String idUsuario) {
+        new AlertDialog.Builder(ProyectoDetailActivity.this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Eliminar proyecto")
+                .setMessage("¿Estas seguro de realizar esta acción?")
+                .setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteProyecto(idProyecto, idUsuario);
+                    }
+                })
+                .setNegativeButton("NO", null)
+                .show();
+    }
+
     private void deleteProyecto(String idProyecto, String idUsuario) {
+        mProyectoProvider.getProyectoById(mExtraProyectoId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.contains("equipo")){
+                    ArrayList<String> list = (ArrayList<String>) documentSnapshot.get("equipo");
+                    String liderId = list.get(0);
+                    if (liderId.equals(idUsuario)){
+                        mProyectoProvider.deleteProyecto(idProyecto);
+                        Toast.makeText(ProyectoDetailActivity.this, "Se eliminó el proyecto", Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        mProyectoProvider.deleteUsuarioFromProyecto(idProyecto, idUsuario);
+                        Toast.makeText(ProyectoDetailActivity.this, "Abandonaste el proyecto", Toast.LENGTH_LONG).show();
+                    }
+                    Intent intent = new Intent(ProyectoDetailActivity.this, MenuActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 }

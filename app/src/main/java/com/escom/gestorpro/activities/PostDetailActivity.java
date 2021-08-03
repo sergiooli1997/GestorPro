@@ -187,7 +187,7 @@ public class PostDetailActivity extends AppCompatActivity {
                     createComment(value);
                 }
                 else{
-                    Toast.makeText(PostDetailActivity.this, "Debe ingesar cometario", Toast.LENGTH_LONG).show();
+                    Toast.makeText(PostDetailActivity.this, "Debe ingesar comentario", Toast.LENGTH_LONG).show();
                 }
 
             }

@@ -23,12 +23,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GestorPro">
+        <activity android:name=".activities.TareaDetailActivity"></activity>
         <activity
             android:name=".activities.ProyectoDetailActivity"
-            android:parentActivityName=".activities.MenuActivity"/>
+            android:parentActivityName=".activities.MenuActivity" />
         <activity
             android:name=".activities.UserProfileActivity"
-            android:parentActivityName=".activities.PostDetailActivity"/>
+            android:parentActivityName=".activities.PostDetailActivity" />
         <activity
             android:name=".activities.PostDetailActivity"
             android:parentActivityName=".activities.MenuActivity" />

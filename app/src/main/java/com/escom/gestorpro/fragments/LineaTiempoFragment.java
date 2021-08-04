@@ -3,15 +3,26 @@ package com.escom.gestorpro.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.escom.gestorpro.R;
+import com.escom.gestorpro.activities.MainActivity;
+import com.escom.gestorpro.activities.NuevoProyectoActivity;
 import com.escom.gestorpro.activities.RegistroTarea;
+import com.escom.gestorpro.providers.AuthProvider;
+import com.escom.gestorpro.providers.UserProvider;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +38,13 @@ public class LineaTiempoFragment extends Fragment {
 
     private String mParam1;
     private String mParam2;
+
+    UserProvider mUserProvider;
+    AuthProvider mAuthProvider;
+
+    RecyclerView mRecyclerView;
+    FloatingActionButton fab;
+
 
     public LineaTiempoFragment() {
         // Required empty public constructor
@@ -62,13 +80,64 @@ public class LineaTiempoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_linea_tiempo, container, false);
-    return  v;
+        View vista = inflater.inflate(R.layout.fragment_linea_tiempo, container, false);
 
+        mAuthProvider = new AuthProvider();
+        mUserProvider = new UserProvider();
+
+        mRecyclerView =  vista.findViewById(R.id.RecyclerViewTareas);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        setHasOptionsMenu(true);
+        fab = vista.findViewById(R.id.newTarea);
+
+        getRol(mAuthProvider.getUid());
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newTarea();
+            }
+        });
+
+        return  vista;
+
+    }
+
+    private void getRol(String uid) {
+        mUserProvider.getUser(uid).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.contains("rol")){
+                    String rol = documentSnapshot.getString("rol");
+                    if (rol.equals("Líder de proyecto")){
+                        fab.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        fab.setVisibility(View.INVISIBLE);
+                    }
+                }
+            }
+        });
     }
 
     private void newTarea() {
         Intent miIntent = new Intent(getActivity(), RegistroTarea.class);
         startActivity(miIntent);
     }
+
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.item_logout) {
+            logout();
+        }
+        return super.onOptionsItemSelected(item);
+
     }
+
+    private void logout() {
+        mAuthProvider.logout();
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+}

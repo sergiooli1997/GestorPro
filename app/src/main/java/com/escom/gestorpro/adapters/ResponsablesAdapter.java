@@ -6,13 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.escom.gestorpro.R;
-import com.escom.gestorpro.activities.PostDetailActivity;
 import com.escom.gestorpro.activities.UserProfileActivity;
 import com.escom.gestorpro.models.Users;
 import com.escom.gestorpro.providers.UserProvider;
@@ -89,7 +87,7 @@ public class ResponsablesAdapter extends FirestoreRecyclerAdapter<Users, Respons
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_responsables, parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_responsables, parent,false);
         return new ViewHolder(view);
     }
 

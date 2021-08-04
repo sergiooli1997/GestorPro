@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.escom.gestorpro.R;
 import com.escom.gestorpro.activities.EditProfileActivity;
 import com.escom.gestorpro.adapters.MyPostsAdapter;
-import com.escom.gestorpro.adapters.PostsAdapter;
 import com.escom.gestorpro.models.Post;
 import com.escom.gestorpro.providers.AuthProvider;
 import com.escom.gestorpro.providers.PostProvider;
@@ -36,10 +35,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link profileFragment#newInstance} factory method to
+ * Use the {@link ProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class profileFragment extends Fragment {
+public class ProfileFragment extends Fragment {
 
     View mView;
     LinearLayout mLinearLayoutEditProfile;
@@ -66,7 +65,7 @@ public class profileFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public profileFragment() {
+    public ProfileFragment() {
         // Required empty public constructor
     }
 
@@ -76,10 +75,10 @@ public class profileFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment profileFragment.
+     * @return A new instance of fragment ProfileFragment.
      */
-    public static profileFragment newInstance(String param1, String param2) {
-        profileFragment fragment = new profileFragment();
+    public static ProfileFragment newInstance(String param1, String param2) {
+        ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

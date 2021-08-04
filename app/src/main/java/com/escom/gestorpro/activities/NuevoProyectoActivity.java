@@ -103,7 +103,7 @@ public class NuevoProyectoActivity extends AppCompatActivity {
                     crearProyecto();
                 }
                 else{
-                    Toast.makeText(NuevoProyectoActivity.this, "Nombre del proyecto es necesario", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NuevoProyectoActivity.this, "Nombre del proyecto, fecha de inicio y final son necesarios", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -149,7 +149,7 @@ public class NuevoProyectoActivity extends AppCompatActivity {
                 }
                 else{
                     mDialog.dismiss();
-                    Toast.makeText(NuevoProyectoActivity.this, "Hubo un error al amacenar", Toast.LENGTH_LONG).show();
+                    Toast.makeText(NuevoProyectoActivity.this, "Hubo un error al almacenar", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -225,7 +225,7 @@ public class NuevoProyectoActivity extends AppCompatActivity {
         int month = cal.get(Calendar.MONTH);
         int day = cal.get(Calendar.DAY_OF_MONTH);
 
-        int style = AlertDialog.THEME_HOLO_LIGHT;
+        int style = AlertDialog.THEME_DEVICE_DEFAULT_LIGHT;
 
         datePickerDialogFin = new DatePickerDialog(this, style, dateSetListener, year, month, day);
     }

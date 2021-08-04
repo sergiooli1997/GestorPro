@@ -21,11 +21,8 @@ import android.widget.Toast;
 
 import com.escom.gestorpro.R;
 import com.escom.gestorpro.activities.MainActivity;
-import com.escom.gestorpro.activities.MenuActivity;
 import com.escom.gestorpro.activities.NuevoProyectoActivity;
-import com.escom.gestorpro.activities.PostDetailActivity;
 import com.escom.gestorpro.activities.ProyectoDetailActivity;
-import com.escom.gestorpro.activities.RegisterActivity;
 import com.escom.gestorpro.adapters.ProyectosAdapter;
 import com.escom.gestorpro.models.Proyecto;
 import com.escom.gestorpro.providers.AuthProvider;
@@ -45,10 +42,10 @@ import dmax.dialog.SpotsDialog;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link proyectosFragment#newInstance} factory method to
+ * Use the {@link ProyectosFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class proyectosFragment extends Fragment {
+public class ProyectosFragment extends Fragment {
 
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -66,7 +63,7 @@ public class proyectosFragment extends Fragment {
     ProyectoProvider mProyectosProvider;
     AuthProvider mAuthProvider;
 
-    public proyectosFragment() {
+    public ProyectosFragment() {
         // Required empty public constructor
     }
 
@@ -76,10 +73,10 @@ public class proyectosFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment proyectosFragment.
+     * @return A new instance of fragment ProyectosFragment.
      */
-    public static proyectosFragment newInstance(String param1, String param2) {
-        proyectosFragment fragment = new proyectosFragment();
+    public static ProyectosFragment newInstance(String param1, String param2) {
+        ProyectosFragment fragment = new ProyectosFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

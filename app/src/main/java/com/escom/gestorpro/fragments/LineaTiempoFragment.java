@@ -18,11 +18,16 @@ import com.escom.gestorpro.R;
 import com.escom.gestorpro.activities.MainActivity;
 import com.escom.gestorpro.activities.NuevoProyectoActivity;
 import com.escom.gestorpro.activities.RegistroTarea;
+import com.escom.gestorpro.adapters.TareaAdapter;
+import com.escom.gestorpro.models.Tarea;
 import com.escom.gestorpro.providers.AuthProvider;
+import com.escom.gestorpro.providers.TareaProvider;
 import com.escom.gestorpro.providers.UserProvider;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Query;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,6 +46,8 @@ public class LineaTiempoFragment extends Fragment {
 
     UserProvider mUserProvider;
     AuthProvider mAuthProvider;
+    TareaProvider mTareaProvider;
+    TareaAdapter mTareaAdapter;
 
     RecyclerView mRecyclerView;
     FloatingActionButton fab;
@@ -84,6 +91,7 @@ public class LineaTiempoFragment extends Fragment {
 
         mAuthProvider = new AuthProvider();
         mUserProvider = new UserProvider();
+        mTareaProvider = new TareaProvider();
 
         mRecyclerView =  vista.findViewById(R.id.RecyclerViewTareas);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -102,6 +110,25 @@ public class LineaTiempoFragment extends Fragment {
 
         return  vista;
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Query query = mTareaProvider.getAllTarea();
+        FirestoreRecyclerOptions<Tarea>  options = new FirestoreRecyclerOptions.Builder<Tarea>()
+                .setQuery(query, Tarea.class)
+                .build();
+
+        mTareaAdapter = new TareaAdapter(options, getActivity());
+        mRecyclerView.setAdapter(mTareaAdapter);
+        mTareaAdapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mTareaAdapter.stopListening();
     }
 
     private void getRol(String uid) {

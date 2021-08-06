@@ -134,12 +134,16 @@ public class ProfileFragment extends Fragment {
         mPostProvider.getPostByUser(mAuthProvider.getUid()).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
-                int numberPost = queryDocumentSnapshots.size();
-                if (numberPost > 0){
-                    mTextViewPostExist.setText("Publicaciones");
-                }
-                else{
-                    mTextViewPostExist.setText("No hay publicaciones");
+                if (error == null){
+                    if (!queryDocumentSnapshots.isEmpty()){
+                        int numberPost = queryDocumentSnapshots.size();
+                        if (numberPost > 0){
+                            mTextViewPostExist.setText("Publicaciones");
+                        }
+                        else{
+                            mTextViewPostExist.setText("No hay publicaciones");
+                        }
+                    }
                 }
             }
         });

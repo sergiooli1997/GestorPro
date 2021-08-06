@@ -22,8 +22,16 @@ public class ProyectoProvider {
         return mCollection.whereArrayContains("equipo", id);
     }
 
+    public Task<QuerySnapshot> getProyectoByUser2(String id) {
+        return mCollection.whereArrayContains("equipo", id).get();
+    }
+
     public Task<DocumentSnapshot> getProyectoById(String id) {
         return mCollection.document(id).get();
+    }
+
+    public Task<QuerySnapshot> getProyectoById2(String id) {
+        return mCollection.whereEqualTo("id", id).get();
     }
 
     public Task<QuerySnapshot> getIdByCode(String codigo) {

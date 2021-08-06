@@ -8,21 +8,33 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.escom.gestorpro.R;
 import com.escom.gestorpro.models.Tarea;
+import com.escom.gestorpro.providers.AuthProvider;
+import com.escom.gestorpro.providers.ProyectoProvider;
 import com.escom.gestorpro.providers.TareaProvider;
+import com.escom.gestorpro.providers.UserProvider;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -33,6 +45,19 @@ public class RegistroTarea extends AppCompatActivity {
     private DatePickerDialog datePickerDialogFin;
     long fecha_inicio = 0;
     long fecha_fin = 0;
+    String id_proyecto = "";
+    String id_usuario = "";
+    List<String> proyectos = new ArrayList<>();
+    List<String> id_proyectos = new ArrayList<>();
+    List<String> equipo = new ArrayList<>();
+    List<String> id_equipo = new ArrayList<>();
+    ArrayAdapter<String> adapter_equipo;
+    ArrayAdapter<String> adapter;
+
+    ProyectoProvider mProyectoProvider;
+    AuthProvider mAuthProvider;
+    UserProvider mUserProvider;
+
     AlertDialog mDialog;
     CircleImageView mCircleImageViewBack;
     TextInputEditText mtextInputNombreEvento;
@@ -41,6 +66,8 @@ public class RegistroTarea extends AppCompatActivity {
     Button btnFechaInicio;
     Button btnFechaFin;
     Button btnCrear;
+    Spinner spinnerEquipo;
+    Spinner spinnerProyecto;
 
     TareaProvider mTareaProvider;
 
@@ -49,6 +76,10 @@ public class RegistroTarea extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nueva_tarea);
 
+        mProyectoProvider = new ProyectoProvider();
+        mAuthProvider = new AuthProvider();
+        mUserProvider = new UserProvider();
+
         mCircleImageViewBack = findViewById(R.id.circleImageBack);
         mtextInputNombreEvento = findViewById(R.id.textInputNombreEvento);
         mtextInputDesc = findViewById(R.id.textInputDescripcion);
@@ -56,11 +87,22 @@ public class RegistroTarea extends AppCompatActivity {
         btnFechaInicio = findViewById(R.id.btnFechaInicio);
         btnFechaFin = findViewById(R.id.btnFechaFinal);
         btnCrear = findViewById(R.id.btnAceptar);
+        spinnerEquipo = (Spinner)findViewById(R.id.spinerEquipo);
+        spinnerProyecto = (Spinner)findViewById(R.id.spinerProyecto);
 
         mTareaProvider = new TareaProvider();
 
+        adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, proyectos);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerProyecto.setAdapter(adapter);
+
+        adapter_equipo = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, equipo);
+        adapter_equipo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerEquipo.setAdapter(adapter_equipo);
+
         initDatePickerInicio();
         initDatePickerFin();
+        loadProyecto();
 
         mDialog = new SpotsDialog.Builder()
                 .setContext(this)
@@ -100,6 +142,84 @@ public class RegistroTarea extends AppCompatActivity {
                 }
             }
         });
+
+        spinnerProyecto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                id_proyecto = id_proyectos.get(spinnerProyecto.getSelectedItemPosition());
+                loadEquipo(id_proyecto);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spinnerEquipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                id_usuario = id_equipo.get(spinnerEquipo.getSelectedItemPosition());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void loadProyecto() {
+        mProyectoProvider.getProyectoByUser2(mAuthProvider.getUid()).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        String nombre_proyectos = document.getString("nombre");
+                        String id = document.getString("id");
+                        proyectos.add(nombre_proyectos);
+                        id_proyectos.add(id);
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
+    private void loadEquipo(String id) {
+        mProyectoProvider.getProyectoById(id).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot_proyecto) {
+                if (documentSnapshot_proyecto.exists()){
+                    ArrayList<String> lista = (ArrayList<String>) documentSnapshot_proyecto.get("equipo");
+                    equipo.clear();
+                    id_equipo.clear();
+                    adapter_equipo.notifyDataSetChanged();
+                    if (!lista.isEmpty()){
+                        for (String cadena : lista){
+                            mUserProvider.getUser(cadena).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    if (documentSnapshot.exists()){
+                                        if (documentSnapshot.contains("usuario")){
+                                            String usuario = documentSnapshot.getString("usuario");
+                                            equipo.add(usuario);
+                                            adapter_equipo.notifyDataSetChanged();
+                                        }
+                                        if (documentSnapshot.contains("id")){
+                                            String id = documentSnapshot.getString("id");
+                                            id_equipo.add(id);
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+
+            }
+        });
+
     }
 
     private void crearTarea() {
@@ -113,6 +233,8 @@ public class RegistroTarea extends AppCompatActivity {
         tarea.setRepositorio(repo);
         tarea.setFecha_inicio(fecha_inicio);
         tarea.setFecha_fin(fecha_fin);
+        tarea.setIdProyecto(id_proyecto);
+        tarea.setIdUsuario(id_usuario);
         mDialog.show();
         mTareaProvider.save(tarea).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -120,7 +242,7 @@ public class RegistroTarea extends AppCompatActivity {
                 if (task.isSuccessful()){
                     mDialog.dismiss();
                     Intent intent = new Intent(RegistroTarea.this, TareaDetailActivity.class);
-                    //intent.putExtra("id", tarea.getId());
+                    intent.putExtra("id", tarea.getId());
                     startActivity(intent);
                     Toast.makeText(RegistroTarea.this, "La información se almacenó correctamente", Toast.LENGTH_LONG).show();
                 }

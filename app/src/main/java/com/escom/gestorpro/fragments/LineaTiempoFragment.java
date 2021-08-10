@@ -115,14 +115,30 @@ public class LineaTiempoFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        Query query = mTareaProvider.getAllTarea();
-        FirestoreRecyclerOptions<Tarea>  options = new FirestoreRecyclerOptions.Builder<Tarea>()
-                .setQuery(query, Tarea.class)
-                .build();
+        final Query[] query = new Query[1];
+        mUserProvider.getUser(mAuthProvider.getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()){
+                    if (documentSnapshot.contains("rol")){
+                        String rol = documentSnapshot.getString("rol");
+                        if (rol.equals("Líder de proyecto")){
+                            query[0] = mTareaProvider.getAllTarea();
+                        }
+                        else{
+                            query[0] = mTareaProvider.getTareasByUser(mAuthProvider.getUid());
+                        }
+                        FirestoreRecyclerOptions<Tarea>  options = new FirestoreRecyclerOptions.Builder<Tarea>()
+                                .setQuery(query[0], Tarea.class)
+                                .build();
 
-        mTareaAdapter = new TareaAdapter(options, getActivity());
-        mRecyclerView.setAdapter(mTareaAdapter);
-        mTareaAdapter.startListening();
+                        mTareaAdapter = new TareaAdapter(options, getActivity());
+                        mRecyclerView.setAdapter(mTareaAdapter);
+                        mTareaAdapter.startListening();
+                    }
+                }
+            }
+        });
     }
 
     @Override

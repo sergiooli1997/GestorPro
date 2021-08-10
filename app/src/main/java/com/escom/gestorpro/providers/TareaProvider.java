@@ -23,6 +23,10 @@ public class TareaProvider {
         return mCollection.orderBy("id");
     }
 
+    public Query getTareasByUser(String idUsuario) {
+        return mCollection.whereEqualTo("idUsuario", idUsuario);
+    }
+
     public Task<Void> save(Tarea tarea){
         DocumentReference document = mCollection.document();
         String id = document.getId();

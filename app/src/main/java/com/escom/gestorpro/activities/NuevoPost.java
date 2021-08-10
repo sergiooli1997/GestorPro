@@ -25,11 +25,13 @@ import com.escom.gestorpro.models.Post;
 import com.escom.gestorpro.providers.AuthProvider;
 import com.escom.gestorpro.providers.ImageProvider;
 import com.escom.gestorpro.providers.PostProvider;
+import com.escom.gestorpro.providers.UserProvider;
 import com.escom.gestorpro.utils.FileUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
@@ -48,8 +50,10 @@ public class NuevoPost extends AppCompatActivity {
     ImageProvider mImagePrivder;
     PostProvider mPostProvider;
     AuthProvider mAuthProvider;
+    UserProvider mUserProvider;
     TextInputEditText mTextInputDesc;
     TextView mTextViewUsuario;
+    CircleImageView mCircleImgUsuario;
     AlertDialog mDialog;
     AlertDialog.Builder mBuilderSelector;
     CharSequence options[];
@@ -70,6 +74,8 @@ public class NuevoPost extends AppCompatActivity {
         mImagePrivder = new ImageProvider();
         mPostProvider = new PostProvider();
         mAuthProvider = new AuthProvider();
+        mUserProvider = new UserProvider();
+
         mDialog = new SpotsDialog.Builder()
                 .setContext(this)
                 .setMessage("Espere un momento")
@@ -84,7 +90,10 @@ public class NuevoPost extends AppCompatActivity {
         mImageViewPost = findViewById(R.id.subirImagen);
         mTextInputDesc = findViewById(R.id.textInputPost);
         mTextViewUsuario = findViewById(R.id.usuarioname);
+        mCircleImgUsuario = findViewById(R.id.circleImageUser);
         mButtonPost = findViewById(R.id.btnPublicar);
+
+        getUserInfo(mAuthProvider.getUid());
 
         mButtonPost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +113,28 @@ public class NuevoPost extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+    }
+
+    private void getUserInfo(String uid) {
+        mUserProvider.getUser(uid).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()){
+                    if (documentSnapshot.contains("usuario")){
+                        String usuario = documentSnapshot.getString("usuario");
+                        mTextViewUsuario.setText(usuario);
+                    }
+                    if (documentSnapshot.contains("imageProfile")) {
+                        String imageProfile = documentSnapshot.getString("imageProfile");
+                        if (imageProfile != null) {
+                            if (!imageProfile.isEmpty()) {
+                                Picasso.with(NuevoPost.this).load(imageProfile).into(mCircleImgUsuario);
+                            }
+                        }
+                    }
+                }
             }
         });
     }

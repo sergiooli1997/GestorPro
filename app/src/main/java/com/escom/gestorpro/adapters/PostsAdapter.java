@@ -92,7 +92,12 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
                 if (error == null){
                     if (!queryDocumentSnapshots.isEmpty()){
                         int numberLikes = queryDocumentSnapshots.size();
-                        holder.textViewLike.setText(String.valueOf(numberLikes) + " Me gustas");
+                        if (numberLikes == 1){
+                            holder.textViewLike.setText(String.valueOf(numberLikes) + " Me gusta");
+                        }
+                        else{
+                            holder.textViewLike.setText(String.valueOf(numberLikes) + " Me gustas");
+                        }
                     }
                     else{
                         holder.textViewLike.setText("0 me gustas");

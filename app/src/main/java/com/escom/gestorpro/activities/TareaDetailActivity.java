@@ -12,9 +12,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.escom.gestorpro.R;
+import com.escom.gestorpro.providers.ProyectoProvider;
 import com.escom.gestorpro.providers.TareaProvider;
+import com.escom.gestorpro.providers.UserProvider;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,6 +29,10 @@ public class TareaDetailActivity extends AppCompatActivity {
     String mExtraTareaId;
     String mIdUser = "";
     String mIdProyecto = "";
+
+    UserProvider mUserProvider;
+    ProyectoProvider mProyectoProvider;
+    TareaProvider mTareaProvider;
 
     TextView textViewFechaInicio;
     TextView textViewFechaFin;
@@ -40,14 +47,14 @@ public class TareaDetailActivity extends AppCompatActivity {
     Button btnVerProyecto;
     Toolbar toolbar;
 
-    TareaProvider mTareaProvider;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tarea_detail);
 
         mTareaProvider = new TareaProvider();
+        mUserProvider = new UserProvider();
+        mProyectoProvider = new ProyectoProvider();
 
         textViewFechaInicio = findViewById(R.id.textViewRelativeTimeInicio);
         textViewFechaFin = findViewById(R.id.textViewRelativeTimeFinal);
@@ -84,6 +91,46 @@ public class TareaDetailActivity extends AppCompatActivity {
         getTarea();
     }
 
+    private void getProyectoInfo(String mIdProyecto) {
+        mProyectoProvider.getProyectoById(mIdProyecto).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()){
+                    if (documentSnapshot.contains("nombre")){
+                        String nombreProy = documentSnapshot.getString("nombre");
+                        textViewNombreProy.setText(nombreProy);
+                    }
+                }
+            }
+        });
+    }
+
+    private void getUserInfo(String mIdUser) {
+        mUserProvider.getUser(mIdUser).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()){
+                    if (documentSnapshot.contains("usuario")){
+                        String usuario = documentSnapshot.getString("usuario");
+                        textViewUsuario.setText(usuario);
+                    }
+                    if (documentSnapshot.contains("celular")){
+                        String cel = documentSnapshot.getString("celular");
+                        textViewCel.setText(cel);
+                    }
+                    if (documentSnapshot.contains("imageProfile")) {
+                        String imageProfile = documentSnapshot.getString("imageProfile");
+                        if (imageProfile != null) {
+                            if (!imageProfile.isEmpty()) {
+                                Picasso.with(TareaDetailActivity.this).load(imageProfile).into(circleImageViewProfile);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
     private void getTarea() {
         mTareaProvider.getTareaById(mExtraTareaId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -115,30 +162,38 @@ public class TareaDetailActivity extends AppCompatActivity {
                         String repositorio = documentSnapshot.getString("repositorio");
                         textViewRepositorio.setText(repositorio);
                     }
+                    if (documentSnapshot.contains("idUsuario")){
+                        mIdUser = documentSnapshot.getString("idUsuario");
+                        getUserInfo(mIdUser);
+                    }
+                    if (documentSnapshot.contains("idProyecto")){
+                        mIdProyecto = documentSnapshot.getString("idProyecto");
+                        getProyectoInfo(mIdProyecto);
+                    }
                 }
             }
         });
     }
 
     private void goToShowProyecto() {
-        /*if (!mIdProyecto.equals("")){
+        if (!mIdProyecto.equals("")){
             Intent intent = new Intent(TareaDetailActivity.this, ProyectoDetailActivity.class);
             intent.putExtra("id", mIdProyecto);
             startActivity(intent);
         }
         else{
             Toast.makeText(this, "El id del usuario aún no se carga", Toast.LENGTH_LONG).show();
-        }*/
+        }
     }
 
     private void goToShowProfile() {
-        /*if (!mIdUser.equals("")){
+        if (!mIdUser.equals("")){
             Intent intent = new Intent(TareaDetailActivity.this, UserProfileActivity.class);
             intent.putExtra("usuario", mIdUser);
             startActivity(intent);
         }
         else{
             Toast.makeText(this, "El id del usuario aún no se carga", Toast.LENGTH_LONG).show();
-        }*/
+        }
     }
 }

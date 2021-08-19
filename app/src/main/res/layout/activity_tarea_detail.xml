@@ -111,7 +111,7 @@
                     android:id="@+id/btnCompletado"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Marcar como completado"
+                    android:text="Marcar tarea como completada"
                     android:layout_marginLeft="5dp"
                     android:background="@drawable/button_border"
                     android:layout_marginRight="10dp"

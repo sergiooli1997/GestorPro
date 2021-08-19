@@ -53,8 +53,13 @@ public class TareaAdapter extends FirestoreRecyclerAdapter<Tarea, TareaAdapter.V
         String fecha_fin = formatter.format(date2);
         holder.textViewFechaFin.setText("Fecha fin: " + fecha_fin);
 
-        /*String titulo_proyecto = tarea.getIdProyecto();
-        holder.textViewTitleProyecto.setText(titulo_proyecto);*/
+        int completo = tarea.getCompletado();
+        if (completo == 0){
+            holder.textViewAvance.setText("No completada");
+        }
+        else{
+            holder.textViewAvance.setText("Completada");
+        }
 
         holder.viewHolder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +82,7 @@ public class TareaAdapter extends FirestoreRecyclerAdapter<Tarea, TareaAdapter.V
         TextView textViewTitleTarea;
         TextView textViewFechaInicio;
         TextView textViewFechaFin;
-        TextView textViewTitleProyecto;
+        TextView textViewAvance;
         View viewHolder;
 
         public ViewHolder(View view){
@@ -86,7 +91,7 @@ public class TareaAdapter extends FirestoreRecyclerAdapter<Tarea, TareaAdapter.V
             textViewTitleTarea = view.findViewById(R.id.textViewTitleTarea);
             textViewFechaInicio = view.findViewById(R.id.textViewFechaInicio);
             textViewFechaFin = view.findViewById(R.id.textViewFechaFin);
-            textViewTitleProyecto = view.findViewById(R.id.textViewTitleProyecto);
+            textViewAvance = view.findViewById(R.id.textViewAvance);
 
             viewHolder = view;
         }

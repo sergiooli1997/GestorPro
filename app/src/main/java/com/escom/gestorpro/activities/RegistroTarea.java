@@ -235,6 +235,7 @@ public class RegistroTarea extends AppCompatActivity {
         tarea.setFecha_fin(fecha_fin);
         tarea.setIdProyecto(id_proyecto);
         tarea.setIdUsuario(id_usuario);
+        tarea.setCompletado(0);
         mDialog.show();
         mTareaProvider.save(tarea).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

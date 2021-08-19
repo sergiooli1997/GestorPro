@@ -9,12 +9,13 @@ public class Tarea {
     private String repositorio;
     private long fecha_inicio;
     private long fecha_fin;
+    private int completado;
 
     public Tarea(){
 
     }
 
-    public Tarea(String id, String idProyecto, String idUsuario, String nombre, String descripcion, String repositorio, long fecha_inicio, long fecha_fin) {
+    public Tarea(String id, String idProyecto, String idUsuario, String nombre, String descripcion, String repositorio, long fecha_inicio, long fecha_fin, int completado) {
         this.id = id;
         this.idProyecto = idProyecto;
         this.idUsuario = idUsuario;
@@ -23,6 +24,7 @@ public class Tarea {
         this.repositorio = repositorio;
         this.fecha_inicio = fecha_inicio;
         this.fecha_fin = fecha_fin;
+        this.completado = completado;
     }
 
     public String getId() {
@@ -87,5 +89,13 @@ public class Tarea {
 
     public void setFecha_fin(long fecha_fin) {
         this.fecha_fin = fecha_fin;
+    }
+
+    public int getCompletado() {
+        return completado;
+    }
+
+    public void setCompletado(int completado) {
+        this.completado = completado;
     }
 }

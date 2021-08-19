@@ -33,4 +33,8 @@ public class TareaProvider {
         tarea.setId(id);
         return document.set(tarea);
     }
+
+    public Task<Void> updateAvance(String id, int value){
+        return mCollection.document(id).update("completado", value);
+    }
 }

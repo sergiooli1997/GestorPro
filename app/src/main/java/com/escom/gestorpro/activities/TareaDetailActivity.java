@@ -1,5 +1,6 @@
 package com.escom.gestorpro.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,7 +16,9 @@ import com.escom.gestorpro.R;
 import com.escom.gestorpro.providers.ProyectoProvider;
 import com.escom.gestorpro.providers.TareaProvider;
 import com.escom.gestorpro.providers.UserProvider;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.squareup.picasso.Picasso;
 
@@ -45,6 +48,7 @@ public class TareaDetailActivity extends AppCompatActivity {
     CircleImageView circleImageViewProfile;
     Button btnVerPerfil;
     Button btnVerProyecto;
+    Button btnCompletado;
     Toolbar toolbar;
 
     @Override
@@ -67,6 +71,7 @@ public class TareaDetailActivity extends AppCompatActivity {
         circleImageViewProfile = findViewById(R.id.circleImageTareaDetail);
         btnVerPerfil = findViewById(R.id.btnVerPerfil);
         btnVerProyecto = findViewById(R.id.btnVerProyecto);
+        btnCompletado = findViewById(R.id.btnCompletado);
         toolbar = findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
@@ -88,7 +93,70 @@ public class TareaDetailActivity extends AppCompatActivity {
             }
         });
 
+        btnCompletado.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                completado(mExtraTareaId);
+            }
+        });
+
+        checkTareaCompletada();
         getTarea();
+    }
+
+    private void checkTareaCompletada() {
+        mTareaProvider.getTareaById(mExtraTareaId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    if (documentSnapshot.contains("completado")) {
+                        int avance = documentSnapshot.getLong("completado").intValue();
+                        if (avance == 0) {
+                            btnCompletado.setText("Marcar tarea como completada");
+                        }
+                        else{
+                            btnCompletado.setText("Marcar tarea como incompleta");
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    private void completado(String id) {
+        final int[] value = new int[1];
+        mTareaProvider.getTareaById(id).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()){
+                    if (documentSnapshot.contains("completado")){
+                        int avance = documentSnapshot.getLong("completado").intValue();
+                        if (avance == 0){
+                            //Tarea marcada como incompleta
+                            value[0] = 1;
+                        }
+                        else{
+                            //Tarea marcada como completa
+                            value[0] = 0;
+                        }
+                        mTareaProvider.updateAvance(id, value[0]).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()){
+                                    if (value[0] == 1){
+                                        btnCompletado.setText("Marcar tarea como incompleta");
+                                    }
+                                    else{
+                                        btnCompletado.setText("Marcar tarea como completada");
+                                    }
+                                    Toast.makeText(TareaDetailActivity.this, "Tarea actualizada", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
     }
 
     private void getProyectoInfo(String mIdProyecto) {

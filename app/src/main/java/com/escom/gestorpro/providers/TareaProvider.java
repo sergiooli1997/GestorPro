@@ -37,4 +37,12 @@ public class TareaProvider {
     public Task<Void> updateAvance(String id, int value){
         return mCollection.document(id).update("completado", value);
     }
+
+    public Query getTareasTotalByProyecto (String idProyecto){
+        return mCollection.whereEqualTo("idProyecto", idProyecto);
+    }
+
+    public Query getTareasCompletadas (String idProyecto){
+        return mCollection.whereEqualTo("idProyecto", idProyecto).whereEqualTo("completado", 1);
+    }
 }

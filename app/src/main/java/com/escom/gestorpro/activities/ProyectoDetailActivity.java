@@ -1,5 +1,6 @@
 package com.escom.gestorpro.activities;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,11 +17,15 @@ import android.widget.Toast;
 import com.escom.gestorpro.R;
 import com.escom.gestorpro.providers.AuthProvider;
 import com.escom.gestorpro.providers.ProyectoProvider;
+import com.escom.gestorpro.providers.TareaProvider;
 import com.escom.gestorpro.providers.UserProvider;
 import com.escom.gestorpro.utils.RelativeTime;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -36,10 +41,12 @@ public class ProyectoDetailActivity extends AppCompatActivity {
     // TODO: Cliente califica proyecto
     String mExtraProyectoId;
     String mIdUser = "";
+    int total_tareas = 0;
 
     ProyectoProvider mProyectoProvider;
     UserProvider mUserProvider;
     AuthProvider mAuthProvider;
+    TareaProvider mTareaProvider;
 
     TextView textViewTitulo;
     TextView textViewCodigo;
@@ -47,11 +54,12 @@ public class ProyectoDetailActivity extends AppCompatActivity {
     TextView textViewFechaFin;
     TextView textViewUsuario;
     TextView textViewCel;
+    TextView textViewTareas;
+    TextView textViewAvance;
     CircleImageView circleImageViewProfile;
     Button btVerPerfil;
     Button btnEliminar;
     FloatingActionButton mFabCalificacion;
-    RecyclerView mRecyclerView;
     Toolbar toolbar;
 
     @Override
@@ -62,6 +70,7 @@ public class ProyectoDetailActivity extends AppCompatActivity {
         mProyectoProvider = new ProyectoProvider();
         mUserProvider = new UserProvider();
         mAuthProvider = new AuthProvider();
+        mTareaProvider = new TareaProvider();
 
         textViewTitulo = findViewById(R.id.textViewTituloProyecto);
         textViewCodigo = findViewById(R.id.textViewCodigoProyecto);
@@ -69,11 +78,12 @@ public class ProyectoDetailActivity extends AppCompatActivity {
         textViewFechaFin = findViewById(R.id.textViewRelativeTimeFinal);
         textViewUsuario = findViewById(R.id.textViewUsuarioPD);
         textViewCel = findViewById(R.id.textViewCelPD);
+        textViewTareas = findViewById(R.id.textViewTareas);
+        textViewAvance = findViewById(R.id.textViewAvanceProyecto);
         circleImageViewProfile = findViewById(R.id.circleImageProyectoDetail);
         btVerPerfil = findViewById(R.id.btnVerPerfil);
         btnEliminar = findViewById(R.id.btnEliminar);
         mFabCalificacion = findViewById(R.id.fabCalificacion);
-        mRecyclerView = findViewById(R.id.RecyclerViewTareas);
         toolbar = findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
@@ -96,7 +106,41 @@ public class ProyectoDetailActivity extends AppCompatActivity {
         });
 
         getProyecto();
+        getNumberTareas();
+        getAvance();
 
+    }
+
+    private void getAvance() {
+        mTareaProvider.getTareasCompletadas(mExtraProyectoId).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                int tareas_completadas = queryDocumentSnapshots.size();
+                if (total_tareas != 0){
+                    double avance = (tareas_completadas*100.00)/total_tareas;
+                    textViewAvance.setText(avance + "% de avance");
+                }
+                else{
+                    textViewAvance.setText("No hay tareas para calcular avance");
+                }
+            }
+        });
+
+    }
+
+    private void getNumberTareas() {
+        mTareaProvider.getTareasTotalByProyecto(mExtraProyectoId).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                total_tareas = queryDocumentSnapshots.size();
+                if (total_tareas == 1){
+                    textViewTareas.setText("1 Tarea asignada");
+                }
+                else{
+                    textViewTareas.setText(total_tareas + " Tareas asignadas");
+                }
+            }
+        });
     }
 
     private void getProyecto() {

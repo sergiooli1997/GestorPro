@@ -25,6 +25,7 @@ import com.escom.gestorpro.providers.AuthProvider;
 import com.escom.gestorpro.providers.LikesProvider;
 import com.escom.gestorpro.providers.PostProvider;
 import com.escom.gestorpro.providers.ProyectoProvider;
+import com.escom.gestorpro.providers.TareaProvider;
 import com.escom.gestorpro.providers.UserProvider;
 import com.escom.gestorpro.utils.RelativeTime;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -49,11 +50,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ProyectosAdapter extends FirestoreRecyclerAdapter<Proyecto, ProyectosAdapter.ViewHolder> {
     Context context;
     ProyectoProvider mProyectoProvider;
+    TareaProvider mTareaProvider;
+    int total_tareas = 0;
 
     public ProyectosAdapter(FirestoreRecyclerOptions<Proyecto> options, Context context) {
         super(options);
         this.context = context;
         mProyectoProvider = new ProyectoProvider();
+        mTareaProvider =  new TareaProvider();
 
     }
 
@@ -77,7 +81,7 @@ public class ProyectosAdapter extends FirestoreRecyclerAdapter<Proyecto, Proyect
         String fecha_fin = formatter.format(date2);
         holder.textViewFechaFin.setText("Fecha fin: " + fecha_fin);
 
-        holder.textViewAvance.setText("0 % de avance");
+        avance(proyectoId, holder);
 
         holder.viewHolder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +93,32 @@ public class ProyectosAdapter extends FirestoreRecyclerAdapter<Proyecto, Proyect
         });
 
 
+    }
+
+    private void avance(String proyectoId, ViewHolder holder) {
+        getNumberTareas(proyectoId);
+        mTareaProvider.getTareasCompletadas(proyectoId).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                int tareas_completadas = queryDocumentSnapshots.size();
+                if (total_tareas != 0){
+                    double avance = (tareas_completadas*100.00)/total_tareas;
+                    holder.textViewAvance.setText(avance + "% de avance");
+                }
+                else{
+                    holder.textViewAvance.setText("No hay tareas para calcular avance");
+                }
+            }
+        });
+    }
+
+    private void getNumberTareas(String proyectoId) {
+        mTareaProvider.getTareasTotalByProyecto(proyectoId).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                total_tareas = queryDocumentSnapshots.size();
+            }
+        });
     }
 
     @NonNull

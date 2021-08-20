@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background"
     tools:context=".fragments.ResponsablesFragment">
 
@@ -13,7 +13,9 @@
         android:textColor="@color/white"
         android:gravity="right"
         android:textSize="30sp"
-        android:layout_margin="20dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="20dp"
         android:text="Conoce a tu equipo" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -22,6 +24,15 @@
         android:layout_height="match_parent"
         android:layout_marginTop="80dp"
         android:layout_marginLeft="10dp"/>
+
+    <com.mancj.materialsearchbar.MaterialSearchBar
+        style="@style/MaterialSearchBarLight"
+        app:mt_hint="Texto de busqueda"
+        app:mt_placeholder="Buscar"
+        app:mt_maxSuggestionsCount="10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchBar" />
 
 
 </FrameLayout>

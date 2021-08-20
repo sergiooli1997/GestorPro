@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.escom.gestorpro.R;
 import com.escom.gestorpro.activities.MainActivity;
@@ -21,6 +22,7 @@ import com.escom.gestorpro.providers.AuthProvider;
 import com.escom.gestorpro.providers.UserProvider;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.Query;
+import com.mancj.materialsearchbar.MaterialSearchBar;
 
 
 /**
@@ -28,7 +30,7 @@ import com.google.firebase.firestore.Query;
  * Use the {@link ResponsablesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ResponsablesFragment extends Fragment {
+public class ResponsablesFragment extends Fragment implements MaterialSearchBar.OnSearchActionListener{
 
     // TODO: Filtrar miembros por proyecto en spinner
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -40,8 +42,10 @@ public class ResponsablesFragment extends Fragment {
 
     RecyclerView mRecyclerView;
     ResponsablesAdapter mResponsablesAdapter;
+    ResponsablesAdapter mResponsablesAdapterSearch;
     UserProvider mUserProvider;
     AuthProvider mAuthProvider;
+    MaterialSearchBar mSearchBar;
 
     public ResponsablesFragment() {
         // Required empty public constructor
@@ -82,31 +86,55 @@ public class ResponsablesFragment extends Fragment {
         mUserProvider = new UserProvider();
         mAuthProvider = new AuthProvider();
 
+        mSearchBar = vista.findViewById(R.id.searchBar);
+
         mRecyclerView = vista.findViewById(R.id.RecyclerResponsable);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(linearLayoutManager);
         setHasOptionsMenu(true);
 
+        mSearchBar.setOnSearchActionListener(this);
+
         return vista;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+    private void searchByName(String name){
+        Query query = mUserProvider.getUserByName(name);
+        FirestoreRecyclerOptions<Users> options = new FirestoreRecyclerOptions.Builder<Users>()
+                .setQuery(query, Users.class)
+                .build();
+
+        mResponsablesAdapterSearch = new ResponsablesAdapter(options, getContext());
+        mResponsablesAdapterSearch.notifyDataSetChanged();
+        mRecyclerView.setAdapter(mResponsablesAdapterSearch);
+        mResponsablesAdapterSearch.startListening();
+    }
+
+    private void getAllUser(){
         Query query = mUserProvider.getAllUser();
         FirestoreRecyclerOptions<Users> options = new FirestoreRecyclerOptions.Builder<Users>()
                 .setQuery(query, Users.class)
                 .build();
 
         mResponsablesAdapter = new ResponsablesAdapter(options, getContext());
+        mResponsablesAdapter.notifyDataSetChanged();
         mRecyclerView.setAdapter(mResponsablesAdapter);
         mResponsablesAdapter.startListening();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getAllUser();
     }
 
     @Override
     public void onStop() {
         super.onStop();
         mResponsablesAdapter.stopListening();
+        if (mResponsablesAdapterSearch != null){
+            mResponsablesAdapterSearch.stopListening();
+        }
     }
 
     @Override
@@ -123,5 +151,22 @@ public class ResponsablesFragment extends Fragment {
         Intent intent = new Intent(getActivity(), MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    @Override
+    public void onSearchStateChanged(boolean enabled) {
+        if (!enabled){
+            getAllUser();
+        }
+    }
+
+    @Override
+    public void onSearchConfirmed(CharSequence text) {
+        searchByName(text.toString());
+    }
+
+    @Override
+    public void onButtonClicked(int buttonCode) {
+
     }
 }

@@ -26,6 +26,10 @@ public class UserProvider {
         return mCollection.orderBy("usuario");
     }
 
+    public Query getUserByName(String name) {
+        return mCollection.orderBy("usuario").startAt(name).endAt(name+'\uf8ff');
+    }
+
     public Task<Void> create(Users user) {
         return mCollection.document(user.getId()).set(user);
     }

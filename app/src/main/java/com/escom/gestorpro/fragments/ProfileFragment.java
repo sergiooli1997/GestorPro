@@ -3,12 +3,14 @@ package com.escom.gestorpro.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 
 import com.escom.gestorpro.R;
 import com.escom.gestorpro.activities.EditProfileActivity;
+import com.escom.gestorpro.activities.MainActivity;
 import com.escom.gestorpro.adapters.MyPostsAdapter;
 import com.escom.gestorpro.models.Post;
 import com.escom.gestorpro.providers.AuthProvider;
@@ -112,6 +115,7 @@ public class ProfileFragment extends Fragment {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerViewMyPost.setLayoutManager(linearLayoutManager);
+        setHasOptionsMenu(true);
 
         mLinearLayoutEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,5 +223,21 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.item_logout) {
+            logout();
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
+
+    private void logout() {
+        mAuthProvider.logout();
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }

@@ -5,6 +5,8 @@ import android.view.View;
 import android.view.Menu;
 
 import com.escom.gestorpro.R;
+import com.escom.gestorpro.providers.AuthProvider;
+import com.escom.gestorpro.providers.TokenProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -20,6 +22,8 @@ import androidx.appcompat.widget.Toolbar;
 public class MenuActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    TokenProvider mTokenProvider;
+    AuthProvider mAuthProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,9 @@ public class MenuActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        mTokenProvider = new TokenProvider();
+        mAuthProvider = new AuthProvider();
+        createToken();
     }
 
     @Override
@@ -53,5 +60,9 @@ public class MenuActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    private void createToken(){
+        mTokenProvider.create(mAuthProvider.getUid());
     }
 }

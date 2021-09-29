@@ -25,13 +25,14 @@
             android:icon="@drawable/ic_eventos"
             android:title="Tareas" />
         <item
-            android:id="@+id/clienteFragment"
+            android:id="@+id/chatsFragment"
             android:icon="@drawable/ic_clientes"
-            android:title="Cliente" />
+            android:title="Chats" />
         <item
             android:id="@+id/estrategiasFragment"
             android:icon="@drawable/ic_estrategias"
             android:title="Estrategias" />
+
 
     </group>
 </menu>

@@ -14,6 +14,7 @@ import com.escom.gestorpro.providers.PostProvider;
 import com.escom.gestorpro.providers.UserProvider;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -22,6 +23,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.auth.User;
 import com.squareup.picasso.Picasso;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,6 +46,7 @@ public class UserProfileActivity extends AppCompatActivity {
     CircleImageView mCircleImageProfile;
     RecyclerView recyclerViewMyPost;
     Toolbar toolbar;
+    FloatingActionButton mFabChat;
 
     UserProvider mUsersProvider;
     AuthProvider mAuthProvider;
@@ -66,6 +69,7 @@ public class UserProfileActivity extends AppCompatActivity {
         mCircleImageProfile = findViewById(R.id.circleImageProfile);
         mImageViewCover = findViewById(R.id.imageViewCover);
         mTextViewPostExist = findViewById(R.id.textViewPostExist);
+        mFabChat = findViewById(R.id.fab_chat);
 
         recyclerViewMyPost = findViewById(R.id.recyclerViewMyPost);
 
@@ -83,9 +87,26 @@ public class UserProfileActivity extends AppCompatActivity {
 
         mExtraIdUser = getIntent().getStringExtra("usuario");
 
+        if (mAuthProvider.getUid().equals(mExtraIdUser)) {
+            mFabChat.setVisibility(View.GONE);
+        }
+        mFabChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToChatActivity();
+            }
+        });
+
         getUser();
         getPostNumber();
         checkIfExistPost();
+    }
+
+    private void goToChatActivity() {
+        Intent intent = new Intent(UserProfileActivity.this, ChatActivity.class);
+        intent.putExtra("idUser1", mAuthProvider.getUid());
+        intent.putExtra("idUser2", mExtraIdUser);
+        startActivity(intent);
     }
 
     private void checkIfExistPost() {

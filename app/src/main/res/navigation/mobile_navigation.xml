@@ -38,11 +38,6 @@
         android:label="Linea de tiempo"
         tools:layout="@layout/fragment_linea_tiempo" />
     <fragment
-        android:id="@+id/clienteFragment"
-        android:name="com.escom.gestorpro.fragments.ClienteFragment"
-        android:label="Cliente"
-        tools:layout="@layout/fragment_cliente" />
-    <fragment
         android:id="@+id/estrategiasFragment"
         android:name="com.escom.gestorpro.fragments.EstrategiasFragment"
         android:label="Estrategias"
@@ -57,4 +52,9 @@
         android:name="com.escom.gestorpro.fragments.ProfileFragment"
         android:label="Mi perfil"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/chatsFragment"
+        android:name="com.escom.gestorpro.fragments.ChatsFragment"
+        android:label="Mis chats"
+        tools:layout="@layout/fragment_chats" />
 </navigation>

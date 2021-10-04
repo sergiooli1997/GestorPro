@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.escom.gestorpro.R;
 import com.escom.gestorpro.models.Chat;
+import com.escom.gestorpro.providers.AuthProvider;
 import com.escom.gestorpro.providers.UserProvider;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -23,19 +24,25 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ChatsAdapter extends FirestoreRecyclerAdapter<Chat, ChatsAdapter.ViewHolder> {
     Context context;
     UserProvider mUserProvider;
+    AuthProvider mAuthProvider;
 
     public ChatsAdapter(FirestoreRecyclerOptions<Chat> options, Context context) {
         super(options);
         this.context = context;
         mUserProvider = new UserProvider();
+        mAuthProvider = new AuthProvider();
     }
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Chat chat) {
         DocumentSnapshot document = getSnapshots().getSnapshot(position);
         final String chatId = document.getId();
-        getUserInfo(chatId, holder);
-
+        if(mAuthProvider.getUid().equals(chat.getIdUser1())){
+            getUserInfo(chat.getIdUser2(), holder);
+        }
+        else{
+            getUserInfo(chat.getIdUser1(), holder);
+        }
     }
 
     private void getUserInfo(String idUser, final ViewHolder holder){

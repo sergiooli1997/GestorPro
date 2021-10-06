@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,21 +13,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.escom.gestorpro.R;
+import com.escom.gestorpro.adapters.MessagesAdapter;
+import com.escom.gestorpro.adapters.MyPostsAdapter;
 import com.escom.gestorpro.models.Chat;
 import com.escom.gestorpro.models.Message;
+import com.escom.gestorpro.models.Post;
 import com.escom.gestorpro.providers.AuthProvider;
 import com.escom.gestorpro.providers.ChatsProvider;
 import com.escom.gestorpro.providers.MessagesProvider;
+import com.escom.gestorpro.providers.UserProvider;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Date;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -36,9 +49,17 @@ public class ChatActivity extends AppCompatActivity {
     ChatsProvider mChatsProvider;
     MessagesProvider mMessagesProvider;
     AuthProvider mAuthProvider;
+    UserProvider mUserProvider;
 
     EditText mEditTextMessage;
     ImageView mImageViewSendMessage;
+    CircleImageView mCircleImageViewProfile;
+    TextView mTextViewUsername;
+    TextView mTextViewRelative;
+    ImageView mImageViewBack;
+    RecyclerView mRecyclerViewMessage;
+
+    MessagesAdapter mAdapter;
 
     View mActionBarView;
 
@@ -46,17 +67,23 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        showCustomToolbar(R.layout.custom_chat_toolbar);
+        mChatsProvider = new ChatsProvider();
+        mMessagesProvider = new MessagesProvider();
+        mAuthProvider = new AuthProvider();
+        mUserProvider = new UserProvider();
 
         mEditTextMessage = findViewById(R.id.editTextMessage);
         mImageViewSendMessage = findViewById(R.id.imageViewSendMessage);
+        mRecyclerViewMessage = findViewById(R.id.recyclerViewMessage);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ChatActivity.this);
+        mRecyclerViewMessage.setLayoutManager(linearLayoutManager);
 
         mExtraIdUser1 = getIntent().getStringExtra("idUser1");
         mExtraIdUser2 = getIntent().getStringExtra("idUser2");
         mExtraChat = getIntent().getStringExtra("idChat");
-        mChatsProvider = new ChatsProvider();
-        mMessagesProvider = new MessagesProvider();
-        mAuthProvider = new AuthProvider();
+
+        showCustomToolbar(R.layout.custom_chat_toolbar);
 
         mImageViewSendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +93,25 @@ public class ChatActivity extends AppCompatActivity {
         });
 
         checkIfChatExist();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Query query = mMessagesProvider.getMessageByChat(mExtraChat);
+        FirestoreRecyclerOptions<Message> options = new FirestoreRecyclerOptions.Builder<Message>()
+                .setQuery(query, Message.class)
+                .build();
+
+        mAdapter = new MessagesAdapter(options, ChatActivity.this);
+        mRecyclerViewMessage.setAdapter(mAdapter);
+        mAdapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mAdapter.stopListening();
     }
 
     private void sendMessage() {
@@ -110,6 +156,48 @@ public class ChatActivity extends AppCompatActivity {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mActionBarView = inflater.inflate(resource, null);
         actionBar.setCustomView(mActionBarView);
+        mCircleImageViewProfile = mActionBarView.findViewById(R.id.circleImageProfile);
+        mTextViewUsername = mActionBarView.findViewById(R.id.textViewUsername);
+        mTextViewRelative = mActionBarView.findViewById(R.id.textViewRelativeTime);
+        mImageViewBack = mActionBarView.findViewById(R.id.imageViewBack);
+
+        mImageViewBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        getUserInfo();
+    }
+
+    private void getUserInfo() {
+        String idUserInfo = "";
+        if(mAuthProvider.getUid().equals(mExtraIdUser1)){
+            idUserInfo = mExtraIdUser2;
+        }
+        else{
+            idUserInfo = mExtraIdUser1;
+        }
+        mUserProvider.getUser(idUserInfo).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()){
+                    if(documentSnapshot.contains("usuario")){
+                        String username = documentSnapshot.getString("usuario");
+                        mTextViewUsername.setText(username);
+                    }
+                    if(documentSnapshot.contains("imageProfile")){
+                        String imageProfile = documentSnapshot.getString("imageProfile");
+                        if(imageProfile != null){
+                            if(!imageProfile.equals("")){
+                                Picasso.with(ChatActivity.this).load(imageProfile).into(mCircleImageViewProfile);
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private void checkIfChatExist(){
@@ -119,6 +207,9 @@ public class ChatActivity extends AppCompatActivity {
                 int size = queryDocumentSnapshots.size();
                 if (size == 0){
                     createChat();
+                }
+                else{
+                    mExtraChat = queryDocumentSnapshots.getDocuments().get(0).getId();
                 }
             }
         });

@@ -31,6 +31,10 @@ public class MessagesProvider {
         return mCollection.whereEqualTo("idChat", idChat).whereEqualTo("idSender", idSender).whereEqualTo("viewed", false);
     }
 
+    public Query getLastMessage(String idChat){
+        return mCollection.whereEqualTo("idChat", idChat).orderBy("timestamp", Query.Direction.DESCENDING).limit(1);
+    }
+
     public Task<Void> updateViewed(String idDocument, boolean state){
         Map<String, Object> map = new HashMap<>();
         map.put("viewed", state);

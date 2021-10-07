@@ -25,7 +25,6 @@ public class RelativeTime extends Application {
             return null;
         }
 
-        // TODO: localize
         final long diff = now - time;
         if (diff < MINUTE_MILLIS) {
             return "Hace un momento";
@@ -44,12 +43,30 @@ public class RelativeTime extends Application {
         }
     }
 
-    public static String timeFormatAMPM(long timestamp) {
+    public static String timeFormatAMPM(long time, Context ctx) {
 
         SimpleDateFormat formatter = new SimpleDateFormat("hh:mm a");
-        String dateString = formatter.format(new Date(timestamp));
 
-        return  dateString;
+        if (time < 1000000000000L) {
+            // if timestamp given in seconds, convert to millis
+            time *= 1000;
+        }
+
+        long now = System.currentTimeMillis();
+        if (time > now || time <= 0) {
+            String dateString = formatter.format(new Date(time));
+            return dateString;
+        }
+
+        final long diff = now - time;
+        if (diff < 24 * HOUR_MILLIS) {
+            String dateString = formatter.format(new Date(time));
+            return dateString;
+        } else if (diff < 48 * HOUR_MILLIS) {
+            return "Ayer";
+        } else {
+            return "Hace " + diff / DAY_MILLIS + " dias";
+        }
     }
 
 }

@@ -100,11 +100,9 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        /*if(mExtraChat!= null){
-            if(!mExtraChat.isEmpty()){
-                getMessageChat();
-            }
-        }*/
+        if (mAdapter != null){
+            mAdapter.startListening();
+        }
     }
 
     @Override
@@ -126,6 +124,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
                 super.onItemRangeInserted(positionStart, itemCount);
+                updateViewed();
                 int numberMessage = mAdapter.getItemCount();
                 int lastMessagePosition = mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
 
@@ -234,6 +233,25 @@ public class ChatActivity extends AppCompatActivity {
                 else{
                     mExtraChat = queryDocumentSnapshots.getDocuments().get(0).getId();
                     getMessageChat();
+                    updateViewed();
+                }
+            }
+        });
+    }
+
+    private void updateViewed() {
+        String idSender = "";
+        if(mAuthProvider.getUid().equals(mExtraIdUser1)){
+            idSender = mExtraIdUser2;
+        }
+        else{
+            idSender = mExtraIdUser1;
+        }
+        mMessagesProvider.getMessageByChatAndSender(mExtraChat, idSender).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for(DocumentSnapshot document : queryDocumentSnapshots.getDocuments()){
+                    mMessagesProvider.updateViewed(document.getId(), true);
                 }
             }
         });
@@ -252,5 +270,7 @@ public class ChatActivity extends AppCompatActivity {
         ids.add(mExtraIdUser2);
         chat.setIds(ids);
         mChatsProvider.create(chat);
+        mExtraChat = chat.getId();
+        getMessageChat();
     }
 }

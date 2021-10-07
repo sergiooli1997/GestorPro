@@ -47,7 +47,7 @@ public class MessagesAdapter extends FirestoreRecyclerAdapter<Message, MessagesA
         final String chatId = document.getId();
         holder.textViewMessage.setText(message.getMessage());
 
-        String relativeTime = RelativeTime.getTimeAgo(message.getTimestamp(), context);
+        String relativeTime = RelativeTime.timeFormatAMPM(message.getTimestamp(), context);
         holder.textViewDate.setText(relativeTime);
 
         if(message.getIdSender().equals(mAuthProvider.getUid())){
@@ -73,6 +73,13 @@ public class MessagesAdapter extends FirestoreRecyclerAdapter<Message, MessagesA
             holder.linearLayoutMessage.setPadding(30, 20, 30, 20);
             holder.linearLayoutMessage.setBackground(context.getResources().getDrawable(R.drawable.rounded_linear_layout_grey));
             holder.imageViewViewed.setVisibility(View.GONE);
+        }
+
+        if(message.isViewed()){
+            holder.imageViewViewed.setImageResource(R.drawable.icon_check_blue);
+        }
+        else{
+            holder.imageViewViewed.setImageResource(R.drawable.icon_check_grey);
         }
     }
 

@@ -1,14 +1,20 @@
 package com.escom.gestorpro.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.escom.gestorpro.R;
+import com.escom.gestorpro.activities.MainActivity;
+import com.escom.gestorpro.providers.AuthProvider;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,13 +23,14 @@ import com.escom.gestorpro.R;
  */
 public class EstrategiasFragment extends Fragment {
 
-    // TODO: Agregar logout al action bar
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     private String mParam1;
     private String mParam2;
+
+    AuthProvider mAuthProvider;
 
     public EstrategiasFragment() {
         // Required empty public constructor
@@ -59,6 +66,25 @@ public class EstrategiasFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+        mAuthProvider = new AuthProvider();
+        setHasOptionsMenu(true);
+
         return inflater.inflate(R.layout.fragment_estrategias, container, false);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.item_logout) {
+            logout();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void logout() {
+        mAuthProvider.logout();
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }

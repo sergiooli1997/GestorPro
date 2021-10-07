@@ -7,6 +7,7 @@ import android.view.Menu;
 import com.escom.gestorpro.R;
 import com.escom.gestorpro.providers.AuthProvider;
 import com.escom.gestorpro.providers.TokenProvider;
+import com.escom.gestorpro.providers.UserProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -24,6 +25,7 @@ public class MenuActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     TokenProvider mTokenProvider;
     AuthProvider mAuthProvider;
+    UserProvider mUserProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class MenuActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
         mTokenProvider = new TokenProvider();
         mAuthProvider = new AuthProvider();
+        mUserProvider = new UserProvider();
         createToken();
     }
 
@@ -60,6 +63,24 @@ public class MenuActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        updateOnline(true);
+    }
+
+    @Override
+    protected void onStop() {
+        updateOnline(false);
+        super.onStop();
+    }
+
+    private void updateOnline(boolean status) {
+        if(mUserProvider != null && !mUserProvider.equals("")){
+            mUserProvider.updateOnline(mAuthProvider.getUid(), status);
+        }
     }
 
     private void createToken(){

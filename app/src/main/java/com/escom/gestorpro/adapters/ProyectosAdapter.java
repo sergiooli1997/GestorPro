@@ -100,13 +100,15 @@ public class ProyectosAdapter extends FirestoreRecyclerAdapter<Proyecto, Proyect
         mTareaProvider.getTareasCompletadas(proyectoId).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
-                int tareas_completadas = queryDocumentSnapshots.size();
-                if (total_tareas != 0){
-                    double avance = (tareas_completadas*100.00)/total_tareas;
-                    holder.textViewAvance.setText(avance + "% de avance");
-                }
-                else{
-                    holder.textViewAvance.setText("No hay tareas para calcular avance");
+                if(error == null){
+                    int tareas_completadas = queryDocumentSnapshots.size();
+                    if (total_tareas != 0){
+                        double avance = (tareas_completadas*100.00)/total_tareas;
+                        holder.textViewAvance.setText(avance + "% de avance");
+                    }
+                    else{
+                        holder.textViewAvance.setText("No hay tareas para calcular avance");
+                    }
                 }
             }
         });
@@ -116,7 +118,9 @@ public class ProyectosAdapter extends FirestoreRecyclerAdapter<Proyecto, Proyect
         mTareaProvider.getTareasTotalByProyecto(proyectoId).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
-                total_tareas = queryDocumentSnapshots.size();
+                if (error == null){
+                    total_tareas = queryDocumentSnapshots.size();
+                }
             }
         });
     }

@@ -3,11 +3,13 @@ package com.escom.gestorpro.providers;
 import com.escom.gestorpro.models.Users;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +22,10 @@ public class UserProvider {
 
     public Task<DocumentSnapshot> getUser(String id) {
         return mCollection.document(id).get();
+    }
+
+    public DocumentReference getUserRealTime(String id) {
+        return mCollection.document(id);
     }
 
     public Query getAllUser() {
@@ -42,5 +48,15 @@ public class UserProvider {
         map.put("imageProfile", user.getImageProfile());
         map.put("imageCover", user.getImageCover());
         return mCollection.document(user.getId()).update(map);
+    }
+
+    public Task<Void> updateOnline(String idUser, boolean status) {
+        Map<String, Object> map = new HashMap<>();
+        if(idUser!=null && !idUser.isEmpty()){
+            map.put("online", status);
+            map.put("lastConnection", new Date().getTime());
+            return mCollection.document(idUser).update(map);
+        }
+        return null;
     }
 }

@@ -11,7 +11,6 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="ingrese_password">Ingrese contraseña</string>
     <string name="ingresar">Ingresar</string>
@@ -27,6 +26,53 @@
     <string name="title_activity_registro_tarea">RegistroTarea</string>
     <string name="transitionname_picture">transitionnamepicture</string>
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="buena_practica_1">
+        Utiliza nombres significativos y pronunciables para las variables
+    </string>
+    <string name="buena_practica_2">
+        Utiliza el vocabulario igual para los variables del mismo tipo
+    </string>
+    <string name="buena_practica_3">
+        Utiliza nombres buscables
+    </string>
+    <string name="buena_practica_4">
+        Evitar el mapeo mental
+    </string>
+    <string name="buena_practica_5">
+        No incluyas contexto innecesario
+    </string>
+    <string name="buena_practica_6">
+        Las funciones deben tener una sola responsabilidad
+    </string>
+    <string name="buena_practica_7">
+        Los nombres de las funciones deben explicar lo que hacen
+    </string>
+    <string name="buena_practica_8">
+        Eliminar el código duplicado
+    </string>
+    <string name="buena_practica_9">
+        Evitar los condicionales negativos
+    </string>
+    <string name="buena_practica_10">
+        Eliminar el código muerto
+    </string>
+    <string name="buena_practica_11">
+        Utiliza getters y setters
+    </string>
+    <string name="buena_practica_12">
+        Principio de abierto/cerrado (OCP)
+    </string>
+    <string name="buena_practica_13">
+        Un solo concepto para cada prueba
+    </string>
+    <string name="buena_practica_14">
+        No ignores errores encontrados
+    </string>
+    <string name="buena_practica_15">
+        Solamente comenta las cosas que tienen lógico complejo.
+    </string>
+
+
     <!--
     This string is used for square devices and overridden by hello_world in
     values-round/strings.xml for round devices.

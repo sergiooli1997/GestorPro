@@ -22,18 +22,21 @@ empieza a mejorar tu calidad de trabajo."
             android:gravity="center"
             android:layout_marginBottom="20dp"/>
         <Button
+            android:id="@+id/btnEstrategias"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Estrategias empresariales"
             android:layout_margin="10dp"
             />
         <Button
+            android:id="@+id/btnBuenasPracticas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Buenas prácticas"
             android:layout_margin="10dp"
             />
         <Button
+            android:id="@+id/btnConceptosFund"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Conceptos fundamentales del desarrollo"
@@ -51,6 +54,7 @@ de las tendencias"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="80dp"/>
         <Button
+            android:id="@+id/btnAnalisisDatos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Análisis de datos"

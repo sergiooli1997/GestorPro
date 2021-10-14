@@ -11,8 +11,10 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.escom.gestorpro.R;
+import com.escom.gestorpro.activities.BuenasPracticasActivity;
 import com.escom.gestorpro.activities.MainActivity;
 import com.escom.gestorpro.providers.AuthProvider;
 
@@ -29,6 +31,7 @@ public class EstrategiasFragment extends Fragment {
 
     private String mParam1;
     private String mParam2;
+    Button mButtonBuenasPracticas;
 
     AuthProvider mAuthProvider;
 
@@ -66,11 +69,24 @@ public class EstrategiasFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_estrategias, container, false);
 
         mAuthProvider = new AuthProvider();
+        mButtonBuenasPracticas = view.findViewById(R.id.btnBuenasPracticas);
+        mButtonBuenasPracticas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToBuenasPracticas();
+            }
+        });
         setHasOptionsMenu(true);
 
-        return inflater.inflate(R.layout.fragment_estrategias, container, false);
+        return view;
+    }
+
+    private void goToBuenasPracticas() {
+        Intent intent = new Intent(getActivity(), BuenasPracticasActivity.class);
+        startActivity(intent);
     }
 
     @Override

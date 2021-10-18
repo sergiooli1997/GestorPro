@@ -40,6 +40,12 @@
                 android:layout_marginBottom="30dp"
                 android:layout_marginTop="20dp"/>
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ejemplo_1"
+                android:layout_marginBottom="20dp"/>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -47,6 +53,12 @@
                 android:textSize="18sp"
                 android:textColor="@color/white"
                 android:layout_marginBottom="30dp"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ejemplo_2"
+                android:layout_marginBottom="20dp"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -56,6 +68,12 @@
                 android:textColor="@color/white"
                 android:layout_marginBottom="30dp"/>
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ejemplo_3"
+                android:layout_marginBottom="20dp"/>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -63,6 +81,12 @@
                 android:textSize="18sp"
                 android:textColor="@color/white"
                 android:layout_marginBottom="30dp"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ejemplo_4"
+                android:layout_marginBottom="20dp"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -72,6 +96,12 @@
                 android:textColor="@color/white"
                 android:layout_marginBottom="30dp"/>
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ejemplo_5"
+                android:layout_marginBottom="20dp"/>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -79,6 +109,12 @@
                 android:textSize="18sp"
                 android:textColor="@color/white"
                 android:layout_marginBottom="30dp"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ejemplo_6"
+                android:layout_marginBottom="20dp"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -88,6 +124,12 @@
                 android:textColor="@color/white"
                 android:layout_marginBottom="30dp"/>
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ejemplo_7"
+                android:layout_marginBottom="20dp"/>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -95,6 +137,18 @@
                 android:textSize="18sp"
                 android:textColor="@color/white"
                 android:layout_marginBottom="30dp"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ejemplo_8_1"
+                android:layout_marginBottom="20dp"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ejemplo_8_2"
+                android:layout_marginBottom="20dp"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -104,6 +158,12 @@
                 android:textColor="@color/white"
                 android:layout_marginBottom="30dp"/>
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ejemplo_9"
+                android:layout_marginBottom="20dp"/>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -111,6 +171,12 @@
                 android:textSize="18sp"
                 android:textColor="@color/white"
                 android:layout_marginBottom="30dp"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ejemplo_10"
+                android:layout_marginBottom="20dp"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -120,13 +186,17 @@
                 android:textColor="@color/white"
                 android:layout_marginBottom="30dp"/>
 
-            <TextView
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/buena_practica_12"
-                android:textSize="18sp"
-                android:textColor="@color/white"
-                android:layout_marginBottom="30dp"/>
+                android:layout_height="wrap_content"
+                android:src="@drawable/ejemplo_11_1"
+                android:layout_marginBottom="20dp"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ejemplo_11_2"
+                android:layout_marginBottom="20dp"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -136,6 +206,18 @@
                 android:textColor="@color/white"
                 android:layout_marginBottom="30dp"/>
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ejemplo_13_1"
+                android:layout_marginBottom="20dp"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ejemplo_13_2"
+                android:layout_marginBottom="20dp"/>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -144,6 +226,12 @@
                 android:textColor="@color/white"
                 android:layout_marginBottom="30dp"/>
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ejemplo_14"
+                android:layout_marginBottom="20dp"/>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -151,6 +239,12 @@
                 android:textSize="18sp"
                 android:textColor="@color/white"
                 android:layout_marginBottom="30dp"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ejemplo_15"
+                android:layout_marginBottom="20dp"/>
 
         </LinearLayout>
 

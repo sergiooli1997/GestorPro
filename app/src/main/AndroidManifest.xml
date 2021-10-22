@@ -23,7 +23,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GestorPro">
-        <activity android:name=".activities.BuenasPracticasActivity"></activity>
+        <activity android:name=".DatosAnalisisActivity"></activity>
+        <activity android:name=".activities.BuenasPracticasActivity" />
         <activity android:name=".activities.ChatActivity" />
         <activity
             android:name=".activities.TareaDetailActivity"

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.escom.gestorpro.DatosAnalisisActivity;
 import com.escom.gestorpro.R;
 import com.escom.gestorpro.activities.BuenasPracticasActivity;
 import com.escom.gestorpro.activities.MainActivity;
@@ -32,6 +33,7 @@ public class EstrategiasFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     Button mButtonBuenasPracticas;
+    Button mButtonAnalisisDatos;
 
     AuthProvider mAuthProvider;
 
@@ -73,15 +75,28 @@ public class EstrategiasFragment extends Fragment {
 
         mAuthProvider = new AuthProvider();
         mButtonBuenasPracticas = view.findViewById(R.id.btnBuenasPracticas);
+        mButtonAnalisisDatos = view.findViewById(R.id.btnAnalisisDatos);
         mButtonBuenasPracticas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goToBuenasPracticas();
             }
         });
+
+        mButtonAnalisisDatos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToAnalisisDatos();
+            }
+        });
         setHasOptionsMenu(true);
 
         return view;
+    }
+
+    private void goToAnalisisDatos() {
+        Intent intent = new Intent(getActivity(), DatosAnalisisActivity.class);
+        startActivity(intent);
     }
 
     private void goToBuenasPracticas() {

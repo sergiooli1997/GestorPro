@@ -11,6 +11,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UserProvider {
@@ -28,7 +29,11 @@ public class UserProvider {
         return mCollection.document(id);
     }
 
-    public Query getAllUser() {
+    public Query getAllUserProyectos(List<String> equipo) {
+        return mCollection.whereIn("id", equipo );
+    }
+
+    public Query getAllUsers() {
         return mCollection.orderBy("usuario");
     }
 

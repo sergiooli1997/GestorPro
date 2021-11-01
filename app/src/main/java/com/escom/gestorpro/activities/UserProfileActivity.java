@@ -141,6 +141,7 @@ public class UserProfileActivity extends AppCompatActivity {
     public void onStop() {
         super.onStop();
         mAdapter.stopListening();
+        finish();
     }
 
     private void getPostNumber() {

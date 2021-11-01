@@ -19,10 +19,20 @@ import com.escom.gestorpro.activities.MainActivity;
 import com.escom.gestorpro.adapters.ResponsablesAdapter;
 import com.escom.gestorpro.models.Users;
 import com.escom.gestorpro.providers.AuthProvider;
+import com.escom.gestorpro.providers.ProyectoProvider;
 import com.escom.gestorpro.providers.UserProvider;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mancj.materialsearchbar.MaterialSearchBar;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -32,10 +42,11 @@ import com.mancj.materialsearchbar.MaterialSearchBar;
  */
 public class ResponsablesFragment extends Fragment implements MaterialSearchBar.OnSearchActionListener{
 
-    // TODO: Filtrar miembros por proyecto en spinner
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    List<String> id_proyectos = new ArrayList<>();
+    List<String> id_equipo = new ArrayList<>();
 
     private String mParam1;
     private String mParam2;
@@ -45,6 +56,7 @@ public class ResponsablesFragment extends Fragment implements MaterialSearchBar.
     ResponsablesAdapter mResponsablesAdapterSearch;
     UserProvider mUserProvider;
     AuthProvider mAuthProvider;
+    ProyectoProvider mProyectoProvider;
     MaterialSearchBar mSearchBar;
 
     public ResponsablesFragment() {
@@ -85,6 +97,7 @@ public class ResponsablesFragment extends Fragment implements MaterialSearchBar.
 
         mUserProvider = new UserProvider();
         mAuthProvider = new AuthProvider();
+        mProyectoProvider = new ProyectoProvider();
 
         mSearchBar = vista.findViewById(R.id.searchBar);
 
@@ -110,27 +123,70 @@ public class ResponsablesFragment extends Fragment implements MaterialSearchBar.
         mResponsablesAdapterSearch.startListening();
     }
 
-    private void getAllUser(){
-        Query query = mUserProvider.getAllUser();
-        FirestoreRecyclerOptions<Users> options = new FirestoreRecyclerOptions.Builder<Users>()
-                .setQuery(query, Users.class)
-                .build();
+    private void loadProyecto() {
+        mProyectoProvider.getProyectoByUser2(mAuthProvider.getUid()).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        String id = document.getString("id");
+                        id_proyectos.add(id);
+                    }
+                }
+                for(String idProyecto : id_proyectos){
+                    loadEquipo(idProyecto);
+                }
+            }
+        });
+    }
 
-        mResponsablesAdapter = new ResponsablesAdapter(options, getContext());
-        mResponsablesAdapter.notifyDataSetChanged();
-        mRecyclerView.setAdapter(mResponsablesAdapter);
-        mResponsablesAdapter.startListening();
+    private void loadEquipo(String id) {
+        mProyectoProvider.getProyectoById(id).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot_proyecto) {
+                if (documentSnapshot_proyecto.exists()){
+                    ArrayList<String> lista = (ArrayList<String>) documentSnapshot_proyecto.get("equipo");
+                    if (!lista.isEmpty()){
+                        for (String cadena : lista){
+                            mUserProvider.getUser(cadena).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    if (documentSnapshot.exists()){
+                                        if (documentSnapshot.contains("id")){
+                                            String id = documentSnapshot.getString("id");
+                                            if (!id_equipo.contains(id)){
+                                                id_equipo.add(id);
+                                                Query query = mUserProvider.getAllUserProyectos(id_equipo);
+                                                FirestoreRecyclerOptions<Users> options = new FirestoreRecyclerOptions.Builder<Users>()
+                                                        .setQuery(query, Users.class)
+                                                        .build();
+
+                                                mResponsablesAdapter = new ResponsablesAdapter(options, getContext());
+                                                mResponsablesAdapter.notifyDataSetChanged();
+                                                mRecyclerView.setAdapter(mResponsablesAdapter);
+                                                mResponsablesAdapter.startListening();
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        });
+
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        getAllUser();
+        loadProyecto();
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onDestroy() {
+        super.onDestroy();
         mResponsablesAdapter.stopListening();
         if (mResponsablesAdapterSearch != null){
             mResponsablesAdapterSearch.stopListening();
@@ -156,7 +212,7 @@ public class ResponsablesFragment extends Fragment implements MaterialSearchBar.
     @Override
     public void onSearchStateChanged(boolean enabled) {
         if (!enabled){
-            getAllUser();
+            loadProyecto();
         }
     }
 

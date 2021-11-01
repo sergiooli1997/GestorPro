@@ -37,6 +37,9 @@ public class TareaProvider {
     public Task<Void> updateAvance(String id, int value){
         return mCollection.document(id).update("completado", value);
     }
+    public Task<Void> updateRetraso(String id, int value){
+        return mCollection.document(id).update("retraso", value);
+    }
 
     public Query getTareasTotalByProyecto (String idProyecto){
         return mCollection.whereEqualTo("idProyecto", idProyecto);
@@ -44,5 +47,9 @@ public class TareaProvider {
 
     public Query getTareasCompletadas (String idProyecto){
         return mCollection.whereEqualTo("idProyecto", idProyecto).whereEqualTo("completado", 1);
+    }
+
+    public Query getTareasConRetraso (String idProyecto){
+        return mCollection.whereEqualTo("idProyecto", idProyecto).whereEqualTo("retraso", 1);
     }
 }

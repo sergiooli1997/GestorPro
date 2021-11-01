@@ -2,9 +2,11 @@ package com.escom.gestorpro.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +19,8 @@ import com.escom.gestorpro.models.Tarea;
 import com.escom.gestorpro.providers.TareaProvider;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.text.SimpleDateFormat;
@@ -61,6 +65,27 @@ public class TareaAdapter extends FirestoreRecyclerAdapter<Tarea, TareaAdapter.V
             holder.textViewAvance.setText("Completada");
         }
 
+        if(timestamp_fin < System.currentTimeMillis()){
+            mTareaProvider.updateRetraso(tareaId, 1).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()){
+                        holder.linearLayoutTarea.setBackgroundColor(0xFFB40404);
+                    }
+                }
+            });
+        }
+        else{
+            mTareaProvider.updateRetraso(tareaId, 0).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()){
+                        holder.linearLayoutTarea.setBackgroundColor(Color.TRANSPARENT);
+                    }
+                }
+            });
+        }
+
         holder.viewHolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,6 +108,7 @@ public class TareaAdapter extends FirestoreRecyclerAdapter<Tarea, TareaAdapter.V
         TextView textViewFechaInicio;
         TextView textViewFechaFin;
         TextView textViewAvance;
+        LinearLayout linearLayoutTarea;
         View viewHolder;
 
         public ViewHolder(View view){
@@ -92,6 +118,7 @@ public class TareaAdapter extends FirestoreRecyclerAdapter<Tarea, TareaAdapter.V
             textViewFechaInicio = view.findViewById(R.id.textViewFechaInicio);
             textViewFechaFin = view.findViewById(R.id.textViewFechaFin);
             textViewAvance = view.findViewById(R.id.textViewAvance);
+            linearLayoutTarea = view.findViewById(R.id.linearLayoutTarea);
 
             viewHolder = view;
         }

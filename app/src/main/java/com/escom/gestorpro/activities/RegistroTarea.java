@@ -226,6 +226,9 @@ public class RegistroTarea extends AppCompatActivity {
         String nombre = mtextInputNombreEvento.getText().toString();
         String descr = mtextInputDesc.getText().toString();
         String repo = mtextInputRepositorio.getText().toString();
+        if(repo.isEmpty()){
+            repo = "";
+        }
 
         Tarea tarea = new Tarea();
         tarea.setNombre(nombre);
@@ -238,22 +241,29 @@ public class RegistroTarea extends AppCompatActivity {
         tarea.setCompletado(0);
         tarea.setRetraso(0);
         mDialog.show();
-        mTareaProvider.save(tarea).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    mDialog.dismiss();
-                    Intent intent = new Intent(RegistroTarea.this, TareaDetailActivity.class);
-                    intent.putExtra("id", tarea.getId());
-                    startActivity(intent);
-                    Toast.makeText(RegistroTarea.this, "La información se almacenó correctamente", Toast.LENGTH_LONG).show();
+        if (!nombre.isEmpty() && fecha_fin!=0 && fecha_inicio!=0 && !id_proyecto.isEmpty() && !id_usuario.isEmpty()){
+            mTareaProvider.save(tarea).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()){
+                        mDialog.dismiss();
+                        Intent intent = new Intent(RegistroTarea.this, TareaDetailActivity.class);
+                        intent.putExtra("id", tarea.getId());
+                        startActivity(intent);
+                        Toast.makeText(RegistroTarea.this, "La información se almacenó correctamente", Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        mDialog.dismiss();
+                        Toast.makeText(RegistroTarea.this, "Hubo un error al amacenar", Toast.LENGTH_LONG).show();
+                    }
                 }
-                else{
-                    mDialog.dismiss();
-                    Toast.makeText(RegistroTarea.this, "Hubo un error al amacenar", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+            });
+        }
+
+        else{
+            Toast.makeText(this, "Campos nombre, fechas, proyecto y persona asignada son necesarios", Toast.LENGTH_LONG).show();
+        }
+
     }
 
     private void initDatePickerInicio()

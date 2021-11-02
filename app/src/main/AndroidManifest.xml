@@ -23,21 +23,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GestorPro">
-        <activity android:name=".DatosAnalisisActivity"></activity>
+        <activity android:name=".activities.DatosAnalisisActivity"/>
         <activity android:name=".activities.BuenasPracticasActivity" />
         <activity android:name=".activities.ChatActivity" />
         <activity
             android:name=".activities.TareaDetailActivity"
-            android:parentActivityName=".activities.MenuActivity" />
+            android:parentActivityName=".activities.MenuActivity"/>
         <activity
             android:name=".activities.ProyectoDetailActivity"
-            android:parentActivityName=".activities.MenuActivity" />
+            android:parentActivityName=".activities.MenuActivity"/>
         <activity
-            android:name=".activities.UserProfileActivity"
-            android:parentActivityName=".activities.PostDetailActivity" />
+            android:name=".activities.UserProfileActivity"/>
         <activity
-            android:name=".activities.PostDetailActivity"
-            android:parentActivityName=".activities.MenuActivity" />
+            android:name=".activities.PostDetailActivity"/>
         <activity android:name=".activities.EditProfileActivity" />
 
         <provider
@@ -52,10 +50,10 @@
 
         <activity android:name=".activities.CompleteProfileActivity" />
         <activity android:name=".activities.NuevoProyectoActivity" />
-        <activity android:name=".activities.NuevoPost" />
+        <activity android:name=".activities.NuevoPost"/>
         <activity
             android:name=".activities.RegistroTarea"
-            android:label="@string/title_activity_registro_tarea" />
+            android:label="@string/title_activity_registro_tarea"/>
         <!--
                Set to true if your app is Standalone, that is, it does not require the handheld
                app to run.

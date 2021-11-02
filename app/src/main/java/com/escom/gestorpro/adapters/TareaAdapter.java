@@ -64,27 +64,28 @@ public class TareaAdapter extends FirestoreRecyclerAdapter<Tarea, TareaAdapter.V
         else{
             holder.textViewAvance.setText("Completada");
         }
-
+        int value;
         if(timestamp_fin < System.currentTimeMillis()){
-            mTareaProvider.updateRetraso(tareaId, 1).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()){
-                        holder.linearLayoutTarea.setBackgroundColor(0xFFB40404);
-                    }
-                }
-            });
+            value = 1;
         }
         else{
-            mTareaProvider.updateRetraso(tareaId, 0).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()){
+            value = 0;
+        }
+
+        mTareaProvider.updateRetraso(tareaId, value).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    if (value == 1){
+                        holder.linearLayoutTarea.setBackgroundColor(0xFFB40404);
+                    }
+                    else{
                         holder.linearLayoutTarea.setBackgroundColor(Color.TRANSPARENT);
                     }
+
                 }
-            });
-        }
+            }
+        });
 
         holder.viewHolder.setOnClickListener(new View.OnClickListener() {
             @Override

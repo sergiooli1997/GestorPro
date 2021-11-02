@@ -5,6 +5,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/background">
 
+
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -13,11 +15,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_margin="20dp">
+            android:layout_margin="30dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="40dp"
                 android:text="En esta sección encontrará buenas prácticas para el desarrollo de software"
                 android:textSize="18sp"
                 android:textColor="@color/white"
@@ -249,5 +252,12 @@
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+    <ImageView
+        android:id="@+id/imageViewBack"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_arrow_left"
+        android:layout_marginTop="7dp"
+        android:layout_marginLeft="15dp"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

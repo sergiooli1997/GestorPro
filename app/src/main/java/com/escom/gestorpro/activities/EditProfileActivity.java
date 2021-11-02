@@ -46,7 +46,7 @@ import dmax.dialog.SpotsDialog;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-    CircleImageView mCircleImageViewBack;
+    ImageView mImageViewBack;
     CircleImageView mCircleImageViewProfile;
     ImageView mImageViewCover;
     TextInputEditText mTextInputUsername;
@@ -92,7 +92,7 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-        mCircleImageViewBack = findViewById(R.id.circleImageBack);
+        mImageViewBack = findViewById(R.id.imageViewBack);
         mCircleImageViewProfile = findViewById(R.id.circleImageProfile);
         mImageViewCover = findViewById(R.id.imageViewCover);
         mTextInputUsername = findViewById(R.id.textInputUsername);
@@ -140,7 +140,7 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
-        mCircleImageViewBack.setOnClickListener(new View.OnClickListener() {
+        mImageViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();

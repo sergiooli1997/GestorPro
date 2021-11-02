@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +43,7 @@ public class NuevoProyectoActivity extends AppCompatActivity {
     long fecha_fin = 0;
     boolean existe = false;
     String codigo = "";
-    CircleImageView mCircleImageViewBack;
+    ImageView mImageViewBack;
     TextInputEditText textViewTitle;
     Button btnFechaInicio;
     Button btnFechaFin;
@@ -58,7 +59,7 @@ public class NuevoProyectoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nuevo_proyecto);
 
-        mCircleImageViewBack = findViewById(R.id.circleImageBack);
+        mImageViewBack = findViewById(R.id.imageViewBack);
         textViewTitle = findViewById(R.id.textInputNombreProyecto);
         btnFechaInicio = findViewById(R.id.btnFechaInicio);
         btnFechaFin = findViewById(R.id.btnFechaFinal);
@@ -75,7 +76,7 @@ public class NuevoProyectoActivity extends AppCompatActivity {
                 .setCancelable(false)
                 .build();
 
-        mCircleImageViewBack.setOnClickListener(new View.OnClickListener() {
+        mImageViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();

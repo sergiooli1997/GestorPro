@@ -52,4 +52,8 @@ public class TareaProvider {
     public Query getTareasConRetraso (String idProyecto){
         return mCollection.whereEqualTo("idProyecto", idProyecto).whereEqualTo("retraso", 1);
     }
+
+    public Query getTareasRepoVacio (String idProyecto){
+        return mCollection.whereEqualTo("idProyecto", idProyecto).whereEqualTo("repositorio", "");
+    }
 }

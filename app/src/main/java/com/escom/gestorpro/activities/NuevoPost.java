@@ -43,7 +43,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import dmax.dialog.SpotsDialog;
 
 public class NuevoPost extends AppCompatActivity {
-    CircleImageView mCircleImageViewBack;
+    ImageView mImageViewBack;
     ImageView mImageViewPost;
     File mImageFile;
     Button mButtonPost;
@@ -86,7 +86,7 @@ public class NuevoPost extends AppCompatActivity {
         mBuilderSelector.setTitle("Selecciona una opción");
         options = new CharSequence[] {"Imagen de galeria", "Tomar foto"};
 
-        mCircleImageViewBack = findViewById(R.id.circleImageBack);
+        mImageViewBack = findViewById(R.id.imageViewBack);
         mImageViewPost = findViewById(R.id.subirImagen);
         mTextInputDesc = findViewById(R.id.textInputPost);
         mTextViewUsuario = findViewById(R.id.usuarioname);
@@ -109,7 +109,7 @@ public class NuevoPost extends AppCompatActivity {
             }
         });
 
-        mCircleImageViewBack.setOnClickListener(new View.OnClickListener() {
+        mImageViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();

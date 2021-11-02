@@ -8,6 +8,8 @@
     android:background="@drawable/background"
     tools:context=".activities.ProyectoDetailActivity">
 
+
+
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

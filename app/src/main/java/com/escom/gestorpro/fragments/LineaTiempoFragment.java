@@ -46,9 +46,13 @@ public class LineaTiempoFragment extends Fragment {
     UserProvider mUserProvider;
     AuthProvider mAuthProvider;
     TareaProvider mTareaProvider;
-    TareaAdapter mTareaAdapter;
+    TareaAdapter mTareaIncompletaAdapter;
+    TareaAdapter mTareaCompletaAdapter;
+    TareaAdapter mTareaRetrasoAdapter;
 
-    RecyclerView mRecyclerView;
+    RecyclerView mRecyclerTareasIncompletas;
+    RecyclerView mRecyclerTareasCompletas;
+    RecyclerView mRecyclerTareasRetraso;
     FloatingActionButton fab;
 
 
@@ -92,9 +96,18 @@ public class LineaTiempoFragment extends Fragment {
         mUserProvider = new UserProvider();
         mTareaProvider = new TareaProvider();
 
-        mRecyclerView =  vista.findViewById(R.id.RecyclerViewTareas);
+        mRecyclerTareasIncompletas =  vista.findViewById(R.id.RecyclerViewTareasIncompletas);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(linearLayoutManager);
+        mRecyclerTareasIncompletas.setLayoutManager(linearLayoutManager);
+
+        mRecyclerTareasCompletas =  vista.findViewById(R.id.RecyclerViewTareasCompletas);
+        LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(getContext());
+        mRecyclerTareasCompletas.setLayoutManager(linearLayoutManager2);
+
+        mRecyclerTareasRetraso =  vista.findViewById(R.id.RecyclerViewTareasRetraso);
+        LinearLayoutManager linearLayoutManager3 = new LinearLayoutManager(getContext());
+        mRecyclerTareasRetraso.setLayoutManager(linearLayoutManager3);
+
         setHasOptionsMenu(true);
         fab = vista.findViewById(R.id.newTarea);
 
@@ -114,7 +127,7 @@ public class LineaTiempoFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        final Query[] query = new Query[1];
+        final Query[] query = new Query[3];
         mUserProvider.getUser(mAuthProvider.getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -122,18 +135,37 @@ public class LineaTiempoFragment extends Fragment {
                     if (documentSnapshot.contains("rol")){
                         String rol = documentSnapshot.getString("rol");
                         if (rol.equals("Líder de proyecto")){
-                            query[0] = mTareaProvider.getAllTarea();
+                            query[0] = mTareaProvider.getTareaCompletoByValorAllUser(0);
+                            query[1] = mTareaProvider.getTareaCompletoByValorAllUser(1);
+                            query[2] = mTareaProvider.getTareaRetrasoAllUser(1);
+
                         }
                         else{
-                            query[0] = mTareaProvider.getTareasByUser(mAuthProvider.getUid());
+                            query[0] = mTareaProvider.getTareaCompletoByValorByUser(mAuthProvider.getUid(), 0);
+                            query[1] = mTareaProvider.getTareaCompletoByValorByUser(mAuthProvider.getUid(), 1);
+                            query[2] = mTareaProvider.getTareaRetrasoByUser(mAuthProvider.getUid(), 1);
                         }
-                        FirestoreRecyclerOptions<Tarea>  options = new FirestoreRecyclerOptions.Builder<Tarea>()
+                        FirestoreRecyclerOptions<Tarea>  options1 = new FirestoreRecyclerOptions.Builder<Tarea>()
                                 .setQuery(query[0], Tarea.class)
                                 .build();
+                        FirestoreRecyclerOptions<Tarea>  options2 = new FirestoreRecyclerOptions.Builder<Tarea>()
+                                .setQuery(query[1], Tarea.class)
+                                .build();
+                        FirestoreRecyclerOptions<Tarea>  options3 = new FirestoreRecyclerOptions.Builder<Tarea>()
+                                .setQuery(query[2], Tarea.class)
+                                .build();
 
-                        mTareaAdapter = new TareaAdapter(options, getActivity());
-                        mRecyclerView.setAdapter(mTareaAdapter);
-                        mTareaAdapter.startListening();
+                        mTareaIncompletaAdapter = new TareaAdapter(options1, getActivity());
+                        mRecyclerTareasIncompletas.setAdapter(mTareaIncompletaAdapter);
+                        mTareaIncompletaAdapter.startListening();
+
+                        mTareaCompletaAdapter = new TareaAdapter(options2, getActivity());
+                        mRecyclerTareasCompletas.setAdapter(mTareaCompletaAdapter);
+                        mTareaCompletaAdapter.startListening();
+
+                        mTareaRetrasoAdapter = new TareaAdapter(options3, getActivity());
+                        mRecyclerTareasRetraso.setAdapter(mTareaRetrasoAdapter);
+                        mTareaRetrasoAdapter.startListening();
                     }
                 }
             }
@@ -143,7 +175,9 @@ public class LineaTiempoFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        mTareaAdapter.stopListening();
+        mTareaIncompletaAdapter.stopListening();
+        mTareaCompletaAdapter.stopListening();
+        mTareaRetrasoAdapter.stopListening();
     }
 
     private void getRol(String uid) {

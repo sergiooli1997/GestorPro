@@ -3,63 +3,72 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background"
     tools:context=".fragments.EstrategiasFragment">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_marginTop="20dp">
 
-        android:layout_margin="20dp">
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Selecciona una de las opciones debajo y
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+
+            android:layout_margin="20dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Selecciona una de las opciones debajo y
 empieza a mejorar tu calidad de trabajo."
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:layout_marginBottom="20dp"/>
-        <Button
-            android:id="@+id/btnEstrategias"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Estrategias empresariales"
-            android:layout_margin="10dp"
-            />
-        <Button
-            android:id="@+id/btnBuenasPracticas"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Buenas prácticas"
-            android:layout_margin="10dp"
-            />
-        <Button
-            android:id="@+id/btnConceptosFund"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Conceptos fundamentales del desarrollo"
-            android:layout_margin="10dp"
-            />
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:layout_marginBottom="20dp"/>
+            <Button
+                android:id="@+id/btnEstrategias"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Estrategias empresariales"
+                android:layout_margin="10dp"
+                />
+            <Button
+                android:id="@+id/btnBuenasPracticas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Buenas prácticas"
+                android:layout_margin="10dp"
+                />
+            <Button
+                android:id="@+id/btnConceptosFund"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Conceptos fundamentales del desarrollo"
+                android:layout_margin="10dp"
+                />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Selecciona esta opción para realizar un análsis
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Selecciona esta opción para realizar un análsis
 de las tendencias"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="80dp"/>
-        <Button
-            android:id="@+id/btnAnalisisDatos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Análisis de datos"
-            android:layout_margin="10dp"
-            />
-    </LinearLayout>
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="80dp"/>
+            <Button
+                android:id="@+id/btnAnalisisDatos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Análisis de datos"
+                android:layout_margin="10dp"
+                />
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </FrameLayout>

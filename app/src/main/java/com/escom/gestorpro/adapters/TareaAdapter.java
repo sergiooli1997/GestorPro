@@ -50,20 +50,13 @@ public class TareaAdapter extends FirestoreRecyclerAdapter<Tarea, TareaAdapter.V
         long timestamp_inicio = tarea.getFecha_inicio();
         Date date1 = new Date(timestamp_inicio);
         String fecha_inicio = formatter.format(date1);
-        holder.textViewFechaInicio.setText("Fecha inicio: " + fecha_inicio);
+        holder.textViewFechaInicio.setText(fecha_inicio);
 
         long timestamp_fin = tarea.getFecha_fin();
         Date date2 = new Date(timestamp_fin);
         String fecha_fin = formatter.format(date2);
-        holder.textViewFechaFin.setText("Fecha fin: " + fecha_fin);
+        holder.textViewFechaFin.setText(fecha_fin);
 
-        int completo = tarea.getCompletado();
-        if (completo == 0){
-            holder.textViewAvance.setText("No completada");
-        }
-        else{
-            holder.textViewAvance.setText("Completada");
-        }
         int value;
         if(timestamp_fin < System.currentTimeMillis()){
             value = 1;
@@ -75,15 +68,7 @@ public class TareaAdapter extends FirestoreRecyclerAdapter<Tarea, TareaAdapter.V
         mTareaProvider.updateRetraso(tareaId, value).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    if (value == 1){
-                        holder.linearLayoutTarea.setBackgroundColor(0xFFB40404);
-                    }
-                    else{
-                        holder.linearLayoutTarea.setBackgroundColor(Color.TRANSPARENT);
-                    }
 
-                }
             }
         });
 
@@ -108,7 +93,6 @@ public class TareaAdapter extends FirestoreRecyclerAdapter<Tarea, TareaAdapter.V
         TextView textViewTitleTarea;
         TextView textViewFechaInicio;
         TextView textViewFechaFin;
-        TextView textViewAvance;
         LinearLayout linearLayoutTarea;
         View viewHolder;
 
@@ -118,7 +102,6 @@ public class TareaAdapter extends FirestoreRecyclerAdapter<Tarea, TareaAdapter.V
             textViewTitleTarea = view.findViewById(R.id.textViewTitleTarea);
             textViewFechaInicio = view.findViewById(R.id.textViewFechaInicio);
             textViewFechaFin = view.findViewById(R.id.textViewFechaFin);
-            textViewAvance = view.findViewById(R.id.textViewAvance);
             linearLayoutTarea = view.findViewById(R.id.linearLayoutTarea);
 
             viewHolder = view;

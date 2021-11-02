@@ -45,8 +45,22 @@ public class TareaProvider {
         return mCollection.whereEqualTo("idProyecto", idProyecto);
     }
 
-    public Query getTareasCompletadas (String idProyecto){
-        return mCollection.whereEqualTo("idProyecto", idProyecto).whereEqualTo("completado", 1);
+    public Query getTareaCompletoByProyecto (String idProyecto, int value){
+        return mCollection.whereEqualTo("idProyecto", idProyecto).whereEqualTo("completado", value);
+    }
+
+    public Query getTareaCompletoByValorAllUser (int value){
+        return mCollection.whereEqualTo("completado", value);
+    }
+    public Query getTareaCompletoByValorByUser (String idUser, int value){
+        return mCollection.whereEqualTo("idUsuario", idUser).whereEqualTo("completado", value);
+    }
+
+    public Query getTareaRetrasoAllUser (int value){
+        return mCollection.whereEqualTo("retraso", value);
+    }
+    public Query getTareaRetrasoByUser (String idUser, int value){
+        return mCollection.whereEqualTo("idUsuario", idUser).whereEqualTo("retraso", value);
     }
 
     public Query getTareasConRetraso (String idProyecto){

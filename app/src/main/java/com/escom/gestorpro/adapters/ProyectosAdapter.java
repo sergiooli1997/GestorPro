@@ -97,7 +97,7 @@ public class ProyectosAdapter extends FirestoreRecyclerAdapter<Proyecto, Proyect
 
     private void avance(String proyectoId, ViewHolder holder) {
         getNumberTareas(proyectoId);
-        mTareaProvider.getTareasCompletadas(proyectoId).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        mTareaProvider.getTareaCompletoByProyecto(proyectoId, 1).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
                 if(error == null){

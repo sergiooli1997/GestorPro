@@ -113,7 +113,7 @@ public class ProyectoDetailActivity extends AppCompatActivity {
     }
 
     private void getAvance() {
-        mTareaProvider.getTareasCompletadas(mExtraProyectoId).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        mTareaProvider.getTareaCompletoByProyecto(mExtraProyectoId, 1).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
                 int tareas_completadas = queryDocumentSnapshots.size();

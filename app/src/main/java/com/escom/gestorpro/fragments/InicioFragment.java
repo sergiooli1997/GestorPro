@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,10 +23,23 @@ import com.escom.gestorpro.adapters.PostsAdapter;
 import com.escom.gestorpro.models.Post;
 import com.escom.gestorpro.providers.AuthProvider;
 import com.escom.gestorpro.providers.PostProvider;
+import com.escom.gestorpro.providers.ProyectoProvider;
 import com.escom.gestorpro.providers.TokenProvider;
+import com.escom.gestorpro.providers.UserProvider;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,11 +55,15 @@ public class InicioFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    List<String> proyectos = new ArrayList<>();
+    List<String> id_proyectos = new ArrayList<>();
 
     RecyclerView mRecyclerView;
     PostProvider mPostProvider;
     PostsAdapter mPostAdapter;
     AuthProvider mAuthProvider;
+    UserProvider mUserProvider;
+    ProyectoProvider mProyectoProvider;
     public InicioFragment() {
         // Required empty public constructor
     }
@@ -58,7 +76,6 @@ public class InicioFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment InicioFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static InicioFragment newInstance(String param1, String param2) {
         InicioFragment fragment = new InicioFragment();
         Bundle args = new Bundle();
@@ -87,6 +104,8 @@ public class InicioFragment extends Fragment {
         View vista = inflater.inflate(R.layout.fragment_inicio, container, false);
         mPostProvider = new PostProvider();
         mAuthProvider = new AuthProvider();
+        mUserProvider = new UserProvider();
+        mProyectoProvider = new ProyectoProvider();
 
         mRecyclerView =  vista.findViewById(R.id.RecyclerPost);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -94,6 +113,25 @@ public class InicioFragment extends Fragment {
         setHasOptionsMenu(true);
 
         FloatingActionButton fab = vista.findViewById(R.id.newPost);
+
+        mUserProvider.getUser(mAuthProvider.getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()){
+                    if (documentSnapshot.contains("rol")){
+                        String rol = documentSnapshot.getString("rol");
+                        if(rol.equals("Líder de proyecto")){
+                            fab.setVisibility(View.VISIBLE);
+                        }
+                        else{
+                            fab.setVisibility(View.GONE);
+                        }
+                    }
+                }
+            }
+        });
+
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,14 +146,28 @@ public class InicioFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        Query query = mPostProvider.getAll();
-        FirestoreRecyclerOptions<Post> options = new FirestoreRecyclerOptions.Builder<Post>()
-                .setQuery(query, Post.class)
-                .build();
+        mProyectoProvider.getProyectoByUser(mAuthProvider.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        String nombre_proyectos = document.getString("nombre");
+                        String id = document.getString("id");
+                        proyectos.add(nombre_proyectos);
+                        id_proyectos.add(id);
+                        Query query = mPostProvider.getPostByProyectos(id_proyectos);
+                        FirestoreRecyclerOptions<Post> options = new FirestoreRecyclerOptions.Builder<Post>()
+                                .setQuery(query, Post.class)
+                                .build();
 
-        mPostAdapter = new PostsAdapter(options, getContext());
-        mRecyclerView.setAdapter(mPostAdapter);
-        mPostAdapter.startListening();
+                        mPostAdapter = new PostsAdapter(options, getContext());
+                        mRecyclerView.setAdapter(mPostAdapter);
+                        mPostAdapter.startListening();
+                    }
+                }
+            }
+        });
+
     }
 
     @Override

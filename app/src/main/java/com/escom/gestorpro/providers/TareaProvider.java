@@ -8,6 +8,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.util.List;
+
 public class TareaProvider {
     CollectionReference mCollection;
 
@@ -49,15 +51,15 @@ public class TareaProvider {
         return mCollection.whereEqualTo("idProyecto", idProyecto).whereEqualTo("completado", value);
     }
 
-    public Query getTareaCompletoByValorAllUser (int value){
-        return mCollection.whereEqualTo("completado", value);
+    public Query getTareaCompletoByValorAllUser (List<String> proyectos, int value){
+        return mCollection.whereIn("idProyecto", proyectos).whereEqualTo("completado", value);
     }
     public Query getTareaCompletoByValorByUser (String idUser, int value){
         return mCollection.whereEqualTo("idUsuario", idUser).whereEqualTo("completado", value);
     }
 
-    public Query getTareaRetrasoAllUser (int value){
-        return mCollection.whereEqualTo("retraso", value);
+    public Query getTareaRetrasoAllUser (List<String> proyectos, int value){
+        return mCollection.whereIn("idProyecto", proyectos).whereEqualTo("retraso", value);
     }
     public Query getTareaRetrasoByUser (String idUser, int value){
         return mCollection.whereEqualTo("idUsuario", idUser).whereEqualTo("retraso", value);

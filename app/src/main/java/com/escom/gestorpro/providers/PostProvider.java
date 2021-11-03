@@ -8,6 +8,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.util.List;
+
 public class PostProvider {
 
     CollectionReference mCollection;
@@ -25,6 +27,10 @@ public class PostProvider {
 
     public Query getAll() {
         return mCollection.orderBy("fecha", Query.Direction.DESCENDING);
+    }
+
+    public Query getPostByProyectos(List<String> proyectos){
+        return mCollection.whereIn("idProyecto", proyectos).orderBy("fecha", Query.Direction.DESCENDING);
     }
 
     public Query getPostByUser(String id) {

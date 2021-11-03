@@ -35,7 +35,8 @@
         <activity
             android:name=".activities.UserProfileActivity"/>
         <activity
-            android:name=".activities.PostDetailActivity"/>
+            android:name=".activities.PostDetailActivity"
+            android:parentActivityName=".activities.MenuActivity"/>
         <activity android:name=".activities.EditProfileActivity" />
 
         <provider

@@ -54,6 +54,24 @@
 
         </LinearLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Elije para que proyecto será visible esta publicación"
+            android:textSize="18sp"
+            android:layout_margin="15dp"
+            android:textColor="@color/white"/>
+
+        <Spinner
+            android:id="@+id/spinnerProyecto"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="#AAAAAAAA"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="50dp"
+            android:layout_marginRight="20dp"
+            />
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,19 +86,20 @@
                 android:inputType="textEmailAddress" />
 
         </com.google.android.material.textfield.TextInputLayout>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
-                android:text="Subir una imagen"
-                android:gravity="center"
-                android:textSize="30sp"
-                android:textColor="@color/white" />
-            <ImageView
-                android:id="@+id/subirImagen"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:src="@drawable/ic_baseline_cloud_upload_24"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="Subir una imagen"
+            android:gravity="center"
+            android:textSize="30sp"
+            android:textColor="@color/white" />
+        <ImageView
+            android:id="@+id/subirImagen"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/ic_baseline_cloud_upload_24"/>
 
 
 

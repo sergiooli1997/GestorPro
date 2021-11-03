@@ -29,6 +29,7 @@ import java.util.TimeZone;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+//TODO: boton back no debe regresar a Menu.Activity
 public class TareaDetailActivity extends AppCompatActivity {
     String mExtraTareaId;
     String mIdUser = "";

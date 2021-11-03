@@ -40,6 +40,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProyectoDetailActivity extends AppCompatActivity {
     // TODO: Cliente califica proyecto
+    //TODO: boton back no debe regresar a Menu.Activity
     String mExtraProyectoId;
     String mIdUser = "";
     int total_tareas = 0;

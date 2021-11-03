@@ -1,5 +1,6 @@
 package com.escom.gestorpro.fragments;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -21,13 +22,23 @@ import com.escom.gestorpro.activities.RegistroTarea;
 import com.escom.gestorpro.adapters.TareaAdapter;
 import com.escom.gestorpro.models.Tarea;
 import com.escom.gestorpro.providers.AuthProvider;
+import com.escom.gestorpro.providers.ProyectoProvider;
 import com.escom.gestorpro.providers.TareaProvider;
 import com.escom.gestorpro.providers.UserProvider;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import dmax.dialog.SpotsDialog;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,9 +54,13 @@ public class LineaTiempoFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    List<String> proyectos = new ArrayList<>();
+    List<String> id_proyectos = new ArrayList<>();
+
     UserProvider mUserProvider;
     AuthProvider mAuthProvider;
     TareaProvider mTareaProvider;
+    ProyectoProvider mProyectoProvider;
     TareaAdapter mTareaIncompletaAdapter;
     TareaAdapter mTareaCompletaAdapter;
     TareaAdapter mTareaRetrasoAdapter;
@@ -54,6 +69,7 @@ public class LineaTiempoFragment extends Fragment {
     RecyclerView mRecyclerTareasCompletas;
     RecyclerView mRecyclerTareasRetraso;
     FloatingActionButton fab;
+    AlertDialog mDialog;
 
 
     public LineaTiempoFragment() {
@@ -95,6 +111,7 @@ public class LineaTiempoFragment extends Fragment {
         mAuthProvider = new AuthProvider();
         mUserProvider = new UserProvider();
         mTareaProvider = new TareaProvider();
+        mProyectoProvider = new ProyectoProvider();
 
         mRecyclerTareasIncompletas =  vista.findViewById(R.id.RecyclerViewTareasIncompletas);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -111,6 +128,12 @@ public class LineaTiempoFragment extends Fragment {
         setHasOptionsMenu(true);
         fab = vista.findViewById(R.id.newTarea);
 
+        mDialog = new SpotsDialog.Builder()
+                .setContext(getActivity())
+                .setMessage("Espere un momento")
+                .setCancelable(false)
+                .build();
+        mDialog.show();
         getRol(mAuthProvider.getUid());
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -135,37 +158,37 @@ public class LineaTiempoFragment extends Fragment {
                     if (documentSnapshot.contains("rol")){
                         String rol = documentSnapshot.getString("rol");
                         if (rol.equals("Líder de proyecto")){
-                            query[0] = mTareaProvider.getTareaCompletoByValorAllUser(0);
-                            query[1] = mTareaProvider.getTareaCompletoByValorAllUser(1);
-                            query[2] = mTareaProvider.getTareaRetrasoAllUser(1);
-
+                            loadProyecto();
                         }
                         else{
                             query[0] = mTareaProvider.getTareaCompletoByValorByUser(mAuthProvider.getUid(), 0);
                             query[1] = mTareaProvider.getTareaCompletoByValorByUser(mAuthProvider.getUid(), 1);
                             query[2] = mTareaProvider.getTareaRetrasoByUser(mAuthProvider.getUid(), 1);
+
+                            FirestoreRecyclerOptions<Tarea>  options1 = new FirestoreRecyclerOptions.Builder<Tarea>()
+                                    .setQuery(query[0], Tarea.class)
+                                    .build();
+                            FirestoreRecyclerOptions<Tarea>  options2 = new FirestoreRecyclerOptions.Builder<Tarea>()
+                                    .setQuery(query[1], Tarea.class)
+                                    .build();
+                            FirestoreRecyclerOptions<Tarea>  options3 = new FirestoreRecyclerOptions.Builder<Tarea>()
+                                    .setQuery(query[2], Tarea.class)
+                                    .build();
+
+                            mTareaIncompletaAdapter = new TareaAdapter(options1, getActivity());
+                            mRecyclerTareasIncompletas.setAdapter(mTareaIncompletaAdapter);
+                            mTareaIncompletaAdapter.startListening();
+
+                            mTareaCompletaAdapter = new TareaAdapter(options2, getActivity());
+                            mRecyclerTareasCompletas.setAdapter(mTareaCompletaAdapter);
+                            mTareaCompletaAdapter.startListening();
+
+                            mTareaRetrasoAdapter = new TareaAdapter(options3, getActivity());
+                            mRecyclerTareasRetraso.setAdapter(mTareaRetrasoAdapter);
+                            mTareaRetrasoAdapter.startListening();
+
+                            mDialog.dismiss();
                         }
-                        FirestoreRecyclerOptions<Tarea>  options1 = new FirestoreRecyclerOptions.Builder<Tarea>()
-                                .setQuery(query[0], Tarea.class)
-                                .build();
-                        FirestoreRecyclerOptions<Tarea>  options2 = new FirestoreRecyclerOptions.Builder<Tarea>()
-                                .setQuery(query[1], Tarea.class)
-                                .build();
-                        FirestoreRecyclerOptions<Tarea>  options3 = new FirestoreRecyclerOptions.Builder<Tarea>()
-                                .setQuery(query[2], Tarea.class)
-                                .build();
-
-                        mTareaIncompletaAdapter = new TareaAdapter(options1, getActivity());
-                        mRecyclerTareasIncompletas.setAdapter(mTareaIncompletaAdapter);
-                        mTareaIncompletaAdapter.startListening();
-
-                        mTareaCompletaAdapter = new TareaAdapter(options2, getActivity());
-                        mRecyclerTareasCompletas.setAdapter(mTareaCompletaAdapter);
-                        mTareaCompletaAdapter.startListening();
-
-                        mTareaRetrasoAdapter = new TareaAdapter(options3, getActivity());
-                        mRecyclerTareasRetraso.setAdapter(mTareaRetrasoAdapter);
-                        mTareaRetrasoAdapter.startListening();
                     }
                 }
             }
@@ -191,6 +214,49 @@ public class LineaTiempoFragment extends Fragment {
                     }
                     else{
                         fab.setVisibility(View.INVISIBLE);
+                    }
+                }
+            }
+        });
+    }
+
+    private void loadProyecto() {
+        final Query[] query = new Query[3];
+        mProyectoProvider.getProyectoByUser2(mAuthProvider.getUid()).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        String nombre_proyectos = document.getString("nombre");
+                        String id = document.getString("id");
+                        proyectos.add(nombre_proyectos);
+                        id_proyectos.add(id);
+                        query[0] = mTareaProvider.getTareaCompletoByValorAllUser(id_proyectos,0);
+                        query[1] = mTareaProvider.getTareaCompletoByValorAllUser(id_proyectos,1);
+                        query[2] = mTareaProvider.getTareaRetrasoAllUser(id_proyectos,1);
+
+                        FirestoreRecyclerOptions<Tarea>  options1 = new FirestoreRecyclerOptions.Builder<Tarea>()
+                                .setQuery(query[0], Tarea.class)
+                                .build();
+                        FirestoreRecyclerOptions<Tarea>  options2 = new FirestoreRecyclerOptions.Builder<Tarea>()
+                                .setQuery(query[1], Tarea.class)
+                                .build();
+                        FirestoreRecyclerOptions<Tarea>  options3 = new FirestoreRecyclerOptions.Builder<Tarea>()
+                                .setQuery(query[2], Tarea.class)
+                                .build();
+
+                        mTareaIncompletaAdapter = new TareaAdapter(options1, getActivity());
+                        mRecyclerTareasIncompletas.setAdapter(mTareaIncompletaAdapter);
+                        mTareaIncompletaAdapter.startListening();
+
+                        mTareaCompletaAdapter = new TareaAdapter(options2, getActivity());
+                        mRecyclerTareasCompletas.setAdapter(mTareaCompletaAdapter);
+                        mTareaCompletaAdapter.startListening();
+
+                        mTareaRetrasoAdapter = new TareaAdapter(options3, getActivity());
+                        mRecyclerTareasRetraso.setAdapter(mTareaRetrasoAdapter);
+                        mTareaRetrasoAdapter.startListening();
+                        mDialog.dismiss();
                     }
                 }
             }

@@ -6,16 +6,19 @@ public class Post {
     private long fecha;
     private String texto;
     private String image;
+    private String idProyecto;
 
     public Post(){
 
     }
-    public Post(String id, String usuario, long fecha, String texto, String image) {
+
+    public Post(String id, String usuario, long fecha, String texto, String image, String idProyecto) {
         this.id = id;
         this.usuario = usuario;
         this.fecha = fecha;
         this.texto = texto;
         this.image = image;
+        this.idProyecto = idProyecto;
     }
 
     public String getId() {
@@ -56,5 +59,13 @@ public class Post {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getIdProyecto() {
+        return idProyecto;
+    }
+
+    public void setIdProyecto(String idProyecto) {
+        this.idProyecto = idProyecto;
     }
 }

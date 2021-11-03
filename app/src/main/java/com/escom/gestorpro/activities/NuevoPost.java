@@ -15,8 +15,11 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +28,7 @@ import com.escom.gestorpro.models.Post;
 import com.escom.gestorpro.providers.AuthProvider;
 import com.escom.gestorpro.providers.ImageProvider;
 import com.escom.gestorpro.providers.PostProvider;
+import com.escom.gestorpro.providers.ProyectoProvider;
 import com.escom.gestorpro.providers.UserProvider;
 import com.escom.gestorpro.utils.FileUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,39 +36,51 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import dmax.dialog.SpotsDialog;
 
 public class NuevoPost extends AppCompatActivity {
+    private final int GALLERY_REQUEST_CODE = 1;
+    private final int PHOTO_REQUEST_CODE = 3;
+    String id_proyecto = "";
+    String descripcion = "";
+    ArrayAdapter<String> adapter;
+    CharSequence options[];
+    List<String> proyectos = new ArrayList<>();
+    List<String> id_proyectos = new ArrayList<>();
+
+    String mAbsolutePhotoPath;
+    String mPhotoPath;
+    File mPhotoFile;
+    File mImageFile;
+
     ImageView mImageViewBack;
     ImageView mImageViewPost;
-    File mImageFile;
     Button mButtonPost;
+    Spinner spinnerProyecto;
+    TextInputEditText mTextInputDesc;
+    TextView mTextViewUsuario;
+    CircleImageView mCircleImgUsuario;
+
+    AlertDialog mDialog;
+    AlertDialog.Builder mBuilderSelector;
+
     ImageProvider mImagePrivder;
     PostProvider mPostProvider;
     AuthProvider mAuthProvider;
     UserProvider mUserProvider;
-    TextInputEditText mTextInputDesc;
-    TextView mTextViewUsuario;
-    CircleImageView mCircleImgUsuario;
-    AlertDialog mDialog;
-    AlertDialog.Builder mBuilderSelector;
-    CharSequence options[];
-
-    String descripcion = "";
-    String mAbsolutePhotoPath;
-    String mPhotoPath;
-    File mPhotoFile;
-
-    private final int GALLERY_REQUEST_CODE = 1;
-    private final int PHOTO_REQUEST_CODE = 3;
+    ProyectoProvider mProyectoProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +91,7 @@ public class NuevoPost extends AppCompatActivity {
         mPostProvider = new PostProvider();
         mAuthProvider = new AuthProvider();
         mUserProvider = new UserProvider();
+        mProyectoProvider = new ProyectoProvider();
 
         mDialog = new SpotsDialog.Builder()
                 .setContext(this)
@@ -86,6 +103,11 @@ public class NuevoPost extends AppCompatActivity {
         mBuilderSelector.setTitle("Selecciona una opción");
         options = new CharSequence[] {"Imagen de galeria", "Tomar foto"};
 
+        spinnerProyecto = (Spinner)findViewById(R.id.spinnerProyecto);
+        adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, proyectos);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerProyecto.setAdapter(adapter);
+
         mImageViewBack = findViewById(R.id.imageViewBack);
         mImageViewPost = findViewById(R.id.subirImagen);
         mTextInputDesc = findViewById(R.id.textInputPost);
@@ -94,6 +116,18 @@ public class NuevoPost extends AppCompatActivity {
         mButtonPost = findViewById(R.id.btnPublicar);
 
         getUserInfo(mAuthProvider.getUid());
+        loadProyecto();
+
+        spinnerProyecto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                id_proyecto = id_proyectos.get(spinnerProyecto.getSelectedItemPosition());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
         mButtonPost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +147,23 @@ public class NuevoPost extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+    }
+
+    private void loadProyecto() {
+        mProyectoProvider.getProyectoByUser2(mAuthProvider.getUid()).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        String nombre_proyectos = document.getString("nombre");
+                        String id = document.getString("id");
+                        proyectos.add(nombre_proyectos);
+                        id_proyectos.add(id);
+                    }
+                    adapter.notifyDataSetChanged();
+                }
             }
         });
     }
@@ -215,6 +266,7 @@ public class NuevoPost extends AppCompatActivity {
                             post.setTexto(descripcion);
                             post.setUsuario(mAuthProvider.getUid());
                             post.setFecha(new Date().getTime());
+                            post.setIdProyecto(id_proyecto);
                             mPostProvider.save(post).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> taskSave) {

@@ -128,14 +128,30 @@ public class ProyectosFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        Query query = mProyectosProvider.getProyectoByUser(mAuthProvider.getUid());
-        FirestoreRecyclerOptions<Proyecto> options = new FirestoreRecyclerOptions.Builder<Proyecto>()
-                .setQuery(query, Proyecto.class)
-                .build();
+        final Query[] query = new Query[1];
+        mUserProvider.getUser(mAuthProvider.getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()){
+                    if (documentSnapshot.contains("rol")){
+                        String rol = documentSnapshot.getString("rol");
+                        if (rol.equals("Cliente")){
+                            query[0] = mProyectosProvider.getProyectoByCliente(mAuthProvider.getUid());
+                        }
+                        else{
+                            query[0] = mProyectosProvider.getProyectoByUser(mAuthProvider.getUid());
+                        }
+                        FirestoreRecyclerOptions<Proyecto> options = new FirestoreRecyclerOptions.Builder<Proyecto>()
+                                .setQuery(query[0], Proyecto.class)
+                                .build();
 
-        mProyectosAdapter = new ProyectosAdapter(options, getActivity());
-        mRecyclerView.setAdapter(mProyectosAdapter);
-        mProyectosAdapter.startListening();
+                        mProyectosAdapter = new ProyectosAdapter(options, getActivity());
+                        mRecyclerView.setAdapter(mProyectosAdapter);
+                        mProyectosAdapter.startListening();
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -190,7 +206,23 @@ public class ProyectosFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 String value = editText.getText().toString();
                 if (!value.isEmpty()){
-                    unirProyecto(value);
+                    mUserProvider.getUser(mAuthProvider.getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if (documentSnapshot.exists()){
+                                if(documentSnapshot.contains("rol")){
+                                    String rol = documentSnapshot.getString("rol");
+                                    if(rol.equals("Miembro del equipo")){
+                                        unirProyecto(value);
+                                    }
+                                    else{
+                                        unirCliente(value);
+                                    }
+                                }
+                            }
+                        }
+                    });
+
 
                 }
                 else{
@@ -208,6 +240,57 @@ public class ProyectosFragment extends Fragment {
         });
 
         alert.show();
+    }
+
+    private void unirCliente(String codigo) {
+        mDialog.show();
+        final String[] idProyecto = new String[1];
+        mProyectosProvider.getIdByCode(codigo).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                mDialog.dismiss();
+                if (task.isSuccessful()){
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        if (document.exists()) {
+                            idProyecto[0] = document.get("id").toString();
+                            Proyecto proyecto = new Proyecto();
+                            proyecto.setIdCliente(mAuthProvider.getUid());
+                            proyecto.setId(idProyecto[0]);
+                            mProyectosProvider.update(proyecto).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    mProyectosProvider.getProyectoById(idProyecto[0]).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                            if (documentSnapshot.exists()){
+                                                if (documentSnapshot.contains("nombre")){
+                                                    String nombre = documentSnapshot.getString("nombre");
+                                                    Intent intent = new Intent(getActivity(), ProyectoDetailActivity.class);
+                                                    intent.putExtra("id", idProyecto[0]);
+                                                    startActivity(intent);
+                                                    Toast.makeText(getActivity(), "Te uniste al proyecto " + nombre, Toast.LENGTH_LONG).show();
+                                                }
+                                            }
+                                            else{
+                                                Toast.makeText(getActivity(), "Proyecto inexsistente", Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                        else{
+                            mDialog.dismiss();
+                            Toast.makeText(getActivity(), "No existe el código", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+                else{
+                    Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        Toast.makeText(getActivity(), "No se encontro código", Toast.LENGTH_LONG).show();
     }
 
     private void unirProyecto(String codigo) {

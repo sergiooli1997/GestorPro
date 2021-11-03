@@ -113,13 +113,16 @@ public class UserProfileActivity extends AppCompatActivity {
         mPostProvider.getPostByUser(mExtraIdUser).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
-                int numberPost = queryDocumentSnapshots.size();
-                if (numberPost > 0){
-                    mTextViewPostExist.setText("Publicaciones");
+                if(error == null){
+                    int numberPost = queryDocumentSnapshots.size();
+                    if (numberPost > 0){
+                        mTextViewPostExist.setText("Publicaciones");
+                    }
+                    else{
+                        mTextViewPostExist.setText("No hay publicaciones");
+                    }
                 }
-                else{
-                    mTextViewPostExist.setText("No hay publicaciones");
-                }
+
             }
         });
     }

@@ -10,6 +10,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ProyectoProvider {
 
     CollectionReference mCollection;
@@ -30,6 +33,10 @@ public class ProyectoProvider {
         return mCollection.document(id).get();
     }
 
+    public Query getProyectoByCliente(String id) {
+        return mCollection.whereEqualTo("idCliente", id);
+    }
+
     public Task<QuerySnapshot> getProyectoById2(String id) {
         return mCollection.whereEqualTo("id", id).get();
     }
@@ -42,6 +49,10 @@ public class ProyectoProvider {
         return mCollection.whereEqualTo("codigo", codigo);
     }
 
+    public Task<QuerySnapshot> findLider(String idProyecto){
+        return mCollection.whereEqualTo("id", idProyecto).get();
+    }
+
     public Task<Void> save(Proyecto proyecto){
         DocumentReference document = mCollection.document();
         String id = document.getId();
@@ -51,6 +62,14 @@ public class ProyectoProvider {
 
     public Task<Void> addUser(String idProyecto, String usuario){
         return mCollection.document(idProyecto).update("equipo", FieldValue.arrayUnion(usuario));
+    }
+
+    public Task<Void> update(Proyecto proyecto) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("fecha_fin", proyecto.getFecha_fin());
+        map.put("fecha_inicio", proyecto.getFecha_inicio());
+        map.put("idCliente", proyecto.getIdCliente());
+        return mCollection.document(proyecto.getId()).update(map);
     }
 
     public Task<Void> deleteProyecto(String id){return mCollection.document(id).delete();}

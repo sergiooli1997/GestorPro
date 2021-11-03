@@ -118,19 +118,23 @@ public class DatosAnalisisActivity extends AppCompatActivity {
         mTareaProvider.getTareasTotalByProyecto(id_proyecto).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
-                total_tareas = queryDocumentSnapshots.size();
-                if(total_tareas > 0){
-                    mTareaProvider.getTareasConRetraso(id_proyecto).addSnapshotListener(new EventListener<QuerySnapshot>() {
-                        @Override
-                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                            int tareas_retraso = value.size();
-                            tareas_retraso_analisis = (tareas_retraso*100.00)/total_tareas;
-                            mTextRetraso.setText(String.format("%.2f", tareas_retraso_analisis));
-                        }
-                    });
-                }
-                else{
-                    mTextRetraso.setText("0");
+                if (error == null){
+                    total_tareas = queryDocumentSnapshots.size();
+                    if(total_tareas > 0){
+                        mTareaProvider.getTareasConRetraso(id_proyecto).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                                if (error == null){
+                                    int tareas_retraso = value.size();
+                                    tareas_retraso_analisis = (tareas_retraso*100.00)/total_tareas;
+                                    mTextRetraso.setText(String.format("%.2f", tareas_retraso_analisis));
+                                }
+                            }
+                        });
+                    }
+                    else{
+                        mTextRetraso.setText("0");
+                    }
                 }
             }
         });
@@ -140,19 +144,23 @@ public class DatosAnalisisActivity extends AppCompatActivity {
         mTareaProvider.getTareasTotalByProyecto(id_proyecto).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
-                total_tareas = queryDocumentSnapshots.size();
-                if(total_tareas > 0){
-                    mTareaProvider.getTareasRepoVacio(id_proyecto).addSnapshotListener(new EventListener<QuerySnapshot>() {
-                        @Override
-                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                            int tareas_vacias = value.size();
-                            tareas_repo_vacio_analisis = (tareas_vacias*100.00)/total_tareas;
-                            mTextRepo.setText(String.format("%.2f", tareas_repo_vacio_analisis));
-                        }
-                    });
-                }
-                else{
-                    mTextRepo.setText("0");
+                if (error == null){
+                    total_tareas = queryDocumentSnapshots.size();
+                    if(total_tareas > 0){
+                        mTareaProvider.getTareasRepoVacio(id_proyecto).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                                if(error == null){
+                                    int tareas_vacias = value.size();
+                                    tareas_repo_vacio_analisis = (tareas_vacias*100.00)/total_tareas;
+                                    mTextRepo.setText(String.format("%.2f", tareas_repo_vacio_analisis));
+                                }
+                            }
+                        });
+                    }
+                    else{
+                        mTextRepo.setText("0");
+                    }
                 }
             }
         });

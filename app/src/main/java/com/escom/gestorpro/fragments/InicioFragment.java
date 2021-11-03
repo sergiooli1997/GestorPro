@@ -145,6 +145,7 @@ public class InicioFragment extends Fragment {
 
     @Override
     public void onStart() {
+        final Query[] query = new Query[1];
         super.onStart();
         mProyectoProvider.getProyectoByUser(mAuthProvider.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -155,11 +156,10 @@ public class InicioFragment extends Fragment {
                         String id = document.getString("id");
                         proyectos.add(nombre_proyectos);
                         id_proyectos.add(id);
-                        Query query = mPostProvider.getPostByProyectos(id_proyectos);
+                        query[0] = mPostProvider.getPostByProyectos(id_proyectos);
                         FirestoreRecyclerOptions<Post> options = new FirestoreRecyclerOptions.Builder<Post>()
-                                .setQuery(query, Post.class)
+                                .setQuery(query[0], Post.class)
                                 .build();
-
                         mPostAdapter = new PostsAdapter(options, getContext());
                         mRecyclerView.setAdapter(mPostAdapter);
                         mPostAdapter.startListening();
@@ -167,13 +167,14 @@ public class InicioFragment extends Fragment {
                 }
             }
         });
-
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mPostAdapter.stopListening();
+        if (mPostAdapter != null){
+            mPostAdapter.stopListening();
+        }
     }
 
     @Override

@@ -137,6 +137,7 @@ public class NuevoProyectoActivity extends AppCompatActivity {
         proyecto.setFecha_fin(fecha_fin);
         proyecto.setEquipo(usuarios);
         proyecto.setCodigo(codigo);
+        proyecto.setIdCliente("");
         mDialog.show();
         mProyectoProvider.save(proyecto).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

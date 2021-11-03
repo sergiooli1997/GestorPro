@@ -130,11 +130,30 @@ public class ResponsablesFragment extends Fragment implements MaterialSearchBar.
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         String id = document.getString("id");
+                        String idCliente = document.getString("idCliente");
                         id_proyectos.add(id);
+                        id_equipo.add(idCliente);
                     }
                 }
                 for(String idProyecto : id_proyectos){
                     loadEquipo(idProyecto);
+                }
+            }
+        });
+    }
+
+    private void loadProyectoCliente(){
+        mProyectoProvider.getProyectoByCliente(mAuthProvider.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        String id = document.getString("id");
+                        id_proyectos.add(id);
+                    }
+                }
+                for(String idProyecto : id_proyectos){
+                    loadLider(idProyecto);
                 }
             }
         });
@@ -154,7 +173,67 @@ public class ResponsablesFragment extends Fragment implements MaterialSearchBar.
                                     if (documentSnapshot.exists()){
                                         if (documentSnapshot.contains("id")){
                                             String id = documentSnapshot.getString("id");
-                                            if (!id_equipo.contains(id)){
+                                            if (!id_equipo.contains(id) && !id.equals(mAuthProvider.getUid())){
+                                                id_equipo.add(id);
+                                            }
+                                            Query query = mUserProvider.getAllUserProyectos(id_equipo);
+                                            FirestoreRecyclerOptions<Users> options = new FirestoreRecyclerOptions.Builder<Users>()
+                                                    .setQuery(query, Users.class)
+                                                    .build();
+                                            mResponsablesAdapter = new ResponsablesAdapter(options, getContext());
+                                            mResponsablesAdapter.notifyDataSetChanged();
+                                            mRecyclerView.setAdapter(mResponsablesAdapter);
+                                            mResponsablesAdapter.startListening();
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mUserProvider.getUser(mAuthProvider.getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()){
+                    if (documentSnapshot.contains("rol")){
+                        String rol = documentSnapshot.getString("rol");
+                        if(rol.equals("Cliente")){
+                            loadProyectoCliente();
+                        }
+                        else{
+                            loadProyecto();
+                        }
+                    }
+                }
+            }
+        });
+
+    }
+
+    private void loadLider(String id) {
+        mProyectoProvider.getProyectoById(id).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot_proyecto) {
+                if (documentSnapshot_proyecto.exists()){
+                    ArrayList<String> lista = (ArrayList<String>) documentSnapshot_proyecto.get("equipo");
+                    if (!lista.isEmpty()){
+                        for (String cadena : lista){
+                            mUserProvider.getUser(cadena).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    if (documentSnapshot.exists()){
+                                        if (documentSnapshot.contains("id") && documentSnapshot.contains("rol")){
+                                            String id = documentSnapshot.getString("id");
+                                            String rol = documentSnapshot.getString("rol");
+                                            if (!id_equipo.contains(id) && rol.equals("Líder de proyecto")){
                                                 id_equipo.add(id);
                                                 Query query = mUserProvider.getAllUserProyectos(id_equipo);
                                                 FirestoreRecyclerOptions<Users> options = new FirestoreRecyclerOptions.Builder<Users>()
@@ -179,15 +258,8 @@ public class ResponsablesFragment extends Fragment implements MaterialSearchBar.
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        loadProyecto();
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
-        mResponsablesAdapter.stopListening();
         if (mResponsablesAdapterSearch != null){
             mResponsablesAdapterSearch.stopListening();
         }

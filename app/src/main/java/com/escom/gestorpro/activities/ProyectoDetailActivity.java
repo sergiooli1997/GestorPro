@@ -117,13 +117,15 @@ public class ProyectoDetailActivity extends AppCompatActivity {
         mTareaProvider.getTareaCompletoByProyecto(mExtraProyectoId, 1).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
-                int tareas_completadas = queryDocumentSnapshots.size();
-                if (total_tareas != 0){
-                    double avance = (tareas_completadas*100.00)/total_tareas;
-                    textViewAvance.setText(avance + "% de avance");
-                }
-                else{
-                    textViewAvance.setText("No hay tareas para calcular avance");
+                if (error == null){
+                    int tareas_completadas = queryDocumentSnapshots.size();
+                    if (total_tareas != 0){
+                        double avance = (tareas_completadas*100.00)/total_tareas;
+                        textViewAvance.setText(avance + "% de avance");
+                    }
+                    else{
+                        textViewAvance.setText("No hay tareas para calcular avance");
+                    }
                 }
             }
         });
@@ -134,13 +136,16 @@ public class ProyectoDetailActivity extends AppCompatActivity {
         mTareaProvider.getTareasTotalByProyecto(mExtraProyectoId).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
-                total_tareas = queryDocumentSnapshots.size();
-                if (total_tareas == 1){
-                    textViewTareas.setText("1 Tarea asignada");
+                if(error == null){
+                    total_tareas = queryDocumentSnapshots.size();
+                    if (total_tareas == 1){
+                        textViewTareas.setText("1 Tarea asignada");
+                    }
+                    else{
+                        textViewTareas.setText(total_tareas + " Tareas asignadas");
+                    }
                 }
-                else{
-                    textViewTareas.setText(total_tareas + " Tareas asignadas");
-                }
+
             }
         });
     }

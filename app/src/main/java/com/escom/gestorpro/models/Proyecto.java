@@ -8,19 +8,21 @@ public class Proyecto {
     private long fecha_inicio;
     private long fecha_fin;
     private String codigo;
-    List<String> equipo;
+    private List<String> equipo;
+    private String idCliente;
 
     public Proyecto(){
 
     }
 
-    public Proyecto(String id, String nombre, long fecha_inicio, long fecha_fin, String codigo, List<String> equipo) {
+    public Proyecto(String id, String nombre, long fecha_inicio, long fecha_fin, String codigo, List<String> equipo, String idCliente) {
         this.id = id;
         this.nombre = nombre;
         this.fecha_inicio = fecha_inicio;
         this.fecha_fin = fecha_fin;
         this.codigo = codigo;
         this.equipo = equipo;
+        this.idCliente = idCliente;
     }
 
     public String getId() {
@@ -69,5 +71,13 @@ public class Proyecto {
 
     public void setEquipo(List<String> equipo) {
         this.equipo = equipo;
+    }
+
+    public String getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(String idCliente) {
+        this.idCliente = idCliente;
     }
 }

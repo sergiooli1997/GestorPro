@@ -41,5 +41,9 @@ public class PostProvider {
         return mCollection.document(id).get();
     }
 
+    public Query getPostByProyecto(String idProyecto){
+        return mCollection.whereEqualTo("idProyecto", idProyecto);
+    }
+
     public Task<Void> delete(String id){return mCollection.document(id).delete();}
 }

@@ -147,22 +147,55 @@ public class InicioFragment extends Fragment {
     public void onStart() {
         final Query[] query = new Query[1];
         super.onStart();
-        mProyectoProvider.getProyectoByUser(mAuthProvider.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+        mUserProvider.getUser(mAuthProvider.getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()){
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        String nombre_proyectos = document.getString("nombre");
-                        String id = document.getString("id");
-                        proyectos.add(nombre_proyectos);
-                        id_proyectos.add(id);
-                        query[0] = mPostProvider.getPostByProyectos(id_proyectos);
-                        FirestoreRecyclerOptions<Post> options = new FirestoreRecyclerOptions.Builder<Post>()
-                                .setQuery(query[0], Post.class)
-                                .build();
-                        mPostAdapter = new PostsAdapter(options, getContext());
-                        mRecyclerView.setAdapter(mPostAdapter);
-                        mPostAdapter.startListening();
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if(documentSnapshot.exists() && documentSnapshot.contains("rol")){
+                    String rol = documentSnapshot.getString("rol");
+                    if(rol.equals("Cliente")){
+                        mProyectoProvider.getProyectoByCliente(mAuthProvider.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()){
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        String nombre_proyectos = document.getString("nombre");
+                                        String id = document.getString("id");
+                                        proyectos.add(nombre_proyectos);
+                                        id_proyectos.add(id);
+                                        query[0] = mPostProvider.getPostByProyectos(id_proyectos);
+                                        FirestoreRecyclerOptions<Post> options = new FirestoreRecyclerOptions.Builder<Post>()
+                                                .setQuery(query[0], Post.class)
+                                                .build();
+                                        mPostAdapter = new PostsAdapter(options, getContext());
+                                        mRecyclerView.setAdapter(mPostAdapter);
+                                        mPostAdapter.startListening();
+                                    }
+                                }
+                            }
+                        });
+                    }
+                    else{
+                        mProyectoProvider.getProyectoByUser(mAuthProvider.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()){
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        String nombre_proyectos = document.getString("nombre");
+                                        String id = document.getString("id");
+                                        proyectos.add(nombre_proyectos);
+                                        id_proyectos.add(id);
+                                        query[0] = mPostProvider.getPostByProyectos(id_proyectos);
+                                        FirestoreRecyclerOptions<Post> options = new FirestoreRecyclerOptions.Builder<Post>()
+                                                .setQuery(query[0], Post.class)
+                                                .build();
+                                        mPostAdapter = new PostsAdapter(options, getContext());
+                                        mRecyclerView.setAdapter(mPostAdapter);
+                                        mPostAdapter.startListening();
+                                    }
+                                }
+                            }
+                        });
                     }
                 }
             }

@@ -64,11 +64,14 @@ public class ProyectoProvider {
         return mCollection.document(idProyecto).update("equipo", FieldValue.arrayUnion(usuario));
     }
 
+    public Task<Void> updateCliente(String id, String idCliente){
+        return mCollection.document(id).update("idCliente", idCliente);
+    }
+
     public Task<Void> update(Proyecto proyecto) {
         Map<String, Object> map = new HashMap<>();
         map.put("fecha_fin", proyecto.getFecha_fin());
         map.put("fecha_inicio", proyecto.getFecha_inicio());
-        map.put("idCliente", proyecto.getIdCliente());
         return mCollection.document(proyecto.getId()).update(map);
     }
 

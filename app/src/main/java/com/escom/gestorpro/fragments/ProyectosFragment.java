@@ -272,10 +272,7 @@ public class ProyectosFragment extends Fragment {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         if (document.exists()) {
                             idProyecto[0] = document.get("id").toString();
-                            Proyecto proyecto = new Proyecto();
-                            proyecto.setIdCliente(mAuthProvider.getUid());
-                            proyecto.setId(idProyecto[0]);
-                            mProyectosProvider.update(proyecto).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            mProyectosProvider.updateCliente(idProyecto[0],mAuthProvider.getUid()).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     mProyectosProvider.getProyectoById(idProyecto[0]).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {

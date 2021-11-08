@@ -120,10 +120,28 @@ public class ProyectoDetailActivity extends AppCompatActivity {
         });
 
         checkProyectoCompletado();
+        checkRol();
         getProyecto();
         getNumberTareas();
         getAvance();
 
+    }
+
+    private void checkRol() {
+        mUserProvider.getUser(mAuthProvider.getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists() && documentSnapshot.contains("rol")){
+                    String rol = documentSnapshot.getString("rol");
+                    if (rol.equals("Líder de proyecto")){
+                        btnCompletado.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        btnCompletado.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
     }
 
     private void checkProyectoCompletado() {

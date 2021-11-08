@@ -138,6 +138,8 @@ public class NuevoProyectoActivity extends AppCompatActivity {
         proyecto.setEquipo(usuarios);
         proyecto.setCodigo(codigo);
         proyecto.setIdCliente("");
+        proyecto.setCompleto(0);
+        proyecto.setCalificacion(0);
         mDialog.show();
         mProyectoProvider.save(proyecto).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

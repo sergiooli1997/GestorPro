@@ -291,6 +291,22 @@
                 android:layout_marginRight="25dp"
                 />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/white"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginLeft="25dp"/>
+            <Button
+                android:id="@+id/btnProyectoCompleto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Marcar proyecto como completado"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"/>
+
 
         </LinearLayout>
 

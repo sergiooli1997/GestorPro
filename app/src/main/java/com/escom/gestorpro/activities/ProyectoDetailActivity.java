@@ -1,5 +1,6 @@
 package com.escom.gestorpro.activities;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -21,7 +22,9 @@ import com.escom.gestorpro.providers.ProyectoProvider;
 import com.escom.gestorpro.providers.TareaProvider;
 import com.escom.gestorpro.providers.UserProvider;
 import com.escom.gestorpro.utils.RelativeTime;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -61,6 +64,7 @@ public class ProyectoDetailActivity extends AppCompatActivity {
     CircleImageView circleImageViewProfile;
     Button btVerPerfil;
     Button btnEliminar;
+    Button btnCompletado;
     FloatingActionButton mFabCalificacion;
     Toolbar toolbar;
 
@@ -85,6 +89,7 @@ public class ProyectoDetailActivity extends AppCompatActivity {
         circleImageViewProfile = findViewById(R.id.circleImageProyectoDetail);
         btVerPerfil = findViewById(R.id.btnVerPerfil);
         btnEliminar = findViewById(R.id.btnEliminar);
+        btnCompletado = findViewById(R.id.btnProyectoCompleto);
         mFabCalificacion = findViewById(R.id.fabCalificacion);
         toolbar = findViewById(R.id.toolbar);
 
@@ -107,10 +112,73 @@ public class ProyectoDetailActivity extends AppCompatActivity {
             }
         });
 
+        btnCompletado.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                completado(mExtraProyectoId);
+            }
+        });
+
+        checkProyectoCompletado();
         getProyecto();
         getNumberTareas();
         getAvance();
 
+    }
+
+    private void checkProyectoCompletado() {
+        mProyectoProvider.getProyectoById(mExtraProyectoId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    if (documentSnapshot.contains("completo")) {
+                        int avance = documentSnapshot.getLong("completo").intValue();
+                        if (avance == 0) {
+                            btnCompletado.setText("Marcar proyecto como completado");
+                        }
+                        else{
+                            btnCompletado.setText("Marcar proyecto como incompleto");
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    private void completado(String mExtraProyectoId) {
+        final int[] value = new int[1];
+        mProyectoProvider.getProyectoById(mExtraProyectoId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()){
+                    if (documentSnapshot.contains("completo")){
+                        int avance = documentSnapshot.getLong("completo").intValue();
+                        if (avance == 0){
+                            //Tarea marcada como incompleta
+                            value[0] = 1;
+                        }
+                        else{
+                            //Tarea marcada como completa
+                            value[0] = 0;
+                        }
+                        mProyectoProvider.updateAvance(mExtraProyectoId, value[0]).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()){
+                                    if (value[0] == 1){
+                                        btnCompletado.setText("Marcar proyecto como incompleto");
+                                    }
+                                    else{
+                                        btnCompletado.setText("Marcar proyecto como completado");
+                                    }
+                                    Toast.makeText(ProyectoDetailActivity.this, "Proyecto actualizado", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
     }
 
     private void getAvance() {

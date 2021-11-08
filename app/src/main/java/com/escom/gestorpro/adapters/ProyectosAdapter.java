@@ -107,7 +107,7 @@ public class ProyectosAdapter extends FirestoreRecyclerAdapter<Proyecto, Proyect
                         holder.textViewAvance.setText(avance + "% de avance");
                     }
                     else{
-                        holder.textViewAvance.setText("No hay tareas para calcular avance");
+                        holder.textViewAvance.setText("No hay tareas");
                     }
                 }
             }

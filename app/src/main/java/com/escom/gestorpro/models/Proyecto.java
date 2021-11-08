@@ -10,12 +10,14 @@ public class Proyecto {
     private String codigo;
     private List<String> equipo;
     private String idCliente;
+    private int completo;
+    private int calificacion;
 
     public Proyecto(){
 
     }
 
-    public Proyecto(String id, String nombre, long fecha_inicio, long fecha_fin, String codigo, List<String> equipo, String idCliente) {
+    public Proyecto(String id, String nombre, long fecha_inicio, long fecha_fin, String codigo, List<String> equipo, String idCliente, int completo, int calificacion) {
         this.id = id;
         this.nombre = nombre;
         this.fecha_inicio = fecha_inicio;
@@ -23,6 +25,8 @@ public class Proyecto {
         this.codigo = codigo;
         this.equipo = equipo;
         this.idCliente = idCliente;
+        this.completo = completo;
+        this.calificacion = calificacion;
     }
 
     public String getId() {
@@ -79,5 +83,21 @@ public class Proyecto {
 
     public void setIdCliente(String idCliente) {
         this.idCliente = idCliente;
+    }
+
+    public int getCompleto() {
+        return completo;
+    }
+
+    public void setCompleto(int completo) {
+        this.completo = completo;
+    }
+
+    public int getCalificacion() {
+        return calificacion;
+    }
+
+    public void setCalificacion(int calificacion) {
+        this.calificacion = calificacion;
     }
 }

@@ -45,6 +45,14 @@ public class ProyectoProvider {
         return mCollection.whereEqualTo("id", idProyecto).get();
     }
 
+    public Query getProyectoCompletoByUser(String id, int value) {
+        return mCollection.whereArrayContains("equipo", id).whereEqualTo("completo", value);
+    }
+
+    public Query getProyectoCompletoByCliente(String id, int value) {
+        return mCollection.whereEqualTo("idCliente", id).whereEqualTo("completo", value);
+    }
+
     public Task<Void> save(Proyecto proyecto){
         DocumentReference document = mCollection.document();
         String id = document.getId();
@@ -62,6 +70,10 @@ public class ProyectoProvider {
         map.put("fecha_inicio", proyecto.getFecha_inicio());
         map.put("idCliente", proyecto.getIdCliente());
         return mCollection.document(proyecto.getId()).update(map);
+    }
+
+    public Task<Void> updateAvance(String id, int value){
+        return mCollection.document(id).update("completo", value);
     }
 
     public Task<Void> deleteProyecto(String id){return mCollection.document(id).delete();}

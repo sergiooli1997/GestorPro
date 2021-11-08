@@ -55,11 +55,13 @@ public class ProyectosFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    RecyclerView mRecyclerView;
+    RecyclerView mRecyclerProyectosCompletos;
+    RecyclerView mRecyclerProyectosIncompletos;
     AlertDialog mDialog;
 
     UserProvider mUserProvider;
-    ProyectosAdapter mProyectosAdapter;
+    ProyectosAdapter mProyectosIncompletosAdapter;
+    ProyectosAdapter mProyectosCompletosAdapter;
     ProyectoProvider mProyectosProvider;
     AuthProvider mAuthProvider;
 
@@ -110,9 +112,16 @@ public class ProyectosFragment extends Fragment {
                 .setCancelable(false)
                 .build();
 
-        mRecyclerView =  vista.findViewById(R.id.RecyclerProyecto);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(linearLayoutManager);
+        mDialog.show();
+
+        mRecyclerProyectosCompletos =  vista.findViewById(R.id.RecyclerViewProyectosCompletos);
+        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getContext());
+        mRecyclerProyectosCompletos.setLayoutManager(linearLayoutManager1);
+
+        mRecyclerProyectosIncompletos =  vista.findViewById(R.id.RecyclerViewProyectosIncompletos);
+        LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(getContext());
+        mRecyclerProyectosIncompletos.setLayoutManager(linearLayoutManager2);
+
         setHasOptionsMenu(true);
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -128,7 +137,7 @@ public class ProyectosFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        final Query[] query = new Query[1];
+        final Query[] query = new Query[2];
         mUserProvider.getUser(mAuthProvider.getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -136,18 +145,27 @@ public class ProyectosFragment extends Fragment {
                     if (documentSnapshot.contains("rol")){
                         String rol = documentSnapshot.getString("rol");
                         if (rol.equals("Cliente")){
-                            query[0] = mProyectosProvider.getProyectoByCliente(mAuthProvider.getUid());
+                            query[0] = mProyectosProvider.getProyectoCompletoByCliente(mAuthProvider.getUid(), 0);
+                            query[1] = mProyectosProvider.getProyectoCompletoByCliente(mAuthProvider.getUid(), 1);
                         }
                         else{
-                            query[0] = mProyectosProvider.getProyectoByUser(mAuthProvider.getUid());
+                            query[0] = mProyectosProvider.getProyectoCompletoByUser(mAuthProvider.getUid(), 0);
+                            query[1] = mProyectosProvider.getProyectoCompletoByUser(mAuthProvider.getUid(), 1);
                         }
-                        FirestoreRecyclerOptions<Proyecto> options = new FirestoreRecyclerOptions.Builder<Proyecto>()
+                        FirestoreRecyclerOptions<Proyecto> options1 = new FirestoreRecyclerOptions.Builder<Proyecto>()
                                 .setQuery(query[0], Proyecto.class)
                                 .build();
+                        FirestoreRecyclerOptions<Proyecto> options2 = new FirestoreRecyclerOptions.Builder<Proyecto>()
+                                .setQuery(query[1], Proyecto.class)
+                                .build();
+                        mProyectosIncompletosAdapter = new ProyectosAdapter(options1, getActivity());
+                        mRecyclerProyectosIncompletos.setAdapter(mProyectosIncompletosAdapter);
+                        mProyectosIncompletosAdapter.startListening();
 
-                        mProyectosAdapter = new ProyectosAdapter(options, getActivity());
-                        mRecyclerView.setAdapter(mProyectosAdapter);
-                        mProyectosAdapter.startListening();
+                        mProyectosCompletosAdapter = new ProyectosAdapter(options2, getActivity());
+                        mRecyclerProyectosCompletos.setAdapter(mProyectosCompletosAdapter);
+                        mProyectosCompletosAdapter.startListening();
+                        mDialog.dismiss();
                     }
                 }
             }
@@ -157,7 +175,8 @@ public class ProyectosFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        mProyectosAdapter.stopListening();
+        mProyectosIncompletosAdapter.stopListening();
+        mProyectosCompletosAdapter.stopListening();
     }
 
     private void getRol(String uid) {
@@ -290,7 +309,6 @@ public class ProyectosFragment extends Fragment {
                 }
             }
         });
-        Toast.makeText(getActivity(), "No se encontro código", Toast.LENGTH_LONG).show();
     }
 
     private void unirProyecto(String codigo) {
@@ -338,7 +356,6 @@ public class ProyectosFragment extends Fragment {
                 }
             }
         });
-        Toast.makeText(getActivity(), "No se encontro código", Toast.LENGTH_LONG).show();
     }
 
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

@@ -3,9 +3,21 @@ package com.escom.gestorpro.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import weka.*;
+import weka.core.Instances;
+import weka.core.converters.CSVLoader;
+import weka.core.converters.ConverterUtils.DataSource;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+
+import java.net.*;
+import java.io.*;
+
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,6 +30,7 @@ import android.widget.Toast;
 import com.escom.gestorpro.R;
 import com.escom.gestorpro.models.Analisis;
 import com.escom.gestorpro.providers.AuthProvider;
+import com.escom.gestorpro.providers.FileProvider;
 import com.escom.gestorpro.providers.PostProvider;
 import com.escom.gestorpro.providers.ProyectoProvider;
 import com.escom.gestorpro.providers.TareaProvider;
@@ -31,6 +44,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +64,7 @@ public class DatosAnalisisActivity extends AppCompatActivity {
     TareaProvider mTareaProvider;
     PostProvider mPostProvider;
     UserProvider mUserProvider;
+    FileProvider mFileProvider;
 
     Spinner spinnerProyecto;
     TextView mTextRetraso;
@@ -70,6 +85,7 @@ public class DatosAnalisisActivity extends AppCompatActivity {
         mTareaProvider = new TareaProvider();
         mPostProvider = new PostProvider();
         mUserProvider = new UserProvider();
+        mFileProvider = new FileProvider();
 
         mTextRetraso = findViewById(R.id.tareasRetrasoAnalisis);
         mTextRepo = findViewById(R.id.tareasRepositorioAnalisis);
@@ -103,6 +119,7 @@ public class DatosAnalisisActivity extends AppCompatActivity {
         mAnalizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadFile();
                 crearAnalisis();
             }
         });
@@ -115,14 +132,35 @@ public class DatosAnalisisActivity extends AppCompatActivity {
         });
     }
 
+    private void loadFile(){
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                mFileProvider.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        try {
+                            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                            StrictMode.setThreadPolicy(policy);
+                            InputStream input = new URL(uri.toString()).openStream();
+                            CSVLoader loader = new CSVLoader();
+                            loader.setSource(input);
+                            Instances trainingDataSet = loader.getDataSet();
+                            Toast.makeText(DatosAnalisisActivity.this, String.valueOf(trainingDataSet.numAttributes()), Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        });
+    }
 
 
     private void crearAnalisis() {
         double retraso = Double.parseDouble(mTextRetraso.getText().toString());
         double repo_vacio = Double.parseDouble(mTextRepo.getText().toString());
         int post = Integer.parseInt(mTextPosts.getText().toString());
-
-
     }
 
     private void tareasRetraso(String id_proyecto) {

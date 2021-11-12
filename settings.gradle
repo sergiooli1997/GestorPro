@@ -1,3 +1,4 @@
 include ':weka'
 include ':app'
 rootProject.name = "GestorPro"
+include ':java-rt2'

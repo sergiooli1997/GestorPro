@@ -3,15 +3,13 @@ package com.escom.gestorpro.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+
+
+import weka.classifiers.trees.J48;
+import weka.core.DenseInstance;
 import weka.core.Instances;
 import weka.core.converters.CSVLoader;
-import weka.core.converters.ConverterUtils.DataSource;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-
-import java.net.*;
 import java.io.*;
 
 import android.net.Uri;
@@ -71,7 +69,7 @@ public class DatosAnalisisActivity extends AppCompatActivity {
     TextView mTextRepo;
     TextView mTextPosts;
     TextView mTextPostsOracion;
-    TextView mTextChats;
+    TextView mTextClasificacion;
     Button mAnalizar;
     ImageView mImageViewBack;
 
@@ -91,7 +89,7 @@ public class DatosAnalisisActivity extends AppCompatActivity {
         mTextRepo = findViewById(R.id.tareasRepositorioAnalisis);
         mTextPosts = findViewById(R.id.postsAnalisis);
         mTextPostsOracion = findViewById(R.id.postText);
-        mTextChats = findViewById(R.id.chatsAnalisis);
+        mTextClasificacion = findViewById(R.id.clasificacionAnalisis);
         mAnalizar = findViewById(R.id.btnAnalizar);
         mImageViewBack = findViewById(R.id.imageViewBack);
 
@@ -146,7 +144,22 @@ public class DatosAnalisisActivity extends AppCompatActivity {
                             CSVLoader loader = new CSVLoader();
                             loader.setSource(input);
                             Instances trainingDataSet = loader.getDataSet();
-                            Toast.makeText(DatosAnalisisActivity.this, String.valueOf(trainingDataSet.numAttributes()), Toast.LENGTH_SHORT).show();
+                            /*trainingDataSet.setClassIndex(trainingDataSet.numAttributes()-1);
+
+                            J48 tree = new J48();
+                            tree.buildClassifier(trainingDataSet);
+
+                            double[] values = new double[trainingDataSet.numAttributes()];
+                            values[0] = Double.parseDouble(mTextRetraso.getText().toString());
+                            values[1] = Double.parseDouble(mTextRepo.getText().toString());
+                            values[2] = Integer.parseInt(mTextPosts.getText().toString());
+                            values[3] = trainingDataSet.attribute(3).addStringValue("?");
+                            DenseInstance testInstance = new DenseInstance(1.0, values);
+                            testInstance.setDataset(trainingDataSet);
+
+                            double predB = tree.classifyInstance(testInstance);
+                            String predString = testInstance.classAttribute().value((int) predB);
+                            Toast.makeText(DatosAnalisisActivity.this, predString, Toast.LENGTH_SHORT).show();*/
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -161,6 +174,14 @@ public class DatosAnalisisActivity extends AppCompatActivity {
         double retraso = Double.parseDouble(mTextRetraso.getText().toString());
         double repo_vacio = Double.parseDouble(mTextRepo.getText().toString());
         int post = Integer.parseInt(mTextPosts.getText().toString());
+        String clasificacion;
+        if (retraso <= 45){
+            clasificacion = "Productivo";
+        }
+        else{
+            clasificacion = "No productivo";
+        }
+        mTextClasificacion.setText("Clasficación: " + clasificacion);
     }
 
     private void tareasRetraso(String id_proyecto) {

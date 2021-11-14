@@ -12,9 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.escom.gestorpro.activities.ConceptosActivity;
 import com.escom.gestorpro.activities.DatosAnalisisActivity;
 import com.escom.gestorpro.R;
 import com.escom.gestorpro.activities.BuenasPracticasActivity;
+import com.escom.gestorpro.activities.EstrategiasActivity;
 import com.escom.gestorpro.activities.MainActivity;
 import com.escom.gestorpro.providers.AuthProvider;
 
@@ -32,6 +34,8 @@ public class EstrategiasFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     Button mButtonBuenasPracticas;
+    Button mButtonEstrategias;
+    Button mButtonConceptos;
     Button mButtonAnalisisDatos;
 
     AuthProvider mAuthProvider;
@@ -75,6 +79,8 @@ public class EstrategiasFragment extends Fragment {
         mAuthProvider = new AuthProvider();
         mButtonBuenasPracticas = view.findViewById(R.id.btnBuenasPracticas);
         mButtonAnalisisDatos = view.findViewById(R.id.btnAnalisisDatos);
+        mButtonEstrategias = view.findViewById(R.id.btnEstrategias);
+        mButtonConceptos = view.findViewById(R.id.btnConceptosFund);
         mButtonBuenasPracticas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,9 +94,33 @@ public class EstrategiasFragment extends Fragment {
                 goToAnalisisDatos();
             }
         });
+
+        mButtonEstrategias.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToEstrategias();
+            }
+        });
+
+        mButtonConceptos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToConceptos();
+            }
+        });
         setHasOptionsMenu(true);
 
         return view;
+    }
+
+    private void goToConceptos() {
+        Intent intent = new Intent(getActivity(), ConceptosActivity.class);
+        startActivity(intent);
+    }
+
+    private void goToEstrategias() {
+        Intent intent = new Intent(getActivity(), EstrategiasActivity.class);
+        startActivity(intent);
     }
 
     private void goToAnalisisDatos() {

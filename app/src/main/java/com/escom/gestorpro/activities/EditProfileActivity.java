@@ -350,10 +350,10 @@ public class EditProfileActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     Intent miIntent = new Intent(EditProfileActivity.this, MenuActivity.class);
                     startActivity(miIntent);
-                    Toast.makeText(EditProfileActivity.this, "La informacion se actualizo correctamente", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditProfileActivity.this, "La información se actualizo correctamente", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(EditProfileActivity.this, "La informacion no se pudo actualizar", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditProfileActivity.this, "La información no se pudo actualizar", Toast.LENGTH_SHORT).show();
                 }
             }
         });

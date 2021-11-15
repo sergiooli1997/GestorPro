@@ -21,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="50dp"
-                android:text="En esta sección encontrará conceptos para entender tencnisismos de la industria del software"
+                android:text="En esta sección encontrará conceptos para entender tencnicismos de la industria del software"
                 android:textSize="18sp"
                 android:textColor="@color/white"
                 android:textAlignment="center"

@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(miIntent);
                     }
                     else{
-                        Toast.makeText(MainActivity.this, "El email o la contraseña no son corrrectas", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "El email o la contraseña no son correctas", Toast.LENGTH_LONG).show();
                     }
                 }
             });

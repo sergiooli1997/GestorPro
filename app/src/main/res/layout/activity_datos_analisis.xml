@@ -144,25 +144,6 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="30dp">
-
-                <TextView
-                    android:id="@+id/chatsAnalisis"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="30dp"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"/>
-
-
-            </LinearLayout>
-
             <TextView
                 android:id="@+id/clasificacionAnalisis"
                 android:layout_width="match_parent"
@@ -174,16 +155,6 @@
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:textAlignment="center"
-                android:textSize="25sp"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Estadisticas"
-                android:layout_marginTop="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginLeft="30dp"
-                android:textColor="@color/white"
                 android:textSize="25sp"/>
 
         </LinearLayout>

@@ -254,7 +254,7 @@ public class RegistroTarea extends AppCompatActivity {
                     }
                     else{
                         mDialog.dismiss();
-                        Toast.makeText(RegistroTarea.this, "Hubo un error al amacenar", Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegistroTarea.this, "Hubo un error al almacenar", Toast.LENGTH_LONG).show();
                     }
                 }
             });

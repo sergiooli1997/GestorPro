@@ -53,8 +53,7 @@ empieza a mejorar tu calidad de trabajo."
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Selecciona esta opción para realizar un análsis
-de las tendencias"
+                android:text="Selecciona esta opción para realizar un análisis del proyecto"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:gravity="center"

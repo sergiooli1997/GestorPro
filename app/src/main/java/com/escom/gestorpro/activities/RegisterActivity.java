@@ -123,7 +123,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
             else {
-                Toast.makeText(this, "Insertaste todos los campos pero el correo no es valido", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Insertaste todos los campos pero el correo no es válido", Toast.LENGTH_LONG).show();
             }
         }
         else {
@@ -163,7 +163,7 @@ public class RegisterActivity extends AppCompatActivity {
                     });
                 }
                 else{
-                    Toast.makeText(RegisterActivity.this, "No se registro el usuario", Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterActivity.this, "No se registró el usuario", Toast.LENGTH_LONG).show();
                 }
             }
         });

@@ -34,7 +34,7 @@ public class PostProvider {
     }
 
     public Query getPostByUser(String id) {
-        return mCollection.whereEqualTo("usuario", id);
+        return mCollection.whereEqualTo("usuario", id).orderBy("fecha", Query.Direction.DESCENDING);
     }
 
     public Task<DocumentSnapshot> getPostById(String id) {

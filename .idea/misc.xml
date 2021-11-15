@@ -10,8 +10,15 @@
         <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/activity_estrategias.xml" value="0.18478260869565216" />
         <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/activity_nueva_tarea.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/activity_post_detail.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/activity_register.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/activity_user_profile.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/cardview_my_post.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/cardview_responsables.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/content_main.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/fragment_estrategias.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/fragment_profile.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/posts.xml" value="0.20416666666666666" />
       </map>
     </option>
   </component>

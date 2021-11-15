@@ -65,13 +65,6 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
         holder.textViewRelativeTime.setText(relativeTime);
         holder.textViewDesc.setText(post.getTexto());
 
-        if(post.getUsuario().equals(mAuthProvider.getUid())){
-            holder.imageViewDelete.setVisibility(View.VISIBLE);
-        }
-        else{
-            holder.imageViewDelete.setVisibility(View.GONE);
-        }
-
         if (post.getImage() != null) {
             if (!post.getImage().isEmpty()) {
                 Picasso.with(context).load(post.getImage()).into(holder.circleImageViewMyPost);
@@ -84,42 +77,6 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
                 Intent intent = new Intent(context, PostDetailActivity.class);
                 intent.putExtra("id", postId);
                 context.startActivity(intent);
-            }
-        });
-
-        holder.imageViewDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showConfirmDelete(postId);
-            }
-        });
-    }
-
-    private void showConfirmDelete(String postId) {
-        new AlertDialog.Builder(context)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Eliminar publicación")
-                .setMessage("¿Estas seguro de realizar esta acción?")
-                .setPositiveButton("SI", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        deletePost(postId);
-                    }
-                })
-                .setNegativeButton("NO", null)
-                .show();
-    }
-
-    private void deletePost(String postId) {
-        mPostProvider.delete(postId).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    Toast.makeText(context, "El post se elimino correctamente", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Toast.makeText(context, "No se pudo eliminar el post", Toast.LENGTH_SHORT).show();
-                }
             }
         });
     }
@@ -135,7 +92,6 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
         TextView textViewDesc;
         TextView textViewRelativeTime;
         CircleImageView circleImageViewMyPost;
-        ImageView imageViewDelete;
         View viewHolder;
 
         public ViewHolder(View view){
@@ -144,7 +100,6 @@ public class MyPostsAdapter extends FirestoreRecyclerAdapter<Post, MyPostsAdapte
             textViewDesc = view.findViewById(R.id.textViewTitleMyPost);
             textViewRelativeTime = view.findViewById(R.id.textViewRelaiveTimeMyPost);
             circleImageViewMyPost = view.findViewById(R.id.circleImageMyPost);
-            imageViewDelete = view.findViewById(R.id.imageViewCancelMyPost);
 
             viewHolder = view;
         }

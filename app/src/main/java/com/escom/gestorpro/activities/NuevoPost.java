@@ -247,8 +247,32 @@ public class NuevoPost extends AppCompatActivity {
             saveImage(mPhotoFile);
         }
         else{
-            Toast.makeText(NuevoPost.this, "Hubo un error al amacenar la imagen", Toast.LENGTH_LONG).show();
+            createPost();
         }
+    }
+
+    private void createPost() {
+        mDialog.show();
+        Post post = new Post();
+        post.setTexto(descripcion);
+        post.setUsuario(mAuthProvider.getUid());
+        post.setFecha(new Date().getTime());
+        post.setIdProyecto(id_proyecto);
+        mPostProvider.save(post).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    mDialog.dismiss();
+                    Intent intent = new Intent(NuevoPost.this, MenuActivity.class);
+                    startActivity(intent);
+                    Toast.makeText(NuevoPost.this, "La información se almacenó correctamente", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    mDialog.dismiss();
+                    Toast.makeText(NuevoPost.this, "Hubo un error al amacenar la imagen", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     private void saveImage(File imageFile) {
@@ -277,6 +301,7 @@ public class NuevoPost extends AppCompatActivity {
                                         Toast.makeText(NuevoPost.this, "La información se almacenó correctamente", Toast.LENGTH_LONG).show();
                                     }
                                     else{
+                                        mDialog.dismiss();
                                         Toast.makeText(NuevoPost.this, "Hubo un error al amacenar la imagen", Toast.LENGTH_LONG).show();
                                     }
                                 }

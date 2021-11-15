@@ -78,6 +78,7 @@ public class PostDetailActivity extends AppCompatActivity {
     ImageView imageViewPost;
     CircleImageView circleImageViewProfile;
     Button btnVerPerfil;
+    Button btnEliminarPost;
     FloatingActionButton mFabComment;
     RecyclerView mRecyclerView;
     Toolbar toolbar;
@@ -105,6 +106,7 @@ public class PostDetailActivity extends AppCompatActivity {
         imageViewPost = findViewById(R.id.imageViewPD);
         circleImageViewProfile = findViewById(R.id.circleImageProfileDetail);
         btnVerPerfil = findViewById(R.id.btnVerPerfil);
+        btnEliminarPost = findViewById(R.id.btnEliminarPost);
         mFabComment = findViewById(R.id.fabComment);
         mRecyclerView = findViewById(R.id.RecyclerViewComments);
         toolbar = findViewById(R.id.toolbar);
@@ -130,8 +132,47 @@ public class PostDetailActivity extends AppCompatActivity {
             }
         });
 
+        btnEliminarPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showConfirmDelete(mExtraPostId);
+            }
+        });
+
         getPost();
         getNumberLikes();
+    }
+
+    private void eliminarPost(String idPost) {
+        mPostProvider.delete(idPost).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    Toast.makeText(PostDetailActivity.this, "Se eliminó la publicación", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(PostDetailActivity.this, MenuActivity.class);
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(PostDetailActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
+
+    private void showConfirmDelete(String idPost) {
+        new AlertDialog.Builder(PostDetailActivity.this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Eliminar post")
+                .setMessage("¿Estas seguro de realizar esta acción?")
+                .setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        eliminarPost(idPost);
+                    }
+                })
+                .setNegativeButton("NO", null)
+                .show();
     }
 
     private void getNumberLikes() {

@@ -87,6 +87,8 @@ public class UserProfileActivity extends AppCompatActivity {
 
         mExtraIdUser = getIntent().getStringExtra("usuario");
 
+        checkUsuario();
+
         if (mAuthProvider.getUid().equals(mExtraIdUser)) {
             mFabChat.setVisibility(View.GONE);
         }
@@ -100,6 +102,33 @@ public class UserProfileActivity extends AppCompatActivity {
         getUser();
         getPostNumber();
         checkIfExistPost();
+    }
+
+    private void checkUsuario() {
+        mUsersProvider.getUser(mExtraIdUser).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists() && documentSnapshot.contains("rol")){
+                    String rol = documentSnapshot.getString("rol");
+                    if (rol.equals("Cliente")){
+                        mUsersProvider.getUser(mAuthProvider.getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                if (documentSnapshot.exists() && documentSnapshot.contains("rol")){
+                                    String rol = documentSnapshot.getString("rol");
+                                    if (rol.equals("Líder de proyecto")){
+                                        mFabChat.setVisibility(View.VISIBLE);
+                                    }
+                                    else{
+                                        mFabChat.setVisibility(View.GONE);
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
     }
 
     private void goToChatActivity() {

@@ -8,7 +8,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TareaProvider {
     CollectionReference mCollection;
@@ -35,6 +37,19 @@ public class TareaProvider {
         tarea.setId(id);
         return document.set(tarea);
     }
+
+    public Task<Void> update(Tarea tarea){
+        Map<String, Object> map = new HashMap<>();
+        map.put("nombre", tarea.getNombre());
+        map.put("descripcion", tarea.getDescripcion());
+        map.put("repositorio", tarea.getRepositorio());
+        map.put("fecha_inicio", tarea.getFecha_inicio());
+        map.put("fecha_fin", tarea.getFecha_fin());
+        return mCollection.document(tarea.getId()).update(map);
+
+    }
+
+    public Task<Void> delete(String id){return mCollection.document(id).delete();}
 
     public Task<Void> updateAvance(String id, int value){
         return mCollection.document(id).update("completado", value);

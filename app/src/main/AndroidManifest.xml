@@ -24,6 +24,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GestorPro">
         <activity
+            android:name=".EditTareaActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.ConceptosActivity"
             android:exported="false" />
         <activity

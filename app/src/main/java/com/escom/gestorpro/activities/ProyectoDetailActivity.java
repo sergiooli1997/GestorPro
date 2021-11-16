@@ -65,7 +65,6 @@ public class ProyectoDetailActivity extends AppCompatActivity {
     Button btVerPerfil;
     Button btnEliminar;
     Button btnCompletado;
-    FloatingActionButton mFabCalificacion;
     Toolbar toolbar;
 
     @Override
@@ -90,7 +89,6 @@ public class ProyectoDetailActivity extends AppCompatActivity {
         btVerPerfil = findViewById(R.id.btnVerPerfil);
         btnEliminar = findViewById(R.id.btnEliminar);
         btnCompletado = findViewById(R.id.btnProyectoCompleto);
-        mFabCalificacion = findViewById(R.id.fabCalificacion);
         toolbar = findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);

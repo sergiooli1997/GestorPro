@@ -5,14 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.escom.gestorpro.EditTareaActivity;
 import com.escom.gestorpro.R;
 import com.escom.gestorpro.providers.ProyectoProvider;
 import com.escom.gestorpro.providers.TareaProvider;
@@ -51,7 +55,9 @@ public class TareaDetailActivity extends AppCompatActivity {
     Button btnVerPerfil;
     Button btnVerProyecto;
     Button btnCompletado;
+    Button btnEliminarTarea;
     Toolbar toolbar;
+    LinearLayout mLinearLayoutEditTarea;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +80,9 @@ public class TareaDetailActivity extends AppCompatActivity {
         btnVerPerfil = findViewById(R.id.btnVerPerfil);
         btnVerProyecto = findViewById(R.id.btnVerProyecto);
         btnCompletado = findViewById(R.id.btnCompletado);
+        btnEliminarTarea = findViewById(R.id.btnEliminarTarea);
         toolbar = findViewById(R.id.toolbar);
+        mLinearLayoutEditTarea = findViewById(R.id.linearLayoutEditTarea);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
@@ -102,8 +110,59 @@ public class TareaDetailActivity extends AppCompatActivity {
             }
         });
 
+        btnEliminarTarea.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showConfirmDelete(mExtraTareaId);
+            }
+        });
+
+        mLinearLayoutEditTarea.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToEditTarea();
+            }
+        });
+
         checkTareaCompletada();
         getTarea();
+    }
+
+    private void showConfirmDelete(String idTarea) {
+        new AlertDialog.Builder(TareaDetailActivity.this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Eliminar tarea")
+                .setMessage("¿Estas seguro de realizar esta acción?")
+                .setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        eliminarTarea(idTarea);
+                    }
+                })
+                .setNegativeButton("NO", null)
+                .show();
+    }
+
+    private void eliminarTarea(String idTarea) {
+        mTareaProvider.delete(idTarea).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    Toast.makeText(TareaDetailActivity.this, "Se eliminó la tarea", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(TareaDetailActivity.this, MenuActivity.class);
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(TareaDetailActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void goToEditTarea() {
+        Intent intent = new Intent(TareaDetailActivity.this, EditTareaActivity.class);
+        intent.putExtra("idTarea", mExtraTareaId);
+        startActivity(intent);
     }
 
     private void checkTareaCompletada() {

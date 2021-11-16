@@ -3,7 +3,6 @@ package com.escom.gestorpro.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -11,12 +10,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.escom.gestorpro.EditTareaActivity;
 import com.escom.gestorpro.R;
 import com.escom.gestorpro.providers.ProyectoProvider;
 import com.escom.gestorpro.providers.TareaProvider;

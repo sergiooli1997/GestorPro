@@ -14,8 +14,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.escom.gestorpro.R;
-import com.escom.gestorpro.models.Tarea;
-import com.escom.gestorpro.providers.TareaProvider;
+import com.escom.gestorpro.models.Proyecto;
+import com.escom.gestorpro.providers.ProyectoProvider;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -30,48 +30,44 @@ import java.util.TimeZone;
 
 import dmax.dialog.SpotsDialog;
 
-public class EditTareaActivity extends AppCompatActivity {
+public class EditProyectoActivity extends AppCompatActivity {
     private DatePickerDialog datePickerDialogInicio;
     private DatePickerDialog datePickerDialogFin;
-    String mExtraTareaId;
     long fecha_inicio = 0;
     long fecha_fin = 0;
-    TareaProvider mTareaProvider;
-    AlertDialog mDialog;
-
+    String mExtraProyectoId;
+    ImageView mImageViewBack;
+    TextInputEditText textViewTitle;
     Button btnFechaInicio;
     Button btnFechaFin;
     Button btnActualizar;
-    TextInputEditText textViewTitle;
-    TextInputEditText textViewDesc;
-    TextInputEditText textViewRepositorio;
-    ImageView mImageViewBack;
+    AlertDialog mDialog;
+
+    ProyectoProvider mProyectoProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_tarea);
+        setContentView(R.layout.activity_edit_proyecto);
 
-        mExtraTareaId = getIntent().getStringExtra("idTarea");
-        mTareaProvider = new TareaProvider();
+        mProyectoProvider = new ProyectoProvider();
+        mExtraProyectoId = getIntent().getStringExtra("idProyecto");
 
+        mImageViewBack = findViewById(R.id.imageViewBack);
+        textViewTitle = findViewById(R.id.textInputNombreProyecto);
         btnFechaInicio = findViewById(R.id.btnFechaInicio);
         btnFechaFin = findViewById(R.id.btnFechaFinal);
-        btnActualizar = findViewById(R.id.btnActualizar);
-        textViewTitle = findViewById(R.id.textInputNombreEvento);
-        textViewDesc = findViewById(R.id.textInputDescripcion);
-        textViewRepositorio = findViewById(R.id.textInputRepositorio);
-        mImageViewBack = findViewById(R.id.circleImageBack);
-
+        btnActualizar = findViewById(R.id.btnAceptar);
         initDatePickerInicio();
         initDatePickerFin();
 
         mDialog = new SpotsDialog.Builder()
                 .setContext(this)
                 .setMessage("Espere un momento")
-                .setCancelable(false).build();
+                .setCancelable(false)
+                .build();
 
-        getTarea();
+        getProyecto();
 
         btnActualizar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,36 +109,34 @@ public class EditTareaActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Tarea tarea = new Tarea();
-        tarea.setId(mExtraTareaId);
-        tarea.setNombre(textViewTitle.getText().toString());
-        tarea.setDescripcion(textViewDesc.getText().toString());
-        tarea.setRepositorio(textViewRepositorio.getText().toString());
-        tarea.setFecha_inicio(fecha_inicio);
-        tarea.setFecha_fin(fecha_fin);
-        updateInfo(tarea);
+        Proyecto proyecto = new Proyecto();
+        proyecto.setId(mExtraProyectoId);
+        proyecto.setNombre(textViewTitle.getText().toString());
+        proyecto.setFecha_inicio(fecha_inicio);
+        proyecto.setFecha_fin(fecha_fin);
+        updateInfo(proyecto);
     }
 
-    private void updateInfo(Tarea tarea) {
+    private void updateInfo(Proyecto proyecto) {
         mDialog.show();
-        mTareaProvider.update(tarea).addOnCompleteListener(new OnCompleteListener<Void>() {
+        mProyectoProvider.update(proyecto).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 mDialog.dismiss();
                 if (task.isSuccessful()) {
-                    Intent miIntent = new Intent(EditTareaActivity.this, MenuActivity.class);
+                    Intent miIntent = new Intent(EditProyectoActivity.this, MenuActivity.class);
                     startActivity(miIntent);
-                    Toast.makeText(EditTareaActivity.this, "La información se actualizó correctamente", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditProyectoActivity.this, "La información se actualizó correctamente", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(EditTareaActivity.this, "La información no se pudo actualizar", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditProyectoActivity.this, "La información no se pudo actualizar", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    private void getTarea() {
-        mTareaProvider.getTareaById(mExtraTareaId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+    private void getProyecto() {
+        mProyectoProvider.getProyectoById(mExtraProyectoId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()){
@@ -163,14 +157,6 @@ public class EditTareaActivity extends AppCompatActivity {
                     if (documentSnapshot.contains("nombre")){
                         String nombre = documentSnapshot.getString("nombre");
                         textViewTitle.setText(nombre);
-                    }
-                    if (documentSnapshot.contains("descripcion")){
-                        String descripcion = documentSnapshot.getString("descripcion");
-                        textViewDesc.setText(descripcion);
-                    }
-                    if (documentSnapshot.contains("repositorio")){
-                        String repositorio = documentSnapshot.getString("repositorio");
-                        textViewRepositorio.setText(repositorio);
                     }
                 }
             }

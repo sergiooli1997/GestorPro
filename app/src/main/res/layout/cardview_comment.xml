@@ -8,6 +8,13 @@
     android:layout_marginRight="25dp"
     android:layout_marginBottom="5dp">
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleImageDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_cancel"
+        android:layout_gravity="right"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,7 +34,7 @@
             app:cardCornerRadius="10dp"
             android:layout_weight="1"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp">
+            android:layout_marginRight="30dp">
 
             <LinearLayout
                 android:layout_width="match_parent"

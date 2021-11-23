@@ -23,7 +23,9 @@ public class CommentProvider {
     }
 
     public Query getCommentsByPost(String idPost) {
-        return mCollection.whereEqualTo("idPost", idPost);
+        return mCollection.whereEqualTo("idPost", idPost).orderBy("timestamp", Query.Direction.ASCENDING);
     }
+
+    public Task<Void> delete(String id){return mCollection.document(id).delete();}
 
 }

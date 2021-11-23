@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,6 +67,7 @@ public class ProyectoDetailActivity extends AppCompatActivity {
     Button btnEliminar;
     Button btnCompletado;
     Toolbar toolbar;
+    LinearLayout mLinearLayoutEditProyecto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +92,7 @@ public class ProyectoDetailActivity extends AppCompatActivity {
         btnEliminar = findViewById(R.id.btnEliminar);
         btnCompletado = findViewById(R.id.btnProyectoCompleto);
         toolbar = findViewById(R.id.toolbar);
+        mLinearLayoutEditProyecto = findViewById(R.id.linearLayoutEditProyecto);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
@@ -117,12 +120,40 @@ public class ProyectoDetailActivity extends AppCompatActivity {
             }
         });
 
+        mUserProvider.getUser(mAuthProvider.getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists() && documentSnapshot.contains("rol")){
+                    String rol = documentSnapshot.getString("rol");
+                    if (rol.equals("Líder de proyecto")){
+                        mLinearLayoutEditProyecto.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        mLinearLayoutEditProyecto.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
+
+        mLinearLayoutEditProyecto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToEditTarea();
+            }
+        });
+
         checkProyectoCompletado();
         checkRol();
         getProyecto();
         getNumberTareas();
         getAvance();
 
+    }
+
+    private void goToEditTarea() {
+        Intent intent = new Intent(ProyectoDetailActivity.this, EditProyectoActivity.class);
+        intent.putExtra("idProyecto", mExtraProyectoId);
+        startActivity(intent);
     }
 
     private void checkRol() {

@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:text="Fecha de inicio"
                     android:textStyle="bold"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textColor="@color/white"
                     />
 
@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:text="Fecha de fin"
                     android:textStyle="bold"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textColor="@color/white"
                     />
 
@@ -55,7 +55,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"/>
+                app:layout_collapseMode="pin" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 

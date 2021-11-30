@@ -42,6 +42,7 @@ public class TareaProvider {
         Map<String, Object> map = new HashMap<>();
         map.put("nombre", tarea.getNombre());
         map.put("descripcion", tarea.getDescripcion());
+        map.put("prioridad", tarea.getPrioridad());
         map.put("repositorio", tarea.getRepositorio());
         map.put("fecha_inicio", tarea.getFecha_inicio());
         map.put("fecha_fin", tarea.getFecha_fin());

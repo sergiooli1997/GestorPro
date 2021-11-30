@@ -11,12 +11,13 @@ public class Tarea {
     private long fecha_fin;
     private int completado;
     private int retraso;
+    private String prioridad;
 
     public Tarea(){
 
     }
 
-    public Tarea(String id, String idProyecto, String idUsuario, String nombre, String descripcion, String repositorio, long fecha_inicio, long fecha_fin, int completado, int retraso) {
+    public Tarea(String id, String idProyecto, String idUsuario, String nombre, String descripcion, String repositorio, long fecha_inicio, long fecha_fin, int completado, int retraso, String prioridad) {
         this.id = id;
         this.idProyecto = idProyecto;
         this.idUsuario = idUsuario;
@@ -27,6 +28,7 @@ public class Tarea {
         this.fecha_fin = fecha_fin;
         this.completado = completado;
         this.retraso = retraso;
+        this.prioridad = prioridad;
     }
 
     public String getId() {
@@ -107,5 +109,13 @@ public class Tarea {
 
     public void setRetraso(int retraso) {
         this.retraso = retraso;
+    }
+
+    public String getPrioridad() {
+        return prioridad;
+    }
+
+    public void setPrioridad(String prioridad) {
+        this.prioridad = prioridad;
     }
 }

@@ -47,6 +47,7 @@ public class RegistroTarea extends AppCompatActivity {
     long fecha_fin = 0;
     String id_proyecto = "";
     String id_usuario = "";
+    String prioridad;
     List<String> proyectos = new ArrayList<>();
     List<String> id_proyectos = new ArrayList<>();
     List<String> equipo = new ArrayList<>();
@@ -68,6 +69,7 @@ public class RegistroTarea extends AppCompatActivity {
     Button btnCrear;
     Spinner spinnerEquipo;
     Spinner spinnerProyecto;
+    Spinner spinnerPrioridad;
 
     TareaProvider mTareaProvider;
 
@@ -89,6 +91,7 @@ public class RegistroTarea extends AppCompatActivity {
         btnCrear = findViewById(R.id.btnAceptar);
         spinnerEquipo = (Spinner)findViewById(R.id.spinerEquipo);
         spinnerProyecto = (Spinner)findViewById(R.id.spinerProyecto);
+        spinnerPrioridad = (Spinner)findViewById(R.id.spinerPrioridad);
 
         mTareaProvider = new TareaProvider();
 
@@ -99,6 +102,11 @@ public class RegistroTarea extends AppCompatActivity {
         adapter_equipo = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, equipo);
         adapter_equipo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerEquipo.setAdapter(adapter_equipo);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.prioridad, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerPrioridad.setAdapter(adapter);
 
         initDatePickerInicio();
         initDatePickerFin();
@@ -164,6 +172,19 @@ public class RegistroTarea extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spinnerPrioridad.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                prioridad = spinnerPrioridad.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                prioridad = "Baja";
 
             }
         });
@@ -240,6 +261,7 @@ public class RegistroTarea extends AppCompatActivity {
         tarea.setIdUsuario(id_usuario);
         tarea.setCompletado(0);
         tarea.setRetraso(0);
+        tarea.setPrioridad(prioridad);
         mDialog.show();
         if (!nombre.isEmpty() && fecha_fin!=0 && fecha_inicio!=0 && !id_proyecto.isEmpty() && !id_usuario.isEmpty()){
             mTareaProvider.save(tarea).addOnCompleteListener(new OnCompleteListener<Void>() {

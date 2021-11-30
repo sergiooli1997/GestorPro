@@ -50,8 +50,10 @@ public class DatosAnalisisActivity extends AppCompatActivity {
 
     String id_proyecto = "";
     int total_tareas = 0;
+    int total_post = 0;
     double tareas_retraso_analisis = 0;
     double tareas_repo_vacio_analisis = 0;
+    double post_criticos_analisis = 0;
 
     List<String> proyectos = new ArrayList<>();
     List<String> id_proyectos = new ArrayList<>();
@@ -173,13 +175,23 @@ public class DatosAnalisisActivity extends AppCompatActivity {
     private void crearAnalisis() {
         double retraso = Double.parseDouble(mTextRetraso.getText().toString());
         double repo_vacio = Double.parseDouble(mTextRepo.getText().toString());
-        int post = Integer.parseInt(mTextPosts.getText().toString());
+        double post = Double.parseDouble(mTextPosts.getText().toString());
         String clasificacion;
-        if (retraso <= 45){
+        if (retraso <= 23.53){
             clasificacion = "Productivo";
         }
         else{
-            clasificacion = "No productivo";
+            if (retraso <= 30){
+                if(repo_vacio <= 5.5){
+                    clasificacion = "Productivo";
+                }
+                else{
+                    clasificacion = "No productivo";
+                }
+            }
+            else{
+                clasificacion = "No productivo";
+            }
         }
         mTextClasificacion.setText("Clasficación: " + clasificacion);
     }
@@ -240,15 +252,23 @@ public class DatosAnalisisActivity extends AppCompatActivity {
         mPostProvider.getPostByProyecto(idProyecto).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
-                if(error == null){
-                    int total_post = queryDocumentSnapshots.size();
-                    if(total_post == 1){
-                        mTextPostsOracion.setText("publicación");
+                if (error == null){
+                    total_post = queryDocumentSnapshots.size();
+                    if (total_post > 0){
+                        mPostProvider.getPostCriticosByProyecto(idProyecto, "Critico").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                                if (error == null){
+                                    int post_criticos = value.size();
+                                    post_criticos_analisis = (post_criticos * 100)/ total_post;
+                                    mTextPosts.setText(String.format("%.2f", post_criticos_analisis));
+                                }
+                            }
+                        });
                     }
                     else{
-                        mTextPostsOracion.setText("publicaciones");
+                        mTextPosts.setText("0");
                     }
-                    mTextPosts.setText(String.valueOf(total_post));
                 }
             }
         });

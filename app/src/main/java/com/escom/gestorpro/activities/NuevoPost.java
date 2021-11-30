@@ -55,6 +55,7 @@ public class NuevoPost extends AppCompatActivity {
     private final int PHOTO_REQUEST_CODE = 3;
     String id_proyecto = "";
     String descripcion = "";
+    String tipo_post;
     ArrayAdapter<String> adapter;
     CharSequence options[];
     List<String> proyectos = new ArrayList<>();
@@ -69,6 +70,7 @@ public class NuevoPost extends AppCompatActivity {
     ImageView mImageViewPost;
     Button mButtonPost;
     Spinner spinnerProyecto;
+    Spinner spinnerTipo;
     TextInputEditText mTextInputDesc;
     TextView mTextViewUsuario;
     CircleImageView mCircleImgUsuario;
@@ -108,6 +110,12 @@ public class NuevoPost extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerProyecto.setAdapter(adapter);
 
+        spinnerTipo = (Spinner)findViewById(R.id.spinnerTipoPost);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.tipo_publicacion, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerTipo.setAdapter(adapter);
+
         mImageViewBack = findViewById(R.id.imageViewBack);
         mImageViewPost = findViewById(R.id.subirImagen);
         mTextInputDesc = findViewById(R.id.textInputPost);
@@ -126,6 +134,18 @@ public class NuevoPost extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        spinnerTipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                tipo_post = spinnerTipo.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                tipo_post = "Aviso";
             }
         });
 
@@ -258,6 +278,7 @@ public class NuevoPost extends AppCompatActivity {
         post.setUsuario(mAuthProvider.getUid());
         post.setFecha(new Date().getTime());
         post.setIdProyecto(id_proyecto);
+        post.setTipo(tipo_post);
         mPostProvider.save(post).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -290,6 +311,7 @@ public class NuevoPost extends AppCompatActivity {
                             post.setTexto(descripcion);
                             post.setUsuario(mAuthProvider.getUid());
                             post.setFecha(new Date().getTime());
+                            post.setTipo(tipo_post);
                             post.setIdProyecto(id_proyecto);
                             mPostProvider.save(post).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override

@@ -7,18 +7,20 @@ public class Post {
     private String texto;
     private String image;
     private String idProyecto;
+    private String tipo;
 
     public Post(){
 
     }
 
-    public Post(String id, String usuario, long fecha, String texto, String image, String idProyecto) {
+    public Post(String id, String usuario, long fecha, String texto, String image, String idProyecto, String tipo) {
         this.id = id;
         this.usuario = usuario;
         this.fecha = fecha;
         this.texto = texto;
         this.image = image;
         this.idProyecto = idProyecto;
+        this.tipo = tipo;
     }
 
     public String getId() {
@@ -67,5 +69,13 @@ public class Post {
 
     public void setIdProyecto(String idProyecto) {
         this.idProyecto = idProyecto;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 }

@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.escom.gestorpro.R;
+import com.escom.gestorpro.providers.AuthProvider;
 import com.escom.gestorpro.providers.ProyectoProvider;
 import com.escom.gestorpro.providers.TareaProvider;
 import com.escom.gestorpro.providers.UserProvider;
@@ -39,6 +41,7 @@ public class TareaDetailActivity extends AppCompatActivity {
     UserProvider mUserProvider;
     ProyectoProvider mProyectoProvider;
     TareaProvider mTareaProvider;
+    AuthProvider mAuthProvider;
 
     TextView textViewFechaInicio;
     TextView textViewFechaFin;
@@ -48,6 +51,7 @@ public class TareaDetailActivity extends AppCompatActivity {
     TextView textViewCel;
     TextView textViewNombreProy;
     TextView textViewRepositorio;
+    TextView textViewPrioridad;
     CircleImageView circleImageViewProfile;
     Button btnVerPerfil;
     Button btnVerProyecto;
@@ -64,6 +68,7 @@ public class TareaDetailActivity extends AppCompatActivity {
         mTareaProvider = new TareaProvider();
         mUserProvider = new UserProvider();
         mProyectoProvider = new ProyectoProvider();
+        mAuthProvider = new AuthProvider();
 
         textViewFechaInicio = findViewById(R.id.textViewRelativeTimeInicio);
         textViewFechaFin = findViewById(R.id.textViewRelativeTimeFinal);
@@ -73,6 +78,7 @@ public class TareaDetailActivity extends AppCompatActivity {
         textViewCel = findViewById(R.id.textViewCel);
         textViewNombreProy = findViewById(R.id.textViewProyecto);
         textViewRepositorio = findViewById(R.id.textViewRepositorio);
+        textViewPrioridad = findViewById(R.id.textViewPrioridad);
         circleImageViewProfile = findViewById(R.id.circleImageTareaDetail);
         btnVerPerfil = findViewById(R.id.btnVerPerfil);
         btnVerProyecto = findViewById(R.id.btnVerProyecto);
@@ -123,6 +129,26 @@ public class TareaDetailActivity extends AppCompatActivity {
 
         checkTareaCompletada();
         getTarea();
+        checkUser();
+    }
+
+    private void checkUser() {
+        mUserProvider.getUser(mAuthProvider.getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists() && documentSnapshot.contains("rol")){
+                    String rol = documentSnapshot.getString("rol");
+                    if(rol.equals("Líder de proyecto")){
+                        mLinearLayoutEditTarea.setVisibility(View.VISIBLE);
+                        btnEliminarTarea.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        mLinearLayoutEditTarea.setVisibility(View.GONE);
+                        btnEliminarTarea.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
     }
 
     private void showConfirmDelete(String idTarea) {
@@ -295,6 +321,19 @@ public class TareaDetailActivity extends AppCompatActivity {
                     if (documentSnapshot.contains("idProyecto")){
                         mIdProyecto = documentSnapshot.getString("idProyecto");
                         getProyectoInfo(mIdProyecto);
+                    }
+                    if (documentSnapshot.contains("prioridad")){
+                        String prioridad = documentSnapshot.getString("prioridad");
+                        textViewPrioridad.setText("Prioridad " + prioridad);
+                        if (prioridad.equals("Alta")){
+                            textViewPrioridad.setTextColor(Color.parseColor("#E10E0E"));
+                        }
+                        else if (prioridad.equals("Media")){
+                            textViewPrioridad.setTextColor(Color.parseColor("#FFC107"));
+                        }
+                        else{
+                            textViewPrioridad.setTextColor(Color.parseColor("#4CAF50"));
+                        }
                     }
                 }
             }

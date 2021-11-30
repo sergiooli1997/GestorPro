@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="tipo_publicacion">
+        <item>Seleccione tipo de publicación</item>
+        <item>Critico</item>
+        <item>Aviso</item>
+    </string-array>
+</resources>

@@ -41,6 +41,10 @@ public class PostProvider {
         return mCollection.document(id).get();
     }
 
+    public Query getPostCriticosByProyecto(String idProyecto, String value){
+        return mCollection.whereEqualTo("idProyecto", idProyecto).whereEqualTo("tipo", value);
+    }
+
     public Query getPostByProyecto(String idProyecto){
         return mCollection.whereEqualTo("idProyecto", idProyecto);
     }

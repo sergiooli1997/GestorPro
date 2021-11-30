@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -75,6 +76,7 @@ public class PostDetailActivity extends AppCompatActivity {
     TextView textViewDesc;
     TextView textViewRelativeTime;
     TextView textViewLikes;
+    TextView textViewTipo;
     ImageView imageViewPost;
     CircleImageView circleImageViewProfile;
     Button btnVerPerfil;
@@ -103,6 +105,7 @@ public class PostDetailActivity extends AppCompatActivity {
         textViewDesc = findViewById(R.id.textViewDescPD);
         textViewRelativeTime = findViewById(R.id.textViewRelativeTime);
         textViewLikes = findViewById(R.id.textViewLikes);
+        textViewTipo = findViewById(R.id.textViewTipo);
         imageViewPost = findViewById(R.id.imageViewPD);
         circleImageViewProfile = findViewById(R.id.circleImageProfileDetail);
         btnVerPerfil = findViewById(R.id.btnVerPerfil);
@@ -360,7 +363,16 @@ public class PostDetailActivity extends AppCompatActivity {
                         String relativeTime = RelativeTime.getTimeAgo(timestamp, PostDetailActivity.this);
                         textViewRelativeTime.setText(relativeTime);
                     }
-
+                    if (documentSnapshot.contains("tipo")){
+                        String tipo = documentSnapshot.getString("tipo");
+                        textViewTipo.setText(tipo);
+                        if (tipo.equals("Critico")){
+                            textViewTipo.setTextColor(Color.parseColor("#E10E0E"));
+                        }
+                        else{
+                            textViewTipo.setTextColor(Color.parseColor("#4CAF50"));
+                        }
+                    }
                 }
             }
         });

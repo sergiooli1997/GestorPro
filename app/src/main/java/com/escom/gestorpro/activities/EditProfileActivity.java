@@ -196,20 +196,14 @@ public class EditProfileActivity extends AppCompatActivity {
                         mRol = documentSnapshot.getString("rol");
                         if (mRol.equals("Líder de proyecto")){
                             spinnerRoles.setSelection(1);
-                            rol_seleccionado = "Líder de proyecto";
                         }
                         else if (mRol.equals("Miembro del equipo")){
                             spinnerRoles.setSelection(2);
-                            rol_seleccionado = "Miembro del equipo";
                         }
-                        else if (mRol.equals("Cliente")){
+                        else {
                             spinnerRoles.setSelection(3);
-                            rol_seleccionado = "Cliente";
                         }
-                        else{
-                            spinnerRoles.setSelection(0);
-                            rol_seleccionado = "Sin rol";
-                        }
+                        rol_seleccionado = mRol;
                     }
                 }
             }
@@ -284,6 +278,7 @@ public class EditProfileActivity extends AppCompatActivity {
                                                 user.setImageProfile(urlProfile);
                                                 user.setImageCover(urlCover);
                                                 user.setId(mAuthProvider.getUid());
+                                                user.setRol(rol_seleccionado);
                                                 updateInfo(user);
                                             }
                                         });
@@ -327,6 +322,7 @@ public class EditProfileActivity extends AppCompatActivity {
                                 user.setImageProfile(mImageProfile);
                             }
                             user.setId(mAuthProvider.getUid());
+                            user.setRol(rol_seleccionado);
                             updateInfo(user);
                         }
                     });

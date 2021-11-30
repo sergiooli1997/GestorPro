@@ -8,9 +8,12 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.escom.gestorpro.R;
@@ -34,6 +37,7 @@ public class EditTareaActivity extends AppCompatActivity {
     private DatePickerDialog datePickerDialogInicio;
     private DatePickerDialog datePickerDialogFin;
     String mExtraTareaId;
+    String prioridad;
     long fecha_inicio = 0;
     long fecha_fin = 0;
     TareaProvider mTareaProvider;
@@ -46,6 +50,7 @@ public class EditTareaActivity extends AppCompatActivity {
     TextInputEditText textViewDesc;
     TextInputEditText textViewRepositorio;
     ImageView mImageViewBack;
+    Spinner spinnerPrioridad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +67,12 @@ public class EditTareaActivity extends AppCompatActivity {
         textViewDesc = findViewById(R.id.textInputDescripcion);
         textViewRepositorio = findViewById(R.id.textInputRepositorio);
         mImageViewBack = findViewById(R.id.circleImageBack);
+        spinnerPrioridad = (Spinner)findViewById(R.id.spinerPrioridad);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.prioridad, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerPrioridad.setAdapter(adapter);
 
         initDatePickerInicio();
         initDatePickerFin();
@@ -100,6 +111,19 @@ public class EditTareaActivity extends AppCompatActivity {
                 datePickerDialogFin.show();
             }
         });
+
+        spinnerPrioridad.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                prioridad = spinnerPrioridad.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                prioridad = "Baja";
+
+            }
+        });
     }
 
     private void update() {
@@ -120,6 +144,7 @@ public class EditTareaActivity extends AppCompatActivity {
         tarea.setRepositorio(textViewRepositorio.getText().toString());
         tarea.setFecha_inicio(fecha_inicio);
         tarea.setFecha_fin(fecha_fin);
+        tarea.setPrioridad(prioridad);
         updateInfo(tarea);
     }
 
@@ -171,6 +196,19 @@ public class EditTareaActivity extends AppCompatActivity {
                     if (documentSnapshot.contains("repositorio")){
                         String repositorio = documentSnapshot.getString("repositorio");
                         textViewRepositorio.setText(repositorio);
+                    }
+                    if (documentSnapshot.contains("prioridad")){
+                        String prioridad_tarea = documentSnapshot.getString("prioridad");
+                        if (prioridad_tarea.equals("Alta")){
+                            spinnerPrioridad.setSelection(1);
+                        }
+                        else if (prioridad_tarea.equals("Media")){
+                            spinnerPrioridad.setSelection(2);
+                        }
+                        else{
+                            spinnerPrioridad.setSelection(3);
+                        }
+                        prioridad = prioridad_tarea;
                     }
                 }
             }

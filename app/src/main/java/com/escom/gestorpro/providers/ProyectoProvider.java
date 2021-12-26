@@ -72,6 +72,7 @@ public class ProyectoProvider {
         Map<String, Object> map = new HashMap<>();
         map.put("fecha_fin", proyecto.getFecha_fin());
         map.put("fecha_inicio", proyecto.getFecha_inicio());
+        map.put("cuestionario", proyecto.getCuestionario());
         return mCollection.document(proyecto.getId()).update(map);
     }
 

@@ -323,6 +323,15 @@
                 android:layout_marginLeft="25dp"
                 android:layout_marginRight="25dp"/>
 
+            <Button
+                android:id="@+id/btnCuestionario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Realiza la encuesta de satisfacción"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"/>
+
 
         </LinearLayout>
 

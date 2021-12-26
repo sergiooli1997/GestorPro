@@ -38,6 +38,7 @@ public class EditProyectoActivity extends AppCompatActivity {
     String mExtraProyectoId;
     ImageView mImageViewBack;
     TextInputEditText textViewTitle;
+    TextInputEditText textViewCuestionario;
     Button btnFechaInicio;
     Button btnFechaFin;
     Button btnActualizar;
@@ -55,6 +56,7 @@ public class EditProyectoActivity extends AppCompatActivity {
 
         mImageViewBack = findViewById(R.id.imageViewBack);
         textViewTitle = findViewById(R.id.textInputNombreProyecto);
+        textViewCuestionario = findViewById(R.id.textInputCuestionario);
         btnFechaInicio = findViewById(R.id.btnFechaInicio);
         btnFechaFin = findViewById(R.id.btnFechaFinal);
         btnActualizar = findViewById(R.id.btnAceptar);
@@ -99,6 +101,7 @@ public class EditProyectoActivity extends AppCompatActivity {
     }
 
     private void update() {
+        String cuestionario = textViewCuestionario.getText().toString();
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
         try {
             Date date1 = (Date)formatter.parse(btnFechaInicio.getText().toString());
@@ -114,6 +117,7 @@ public class EditProyectoActivity extends AppCompatActivity {
         proyecto.setNombre(textViewTitle.getText().toString());
         proyecto.setFecha_inicio(fecha_inicio);
         proyecto.setFecha_fin(fecha_fin);
+        proyecto.setCuestionario(cuestionario);
         updateInfo(proyecto);
     }
 
@@ -157,6 +161,10 @@ public class EditProyectoActivity extends AppCompatActivity {
                     if (documentSnapshot.contains("nombre")){
                         String nombre = documentSnapshot.getString("nombre");
                         textViewTitle.setText(nombre);
+                    }
+                    if (documentSnapshot.contains("cuestionario")){
+                        String cuestionario = documentSnapshot.getString("cuestionario");
+                        textViewCuestionario.setText(cuestionario);
                     }
                 }
             }

@@ -45,6 +45,7 @@ public class NuevoProyectoActivity extends AppCompatActivity {
     String codigo = "";
     ImageView mImageViewBack;
     TextInputEditText textViewTitle;
+    TextInputEditText textViewCuestionario;
     Button btnFechaInicio;
     Button btnFechaFin;
     Button btnCrear;
@@ -61,6 +62,7 @@ public class NuevoProyectoActivity extends AppCompatActivity {
 
         mImageViewBack = findViewById(R.id.imageViewBack);
         textViewTitle = findViewById(R.id.textInputNombreProyecto);
+        textViewCuestionario = findViewById(R.id.textInputCuestionario);
         btnFechaInicio = findViewById(R.id.btnFechaInicio);
         btnFechaFin = findViewById(R.id.btnFechaFinal);
         btnCrear = findViewById(R.id.btnAceptar);
@@ -116,6 +118,7 @@ public class NuevoProyectoActivity extends AppCompatActivity {
     private void crearProyecto() {
         String idUsuario = mAuthProvider.getUid();
         String nombre = textViewTitle.getText().toString();
+        String cuestionario = textViewCuestionario.getText().toString();
 
         String[] usuarioArray = idUsuario.split("\\s*,\\s*");
         List<String> usuarios = Arrays.asList(usuarioArray);
@@ -140,6 +143,7 @@ public class NuevoProyectoActivity extends AppCompatActivity {
         proyecto.setIdCliente("");
         proyecto.setCompleto(0);
         proyecto.setCalificacion(0);
+        proyecto.setCuestionario(cuestionario);
         mDialog.show();
         mProyectoProvider.save(proyecto).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

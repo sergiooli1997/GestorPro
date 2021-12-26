@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -43,10 +44,10 @@ import java.util.concurrent.TimeUnit;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProyectoDetailActivity extends AppCompatActivity {
-    // TODO: Cliente califica proyecto
     //TODO: boton back no debe regresar a Menu.Activity
     String mExtraProyectoId;
     String mIdUser = "";
+    String url = "";
     int total_tareas = 0;
 
     ProyectoProvider mProyectoProvider;
@@ -66,6 +67,7 @@ public class ProyectoDetailActivity extends AppCompatActivity {
     Button btVerPerfil;
     Button btnEliminar;
     Button btnCompletado;
+    Button btnCuestionario;
     Toolbar toolbar;
     LinearLayout mLinearLayoutEditProyecto;
 
@@ -91,6 +93,7 @@ public class ProyectoDetailActivity extends AppCompatActivity {
         btVerPerfil = findViewById(R.id.btnVerPerfil);
         btnEliminar = findViewById(R.id.btnEliminar);
         btnCompletado = findViewById(R.id.btnProyectoCompleto);
+        btnCuestionario = findViewById(R.id.btnCuestionario);
         toolbar = findViewById(R.id.toolbar);
         mLinearLayoutEditProyecto = findViewById(R.id.linearLayoutEditProyecto);
 
@@ -117,6 +120,15 @@ public class ProyectoDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 completado(mExtraProyectoId);
+            }
+        });
+
+        btnCuestionario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse(url);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
             }
         });
 
@@ -147,7 +159,29 @@ public class ProyectoDetailActivity extends AppCompatActivity {
         getProyecto();
         getNumberTareas();
         getAvance();
+        getCuestionario();
 
+    }
+
+    private void getCuestionario() {
+        mProyectoProvider.getProyectoById(mExtraProyectoId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()){
+                    if (documentSnapshot.contains("completo")){
+                        int completo = documentSnapshot.getLong("completo").intValue();
+                        if (completo == 1){
+                            url = documentSnapshot.getString("cuestionario");
+                            btnCuestionario.setVisibility(View.VISIBLE);
+
+                        }
+                        else{
+                            btnCuestionario.setVisibility(View.GONE);
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private void goToEditTarea() {

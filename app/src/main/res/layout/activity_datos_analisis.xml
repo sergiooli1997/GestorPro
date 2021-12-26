@@ -65,8 +65,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="150dp">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tareasRetrasoAnalisis"
@@ -76,15 +75,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="30dp"
                 android:textColor="@color/white"
-                android:textSize="20sp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="% tareas con alta prioridad retrasadas"
-                android:layout_marginRight="30dp"
-                android:textColor="@color/white"
-                android:textSize="20sp"/>
+                android:textSize="1sp"/>
 
 
         </LinearLayout>
@@ -92,8 +83,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="30dp">
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tareasIncompletasAnalisis"
@@ -103,15 +93,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginLeft="30dp"
                     android:textColor="@color/white"
-                    android:textSize="20sp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="% tareas con alta prioridad incompletas"
-                    android:layout_marginRight="30dp"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"/>
+                    android:textSize="1sp"/>
 
 
             </LinearLayout>
@@ -119,8 +101,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="30dp">
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tareasRepositorioAnalisis"
@@ -130,15 +111,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginLeft="30dp"
                     android:textColor="@color/white"
-                    android:textSize="20sp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="% tareas sin repositorio"
-                    android:layout_marginRight="30dp"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"/>
+                    android:textSize="1sp"/>
 
 
             </LinearLayout>
@@ -146,27 +119,35 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="30dp">
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/postsAnalisis"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:layout_marginRight="10dp"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="30dp"
+                    android:layout_marginRight="10dp"
+                    android:text="0"
                     android:textColor="@color/white"
-                    android:textSize="20sp"/>
+                    android:textSize="1sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/postText"
+                    android:id="@+id/postsAvisoAnalisis"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="% publicaciones criticas"
-                    android:layout_marginRight="30dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="10dp"
+                    android:text="0"
                     android:textColor="@color/white"
-                    android:textSize="20sp"/>
+                    android:textSize="1sp" />
 
 
             </LinearLayout>
@@ -175,14 +156,70 @@
                 android:id="@+id/clasificacionAnalisis"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Presione Analizar datos para conocer la clasificación"
+                android:layout_marginLeft="30dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginRight="30dp"
-                android:layout_marginLeft="30dp"
-                android:textColor="@color/white"
-                android:textStyle="bold"
+                android:text="Presione Analizar datos para conocer la clasificación y visualizar gráficas"
                 android:textAlignment="center"
-                android:textSize="25sp"/>
+                android:textColor="@color/white"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_margin="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="300dp">
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/pieChart1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </com.github.mikephil.charting.charts.PieChart>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_margin="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="300dp">
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/pieChart2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </com.github.mikephil.charting.charts.PieChart>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_margin="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="300dp">
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/pieChart3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </com.github.mikephil.charting.charts.PieChart>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_margin="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="300dp">
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/pieChart4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </com.github.mikephil.charting.charts.PieChart>
+
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 

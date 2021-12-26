@@ -12,6 +12,7 @@ import weka.core.Instances;
 import weka.core.converters.CSVLoader;
 import java.io.*;
 
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -33,6 +34,12 @@ import com.escom.gestorpro.providers.PostProvider;
 import com.escom.gestorpro.providers.ProyectoProvider;
 import com.escom.gestorpro.providers.TareaProvider;
 import com.escom.gestorpro.providers.UserProvider;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -54,6 +61,7 @@ public class DatosAnalisisActivity extends AppCompatActivity {
     double tareas_retraso_analisis = 0;
     double tareas_repo_vacio_analisis = 0;
     double post_criticos_analisis = 0;
+    double post_avisos_analisis = 0;
 
     List<String> proyectos = new ArrayList<>();
     List<String> id_proyectos = new ArrayList<>();
@@ -68,12 +76,17 @@ public class DatosAnalisisActivity extends AppCompatActivity {
 
     Spinner spinnerProyecto;
     TextView mTextRetraso;
+    TextView mTextCompletas;
     TextView mTextRepo;
     TextView mTextPosts;
-    TextView mTextPostsOracion;
+    TextView mTextPosts2;
     TextView mTextClasificacion;
     Button mAnalizar;
     ImageView mImageViewBack;
+    PieChart pieChart1;
+    PieChart pieChart2;
+    PieChart pieChart3;
+    PieChart pieChart4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,10 +103,15 @@ public class DatosAnalisisActivity extends AppCompatActivity {
         mTextRetraso = findViewById(R.id.tareasRetrasoAnalisis);
         mTextRepo = findViewById(R.id.tareasRepositorioAnalisis);
         mTextPosts = findViewById(R.id.postsAnalisis);
-        mTextPostsOracion = findViewById(R.id.postText);
+        mTextPosts2 = findViewById(R.id.postsAvisoAnalisis);
+        mTextCompletas = findViewById(R.id.tareasIncompletasAnalisis);
         mTextClasificacion = findViewById(R.id.clasificacionAnalisis);
         mAnalizar = findViewById(R.id.btnAnalizar);
         mImageViewBack = findViewById(R.id.imageViewBack);
+        pieChart1 = findViewById(R.id.pieChart1);
+        pieChart2 = findViewById(R.id.pieChart2);
+        pieChart3 = findViewById(R.id.pieChart3);
+        pieChart4 = findViewById(R.id.pieChart4);
 
         spinnerProyecto = (Spinner)findViewById(R.id.spinnerProyectoAnalisis);
         adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, proyectos);
@@ -107,8 +125,10 @@ public class DatosAnalisisActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 id_proyecto = id_proyectos.get(spinnerProyecto.getSelectedItemPosition());
                 tareasRetraso(id_proyecto);
+                tareasCompletas(id_proyecto);
                 tareasRepo(id_proyecto);
                 getPost(id_proyecto);
+                getAvisoPost(id_proyecto);
             }
 
             @Override
@@ -175,7 +195,9 @@ public class DatosAnalisisActivity extends AppCompatActivity {
     private void crearAnalisis() {
         double retraso = Double.parseDouble(mTextRetraso.getText().toString());
         double repo_vacio = Double.parseDouble(mTextRepo.getText().toString());
+        double completo = Double.parseDouble(mTextCompletas.getText().toString());
         double post = Double.parseDouble(mTextPosts.getText().toString());
+        double postAviso = Double.parseDouble(mTextPosts2.getText().toString());
         String clasificacion;
         if (retraso <= 23.53){
             clasificacion = "Productivo";
@@ -194,6 +216,100 @@ public class DatosAnalisisActivity extends AppCompatActivity {
             }
         }
         mTextClasificacion.setText("Clasficación: " + clasificacion);
+
+        crearGraficoRetraso(retraso);
+        crearGraficoCompletas(completo);
+        crearGraficoRepo(repo_vacio);
+        crearGraficoPost(post, postAviso);
+
+    }
+
+    private void crearGraficoPost(double post, double postAviso) {
+        Description description = new Description();
+        description.setText("% Publicaciones");
+        description.setTextSize(16f);
+        description.setTextColor(Color.WHITE);
+        pieChart4.setDescription(description);
+        List<PieEntry> pieEntries = new ArrayList<>();
+        pieEntries.add(new PieEntry((float) post, "Post criticos"));
+        pieEntries.add(new PieEntry((float) postAviso, "Post avisos"));
+        PieDataSet pieDataSet = new PieDataSet(pieEntries, "");
+        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        pieDataSet.setValueTextColor(Color.WHITE);
+        pieDataSet.setValueTextSize(18f);
+        PieData pieData = new PieData(pieDataSet);
+        pieChart4.setData(pieData);
+        pieChart4.setEntryLabelColor(Color.WHITE);
+        pieChart4.setEntryLabelTextSize(16f);
+        pieChart4.setHoleColor(Color.BLACK);
+        pieChart4.getLegend().setEnabled(false);
+        pieChart4.invalidate();
+    }
+
+    private void crearGraficoRepo(double repo_vacio) {
+        Description description = new Description();
+        description.setText("% Tareas");
+        description.setTextSize(16f);
+        description.setTextColor(Color.WHITE);
+        pieChart3.setDescription(description);
+        List<PieEntry> pieEntries = new ArrayList<>();
+        pieEntries.add(new PieEntry((float) repo_vacio, "Sin repositorio"));
+        pieEntries.add(new PieEntry((float) (100-repo_vacio), "Con repositorio"));
+        PieDataSet pieDataSet = new PieDataSet(pieEntries, "");
+        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        pieDataSet.setValueTextColor(Color.WHITE);
+        pieDataSet.setValueTextSize(18f);
+        PieData pieData = new PieData(pieDataSet);
+        pieChart3.setData(pieData);
+        pieChart3.setEntryLabelColor(Color.WHITE);
+        pieChart3.setEntryLabelTextSize(16f);
+        pieChart3.setHoleColor(Color.BLACK);
+        pieChart3.getLegend().setEnabled(false);
+        pieChart3.invalidate();
+    }
+
+    private void crearGraficoCompletas(double completo) {
+        Description description = new Description();
+        description.setText("% Tareas");
+        description.setTextSize(16f);
+        description.setTextColor(Color.WHITE);
+        pieChart2.setDescription(description);
+        List<PieEntry> pieEntries = new ArrayList<>();
+        pieEntries.add(new PieEntry((float) completo, "Completas"));
+        pieEntries.add(new PieEntry((float) (100-completo), "No completadas"));
+        PieDataSet pieDataSet = new PieDataSet(pieEntries, "");
+        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        pieDataSet.setValueTextColor(Color.WHITE);
+        pieDataSet.setValueTextSize(18f);
+        PieData pieData = new PieData(pieDataSet);
+        pieChart2.setData(pieData);
+        pieChart2.setEntryLabelColor(Color.WHITE);
+        pieChart2.setEntryLabelTextSize(16f);
+        pieChart2.setHoleColor(Color.BLACK);
+        pieChart2.getLegend().setEnabled(false);
+        pieChart2.invalidate();
+    }
+
+    private void crearGraficoRetraso(double retraso) {
+        Description description = new Description();
+        description.setText("% Tareas de alta prioridad");
+        description.setTextSize(16f);
+        description.setTextColor(Color.WHITE);
+        pieChart1.setDescription(description);
+        List<PieEntry> pieEntries = new ArrayList<>();
+        pieEntries.add(new PieEntry((float) retraso, "Con retraso"));
+        pieEntries.add(new PieEntry((float) (100-retraso), "Sin retraso"));
+        PieDataSet pieDataSet = new PieDataSet(pieEntries, "");
+        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        pieDataSet.setValueTextColor(Color.WHITE);
+        pieDataSet.setValueTextSize(18f);
+        PieData pieData = new PieData(pieDataSet);
+        pieChart1.setData(pieData);
+        pieChart1.setEntryLabelColor(Color.WHITE);
+        pieChart1.setEntryLabelTextSize(16f);
+        pieChart1.setHoleColor(Color.BLACK);
+        pieChart1.getLegend().setEnabled(false);
+        pieChart1.invalidate();
     }
 
     private void tareasRetraso(String id_proyecto) {
@@ -210,16 +326,39 @@ public class DatosAnalisisActivity extends AppCompatActivity {
                                     int tareas_retraso = value.size();
                                     tareas_retraso_analisis = (tareas_retraso*100.00)/total_tareas;
                                     mTextRetraso.setText(String.format("%.2f", tareas_retraso_analisis));
+                                    mTextRetraso.setVisibility(View.GONE);
                                 }
                             }
                         });
                     }
                     else{
                         mTextRetraso.setText("0");
+                        mTextRetraso.setVisibility(View.GONE);
                     }
                 }
             }
         });
+    }
+
+    private void tareasCompletas(String id_proyecto) {
+        mTareaProvider.getTareaCompletoByProyecto(id_proyecto, 1).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                if (error == null){
+                    int tareas_completadas = queryDocumentSnapshots.size();
+                    if (total_tareas != 0){
+                        double completas = (tareas_completadas*100.00)/total_tareas;
+                        mTextCompletas.setText(String.valueOf(completas));
+                        mTextCompletas.setVisibility(View.GONE);
+                    }
+                    else{
+                        mTextCompletas.setText("0");
+                        mTextCompletas.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
+
     }
 
     private void tareasRepo(String id_proyecto) {
@@ -236,12 +375,14 @@ public class DatosAnalisisActivity extends AppCompatActivity {
                                     int tareas_vacias = value.size();
                                     tareas_repo_vacio_analisis = (tareas_vacias*100.00)/total_tareas;
                                     mTextRepo.setText(String.format("%.2f", tareas_repo_vacio_analisis));
+                                    mTextRepo.setVisibility(View.GONE);
                                 }
                             }
                         });
                     }
                     else{
                         mTextRepo.setText("0");
+                        mTextRepo.setVisibility(View.GONE);
                     }
                 }
             }
@@ -262,12 +403,41 @@ public class DatosAnalisisActivity extends AppCompatActivity {
                                     int post_criticos = value.size();
                                     post_criticos_analisis = (post_criticos * 100)/ total_post;
                                     mTextPosts.setText(String.format("%.2f", post_criticos_analisis));
+                                    mTextPosts.setVisibility(View.GONE);
                                 }
                             }
                         });
                     }
                     else{
                         mTextPosts.setText("0");
+                        mTextPosts.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
+    }
+
+    private void getAvisoPost(String id_proyecto){
+        mPostProvider.getPostByProyecto(id_proyecto).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                if (error == null){
+                    total_post = queryDocumentSnapshots.size();
+                    if (total_post > 0){
+                        mPostProvider.getPostCriticosByProyecto(id_proyecto, "Aviso").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                                if (error == null){
+                                    int post_aviso = value.size();
+                                    post_avisos_analisis = (post_aviso * 100)/ total_post;
+                                    mTextPosts2.setText(String.valueOf(post_avisos_analisis));
+
+                                }
+                            }
+                        });
+                    }
+                    else{
+                        mTextPosts2.setText(String.valueOf(0));
                     }
                 }
             }

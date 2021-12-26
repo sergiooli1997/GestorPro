@@ -1,6 +1,9 @@
 package com.escom.gestorpro.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,14 +14,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.escom.gestorpro.BuzonActivity;
 import com.escom.gestorpro.activities.ConceptosActivity;
 import com.escom.gestorpro.activities.DatosAnalisisActivity;
 import com.escom.gestorpro.R;
 import com.escom.gestorpro.activities.BuenasPracticasActivity;
 import com.escom.gestorpro.activities.EstrategiasActivity;
 import com.escom.gestorpro.activities.MainActivity;
+import com.escom.gestorpro.activities.PostDetailActivity;
+import com.escom.gestorpro.models.Buzon;
 import com.escom.gestorpro.providers.AuthProvider;
+import com.escom.gestorpro.providers.BuzonProvider;
+import com.escom.gestorpro.providers.UserProvider;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,10 +49,13 @@ public class EstrategiasFragment extends Fragment {
 
     private String mParam1;
     private String mParam2;
+    private String url = "";
     Button mButtonBuenasPracticas;
     Button mButtonEstrategias;
     Button mButtonConceptos;
     Button mButtonAnalisisDatos;
+    Button mButtonBuzon;
+    Button mButtonMiEmpresa;
 
     AuthProvider mAuthProvider;
 
@@ -77,10 +96,14 @@ public class EstrategiasFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_estrategias, container, false);
 
         mAuthProvider = new AuthProvider();
+
         mButtonBuenasPracticas = view.findViewById(R.id.btnBuenasPracticas);
         mButtonAnalisisDatos = view.findViewById(R.id.btnAnalisisDatos);
         mButtonEstrategias = view.findViewById(R.id.btnEstrategias);
         mButtonConceptos = view.findViewById(R.id.btnConceptosFund);
+        mButtonBuzon = view.findViewById(R.id.btnBuzon);
+        mButtonMiEmpresa = view.findViewById(R.id.btnMiEmpresa);
+
         mButtonBuenasPracticas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,6 +129,14 @@ public class EstrategiasFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 goToConceptos();
+            }
+        });
+
+        mButtonBuzon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), BuzonActivity.class);
+                startActivity(intent);
             }
         });
         setHasOptionsMenu(true);

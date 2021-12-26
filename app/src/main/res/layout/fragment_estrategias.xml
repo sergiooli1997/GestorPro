@@ -49,6 +49,20 @@ empieza a mejorar tu calidad de trabajo."
                 android:text="Conceptos fundamentales del desarrollo"
                 android:layout_margin="10dp"
                 />
+            <Button
+                android:id="@+id/btnBuzon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Buzon de quejas y felicitaciones"
+                android:layout_margin="10dp"
+                />
+            <Button
+                android:id="@+id/btnMiEmpresa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mi empresa"
+                android:layout_margin="10dp"
+                />
 
             <TextView
                 android:layout_width="match_parent"

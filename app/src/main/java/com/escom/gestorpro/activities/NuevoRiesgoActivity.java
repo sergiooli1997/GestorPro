@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -127,16 +128,52 @@ public class NuevoRiesgoActivity extends AppCompatActivity {
         riesgo.setImpacto(impacto);
         riesgo.setIdProyecto(mExtraProyectoId);
         riesgo.setLink(mtextInputLink.getText().toString());
+        String clasif = calcularClasificacion(probabilidad, impacto);
+        riesgo.setClasificacion(clasif);
         mRiesgosProvider.save(riesgo).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
                     Toast.makeText(NuevoRiesgoActivity.this, "Riesgo registrado", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
                 else{
                     Toast.makeText(NuevoRiesgoActivity.this, "Error", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    private String calcularClasificacion(String probabilidad, String impacto) {
+        switch (probabilidad) {
+            case "Raro":
+                if (impacto.equals("Despreciable") || impacto.equals("Menor")) {
+                    return "Bajo";
+                } else {
+                    return "Medio";
+                }
+            case "Poco probable":
+                if (impacto.equals("Despreciable") || impacto.equals("Menor")) {
+                    return "Bajo";
+                } else if (impacto.equals("Moderado") || impacto.equals("Mayor")) {
+                    return "Medio";
+                } else {
+                    return "Alto";
+                }
+            case "Posible":
+                if (impacto.equals("Despreciable")) {
+                    return "Bajo";
+                } else if (impacto.equals("Menor") || impacto.equals("Moderado")) {
+                    return "Medio";
+                } else {
+                    return "Alto";
+                }
+            default:
+                if (impacto.equals("Despreciable") || impacto.equals("Menor")) {
+                    return "Medio";
+                } else {
+                    return "Alto";
+                }
+        }
     }
 }

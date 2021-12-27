@@ -49,10 +49,10 @@
         <activity android:name=".activities.ChatActivity" />
         <activity
             android:name=".activities.TareaDetailActivity"
-            android:parentActivityName=".activities.MenuActivity" />
+            android:exported="false" />
         <activity
             android:name=".activities.ProyectoDetailActivity"
-            android:parentActivityName=".activities.MenuActivity" />
+            android:exported="false" />
         <activity android:name=".activities.UserProfileActivity" />
         <activity
             android:name=".activities.PostDetailActivity"

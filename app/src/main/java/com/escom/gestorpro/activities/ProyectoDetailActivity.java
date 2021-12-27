@@ -44,7 +44,6 @@ import java.util.concurrent.TimeUnit;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProyectoDetailActivity extends AppCompatActivity {
-    //TODO: boton back no debe regresar a Menu.Activity
     String mExtraProyectoId;
     String mIdUser = "";
     String url = "";
@@ -64,6 +63,7 @@ public class ProyectoDetailActivity extends AppCompatActivity {
     TextView textViewTareas;
     TextView textViewAvance;
     CircleImageView circleImageViewProfile;
+    ImageView mImageViewBack;
     Button btVerPerfil;
     Button btnEliminar;
     Button btnCompletado;
@@ -90,6 +90,7 @@ public class ProyectoDetailActivity extends AppCompatActivity {
         textViewTareas = findViewById(R.id.textViewTareas);
         textViewAvance = findViewById(R.id.textViewAvanceProyecto);
         circleImageViewProfile = findViewById(R.id.circleImageProyectoDetail);
+        mImageViewBack = findViewById(R.id.imageViewBack);
         btVerPerfil = findViewById(R.id.btnVerPerfil);
         btnEliminar = findViewById(R.id.btnEliminar);
         btnCompletado = findViewById(R.id.btnProyectoCompleto);
@@ -99,7 +100,7 @@ public class ProyectoDetailActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mExtraProyectoId = getIntent().getStringExtra("id");
 
         btVerPerfil.setOnClickListener(new View.OnClickListener() {
@@ -151,6 +152,13 @@ public class ProyectoDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 goToEditTarea();
+            }
+        });
+
+        mImageViewBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
 
@@ -417,8 +425,7 @@ public class ProyectoDetailActivity extends AppCompatActivity {
                         mProyectoProvider.deleteUsuarioFromProyecto(idProyecto, idUsuario);
                         Toast.makeText(ProyectoDetailActivity.this, "Abandonaste el proyecto", Toast.LENGTH_LONG).show();
                     }
-                    Intent intent = new Intent(ProyectoDetailActivity.this, MenuActivity.class);
-                    startActivity(intent);
+                    finish();
                 }
             }
         });

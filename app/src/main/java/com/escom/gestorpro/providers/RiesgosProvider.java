@@ -24,6 +24,6 @@ public class RiesgosProvider {
     public Task<Void> delete(String id){return mCollection.document(id).delete();}
 
     public Query getRiesgoByProyecto (String idProyecto, String clasificacion){
-        return mCollection.whereEqualTo("idProyecto", idProyecto).whereEqualTo("clasificacion", clasificacion);
+        return mCollection.whereEqualTo("idProyecto", idProyecto).whereEqualTo("clasificacion", clasificacion).orderBy("nombre");
     }
 }

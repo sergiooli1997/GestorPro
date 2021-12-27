@@ -31,7 +31,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Nuevo proyecto"
+                android:text="Nuevo riesgo"
                 android:textColor="@color/white"
                 android:textAlignment="center"
                 android:textStyle="bold"
@@ -73,7 +73,7 @@
                     android:id="@+id/textInputNombreRiesgo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Ingrese nombre de proyecto"
+                    android:hint="Ingrese nombre de riesgo"
                     android:inputType="text" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -156,7 +156,7 @@
                     android:id="@+id/textInputLink"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Ingrese link de encuesta de satisfaccion"
+                    android:hint="(opcional) Link de archivo para mitigar riesgo"
                     android:inputType="text" />
 
             </com.google.android.material.textfield.TextInputLayout>

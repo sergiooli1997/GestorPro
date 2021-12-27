@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,7 +33,6 @@ import java.util.TimeZone;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-//TODO: boton back no debe regresar a Menu.Activity
 public class TareaDetailActivity extends AppCompatActivity {
     String mExtraTareaId;
     String mIdUser = "";
@@ -53,6 +53,7 @@ public class TareaDetailActivity extends AppCompatActivity {
     TextView textViewRepositorio;
     TextView textViewPrioridad;
     CircleImageView circleImageViewProfile;
+    ImageView mImageViewBack;
     Button btnVerPerfil;
     Button btnVerProyecto;
     Button btnCompletado;
@@ -80,6 +81,7 @@ public class TareaDetailActivity extends AppCompatActivity {
         textViewRepositorio = findViewById(R.id.textViewRepositorio);
         textViewPrioridad = findViewById(R.id.textViewPrioridad);
         circleImageViewProfile = findViewById(R.id.circleImageTareaDetail);
+        mImageViewBack = findViewById(R.id.imageViewBack);
         btnVerPerfil = findViewById(R.id.btnVerPerfil);
         btnVerProyecto = findViewById(R.id.btnVerProyecto);
         btnCompletado = findViewById(R.id.btnCompletado);
@@ -88,8 +90,9 @@ public class TareaDetailActivity extends AppCompatActivity {
         mLinearLayoutEditTarea = findViewById(R.id.linearLayoutEditTarea);
 
         setSupportActionBar(toolbar);
+
         getSupportActionBar().setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mExtraTareaId = getIntent().getStringExtra("id");
 
         btnVerPerfil.setOnClickListener(new View.OnClickListener() {
@@ -124,6 +127,13 @@ public class TareaDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 goToEditTarea();
+            }
+        });
+
+        mImageViewBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
 
@@ -172,8 +182,7 @@ public class TareaDetailActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
                     Toast.makeText(TareaDetailActivity.this, "Se eliminó la tarea", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(TareaDetailActivity.this, MenuActivity.class);
-                    startActivity(intent);
+                    finish();
                 }
                 else{
                     Toast.makeText(TareaDetailActivity.this, "Error", Toast.LENGTH_SHORT).show();

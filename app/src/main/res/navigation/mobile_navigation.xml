@@ -35,7 +35,7 @@
     <fragment
         android:id="@+id/lineaTiempoFragment"
         android:name="com.escom.gestorpro.fragments.LineaTiempoFragment"
-        android:label="Linea de tiempo"
+        android:label="Tareas"
         tools:layout="@layout/fragment_linea_tiempo" />
     <fragment
         android:id="@+id/estrategiasFragment"
@@ -57,4 +57,9 @@
         android:name="com.escom.gestorpro.fragments.ChatsFragment"
         android:label="Mis chats"
         tools:layout="@layout/fragment_chats" />
+    <fragment
+        android:id="@+id/riesgosFragment"
+        android:name="com.escom.gestorpro.fragments.RiesgosFragment"
+        android:label="Riesgos"
+        tools:layout="@layout/fragment_riesgos" />
 </navigation>

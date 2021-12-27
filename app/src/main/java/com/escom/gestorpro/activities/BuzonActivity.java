@@ -1,4 +1,4 @@
-package com.escom.gestorpro;
+package com.escom.gestorpro.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,7 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.escom.gestorpro.activities.PostDetailActivity;
+import com.escom.gestorpro.R;
 import com.escom.gestorpro.models.Buzon;
 import com.escom.gestorpro.providers.AuthProvider;
 import com.escom.gestorpro.providers.BuzonProvider;

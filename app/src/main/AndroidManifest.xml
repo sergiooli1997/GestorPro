@@ -24,7 +24,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GestorPro">
         <activity
-            android:name=".BuzonActivity"
+            android:name=".activities.RiesgoDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.BuzonActivity"
             android:exported="false" />
         <activity
             android:name=".activities.EditProyectoActivity"

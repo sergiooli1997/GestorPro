@@ -29,6 +29,10 @@
             android:icon="@drawable/ic_clientes"
             android:title="Chats" />
         <item
+            android:id="@+id/riesgosFragment"
+            android:icon="@drawable/ic_baseline_assessment"
+            android:title="Riesgos"/>
+        <item
             android:id="@+id/estrategiasFragment"
             android:icon="@drawable/ic_estrategias"
             android:title="Estrategias" />

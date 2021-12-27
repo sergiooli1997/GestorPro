@@ -1,9 +1,6 @@
 package com.escom.gestorpro.fragments;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,27 +11,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
-import com.escom.gestorpro.BuzonActivity;
+import com.escom.gestorpro.activities.BuzonActivity;
 import com.escom.gestorpro.activities.ConceptosActivity;
 import com.escom.gestorpro.activities.DatosAnalisisActivity;
 import com.escom.gestorpro.R;
 import com.escom.gestorpro.activities.BuenasPracticasActivity;
 import com.escom.gestorpro.activities.EstrategiasActivity;
 import com.escom.gestorpro.activities.MainActivity;
-import com.escom.gestorpro.activities.PostDetailActivity;
-import com.escom.gestorpro.models.Buzon;
 import com.escom.gestorpro.providers.AuthProvider;
-import com.escom.gestorpro.providers.BuzonProvider;
-import com.escom.gestorpro.providers.UserProvider;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 
 /**
  * A simple {@link Fragment} subclass.

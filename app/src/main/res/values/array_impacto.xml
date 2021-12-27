@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="impacto">
+        <item>Seleccione impacto</item>
+        <item>Despreciable</item>
+        <item>Menor</item>
+        <item>Moderado</item>
+        <item>Mayor</item>
+        <item>Catastrófico</item>
+    </string-array>
+</resources>

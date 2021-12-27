@@ -67,7 +67,7 @@ public class RiesgosAdapter extends FirestoreRecyclerAdapter<Proyecto, RiesgosAd
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, RiesgoDetailActivity.class);
-                intent.putExtra("id", proyectoId);
+                intent.putExtra("idProyecto", proyectoId);
                 context.startActivity(intent);
             }
         });

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="probabilidad">
+        <item>Seleccione probabilidad</item>
+        <item>Raro</item>
+        <item>Poco probable</item>
+        <item>Posible</item>
+        <item>Muy probable</item>
+        <item>Casi seguro</item>
+    </string-array>
+</resources>

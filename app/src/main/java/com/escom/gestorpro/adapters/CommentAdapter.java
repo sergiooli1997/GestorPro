@@ -86,6 +86,9 @@ public class CommentAdapter extends FirestoreRecyclerAdapter<Comment, CommentAda
                 if (task.isSuccessful()){
                     Toast.makeText(context, "Comentario eliminado", Toast.LENGTH_SHORT).show();
                 }
+                else{
+                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

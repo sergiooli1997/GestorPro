@@ -92,7 +92,6 @@ public class RiesgosFragment extends Fragment {
         mAuthProvider = new AuthProvider();
         mUserProvider = new UserProvider();
 
-        FloatingActionButton fab = vista.findViewById(R.id.newRiesgo);
         mDialog = new SpotsDialog.Builder()
                 .setContext(getActivity())
                 .setMessage("Espere un momento")
@@ -106,18 +105,7 @@ public class RiesgosFragment extends Fragment {
         mRecyclerProyectos.setLayoutManager(linearLayoutManager);
 
         setHasOptionsMenu(true);
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToRiesgos();
-            }
-        });
-
         return vista;
-    }
-
-    private void goToRiesgos() {
     }
 
     @Override
@@ -161,7 +149,6 @@ public class RiesgosFragment extends Fragment {
             logout();
         }
         return super.onOptionsItemSelected(item);
-
     }
 
     private void logout() {

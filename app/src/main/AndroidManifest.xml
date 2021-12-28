@@ -24,6 +24,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GestorPro">
         <activity
+            android:name=".activities.NuevoArchivoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.MiEmpresaDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.MiEmpresaActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.NuevoRiesgoActivity"
             android:exported="false" />
         <activity

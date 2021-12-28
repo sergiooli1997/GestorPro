@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.escom.gestorpro.R;
+import com.escom.gestorpro.models.Archivo;
 import com.escom.gestorpro.models.Riesgo;
-import com.escom.gestorpro.providers.RiesgosProvider;
+import com.escom.gestorpro.providers.ArchivosProvider;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,40 +26,27 @@ import com.google.android.gms.tasks.Task;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class RiesgoAdapter extends FirestoreRecyclerAdapter<Riesgo, RiesgoAdapter.ViewHolder>{
+public class ArchivosAdapter extends FirestoreRecyclerAdapter<Archivo, ArchivosAdapter.ViewHolder>{
     Context context;
-    RiesgosProvider mRiesgosProvider;
+    ArchivosProvider mArchivosProvider;
 
-    public RiesgoAdapter(FirestoreRecyclerOptions<Riesgo> options, Context context){
+    public ArchivosAdapter(FirestoreRecyclerOptions<Archivo> options, Context context){
         super(options);
         this.context = context;
-        mRiesgosProvider = new RiesgosProvider();
+        mArchivosProvider = new ArchivosProvider();
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull final ViewHolder holder, int position, @NonNull final Riesgo riesgo) {
-        String probabilidad = riesgo.getProbabilidad();
-        String impacto = riesgo.getImpacto();
-        String clasificacion = riesgo.getClasificacion();
-        String nombre = riesgo.getNombre();
-        String link = riesgo.getLink();
-        String id = riesgo.getId();
+    protected void onBindViewHolder(@NonNull final ViewHolder holder, int position, @NonNull final Archivo archivo) {
+        String nombre = archivo.getNombre();
+        String descripcion = archivo.getDescripcion();
+        String link = archivo.getLink();
+        String id = archivo.getId();
 
-        holder.textViewProbabilidad.setText(probabilidad);
-        holder.textViewImpacto.setText(impacto);
         holder.textViewNombre.setText(nombre);
+        holder.textViewDescripcion.setText(descripcion);
 
-        if (clasificacion.equals("Alto")){
-            holder.viewColor.setBackgroundColor(Color.RED);
-        }
-        else if (clasificacion.equals("Medio")){
-            holder.viewColor.setBackgroundColor(Color.YELLOW);
-        }
-        else{
-            holder.viewColor.setBackgroundColor(Color.GREEN);
-        }
-
-        holder.linearLayoutRiesgo.setOnClickListener(new View.OnClickListener() {
+        holder.linearLayoutArchivo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!link.isEmpty() && link!=null){
@@ -69,7 +56,6 @@ public class RiesgoAdapter extends FirestoreRecyclerAdapter<Riesgo, RiesgoAdapte
                 }
             }
         });
-
         holder.circleImageDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,24 +67,24 @@ public class RiesgoAdapter extends FirestoreRecyclerAdapter<Riesgo, RiesgoAdapte
     private void showConfirmDelete(String id) {
         new AlertDialog.Builder(context)
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Eliminar riesgo")
+                .setTitle("Eliminar archivo")
                 .setMessage("¿Estas seguro de realizar esta acción?")
                 .setPositiveButton("SI", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        deleteRiesgo(id);
+                        deleteArchivo(id);
                     }
                 })
                 .setNegativeButton("NO", null)
                 .show();
     }
 
-    private void deleteRiesgo(String id) {
-        mRiesgosProvider.delete(id).addOnCompleteListener(new OnCompleteListener<Void>() {
+    private void deleteArchivo(String id) {
+        mArchivosProvider.deleteArchivo(id).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
-                    Toast.makeText(context, "Riesgo eliminado", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Archivo eliminado", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
@@ -110,28 +96,24 @@ public class RiesgoAdapter extends FirestoreRecyclerAdapter<Riesgo, RiesgoAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_riesgo, parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_archivo, parent,false);
         return new ViewHolder(view);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        View viewColor;
         TextView textViewNombre;
-        TextView textViewProbabilidad;
-        TextView textViewImpacto;
+        TextView textViewDescripcion;
         CircleImageView circleImageDelete;
-        LinearLayout linearLayoutRiesgo;
+        LinearLayout linearLayoutArchivo;
         View viewHolder;
 
         public ViewHolder(View view){
             super(view);
 
-            textViewProbabilidad = view.findViewById(R.id.textViewProbabilidad);
-            textViewImpacto = view.findViewById(R.id.textViewImpacto);
             textViewNombre = view.findViewById(R.id.textViewNombre);
+            textViewDescripcion = view.findViewById(R.id.textViewDescripcion);
+            linearLayoutArchivo = view.findViewById(R.id.linearLayoutEmpresa);
             circleImageDelete = view.findViewById(R.id.circleImageDelete);
-            linearLayoutRiesgo = view.findViewById(R.id.linearLayoutRiesgo);
-            viewColor = view.findViewById(R.id.viewColor);
 
             viewHolder = view;
         }

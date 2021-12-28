@@ -25,6 +25,7 @@
             app:cardCornerRadius="10dp"
             android:layout_weight="1"
             android:layout_marginLeft="10dp"
+            android:layout_marginRight="30dp"
             android:layout_marginTop="15dp">
 
             <LinearLayout
@@ -74,6 +75,12 @@
 
     </LinearLayout>
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleImageDelete"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_cancel"
+        android:layout_gravity="right"/>
 
 
 </FrameLayout>

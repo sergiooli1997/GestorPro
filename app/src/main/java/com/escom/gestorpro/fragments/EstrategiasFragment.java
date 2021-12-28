@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.escom.gestorpro.activities.MiEmpresaActivity;
 import com.escom.gestorpro.activities.BuzonActivity;
 import com.escom.gestorpro.activities.ConceptosActivity;
 import com.escom.gestorpro.activities.DatosAnalisisActivity;
@@ -121,6 +122,13 @@ public class EstrategiasFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), BuzonActivity.class);
+                startActivity(intent);
+            }
+        });
+        mButtonMiEmpresa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MiEmpresaActivity.class);
                 startActivity(intent);
             }
         });

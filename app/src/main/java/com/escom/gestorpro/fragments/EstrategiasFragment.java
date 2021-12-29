@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.escom.gestorpro.activities.EstimacionActivity;
 import com.escom.gestorpro.activities.MiEmpresaActivity;
 import com.escom.gestorpro.activities.BuzonActivity;
 import com.escom.gestorpro.activities.ConceptosActivity;
@@ -42,6 +43,7 @@ public class EstrategiasFragment extends Fragment {
     Button mButtonAnalisisDatos;
     Button mButtonBuzon;
     Button mButtonMiEmpresa;
+    Button mButtonEstimacion;
 
     AuthProvider mAuthProvider;
 
@@ -89,6 +91,7 @@ public class EstrategiasFragment extends Fragment {
         mButtonConceptos = view.findViewById(R.id.btnConceptosFund);
         mButtonBuzon = view.findViewById(R.id.btnBuzon);
         mButtonMiEmpresa = view.findViewById(R.id.btnMiEmpresa);
+        mButtonEstimacion = view.findViewById(R.id.btnEstimacionCosto);
 
         mButtonBuenasPracticas.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,6 +132,13 @@ public class EstrategiasFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MiEmpresaActivity.class);
+                startActivity(intent);
+            }
+        });
+        mButtonEstimacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), EstimacionActivity.class);
                 startActivity(intent);
             }
         });

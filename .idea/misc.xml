@@ -12,10 +12,13 @@
         <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/activity_edit_profile.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/activity_edit_proyecto.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/activity_edit_tarea.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/activity_estimacion.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/activity_estimacion_detail.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/activity_estrategias.xml" value="0.18478260869565216" />
         <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/activity_mi_empresa.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/activity_mi_empresa_detail.xml" value="0.19010416666666666" />
+        <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/activity_nueva_estimacion.xml" value="0.25" />
         <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/activity_nueva_tarea.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/activity_nuevo_archivo.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/activity_nuevo_post.xml" value="0.20416666666666666" />
@@ -30,6 +33,7 @@
         <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/cardview_archivo.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/cardview_chat.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/cardview_comment.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/cardview_estimacion.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/cardview_my_post.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/cardview_proyecto.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/giolo/StudioProjects/GestorPro/app/src/main/res/layout/cardview_responsables.xml" value="0.20416666666666666" />

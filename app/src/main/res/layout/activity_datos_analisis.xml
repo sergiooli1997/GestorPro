@@ -23,7 +23,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Selecciona el proyecto a analizar"
+                android:text="Selecciona el proyecto a gráficar"
                 android:textColor="@color/white"
                 android:textSize="22sp"
                 android:layout_marginRight="40dp"
@@ -57,7 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginLeft="20dp"
-                    android:text="Analizar datos"
+                    android:text="Gráficas"
                     />
 
             </LinearLayout>
@@ -159,7 +159,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginRight="30dp"
-                android:text="Presione Analizar datos para conocer la clasificación y visualizar gráficas"
+                android:text="Presione Graficas para visualizar las gráficas"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="25sp"

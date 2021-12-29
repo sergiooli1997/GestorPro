@@ -24,6 +24,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GestorPro">
         <activity
+            android:name=".activities.NuevaEstimacionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.EstimacionDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.EstimacionActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.NuevoArchivoActivity"
             android:exported="false" />
         <activity

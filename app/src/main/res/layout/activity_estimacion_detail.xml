@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.EstimacionDetailActivity"
+    android:background="@drawable/background">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="@color/white"
+        android:gravity="right"
+        android:textSize="30sp"
+        android:layout_margin="20dp"
+        android:text="Detalles de estimación"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="50dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/white"
+                android:gravity="left"
+                android:textSize="25sp"
+                android:layout_margin="20dp"
+                android:text="Sumatoria de los factores de escala"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="SF = "/>
+
+                <TextView
+                    android:id="@+id/textViewPREC"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="PREC + "/>
+
+                <TextView
+                    android:id="@+id/textViewFLEX"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="FLEX + "/>
+
+                <TextView
+                    android:id="@+id/textViewRESL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="RESL + "/>
+
+                <TextView
+                    android:id="@+id/textViewTEAM"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="TEAM + "/>
+
+                <TextView
+                    android:id="@+id/textViewPMAT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="PMAT"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="SF = "/>
+
+                <TextView
+                    android:id="@+id/textViewSF"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="SF"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/white"
+                android:gravity="left"
+                android:textSize="25sp"
+                android:layout_margin="20dp"
+                android:text="Se obtiene E"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="E = "/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="0.91 + (0.01 x SF)"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="E = "/>
+
+                <TextView
+                    android:id="@+id/textViewE"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="E"/>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/white"
+                android:gravity="left"
+                android:textSize="25sp"
+                android:layout_margin="20dp"
+                android:text="Se obtiene el esfuerzo"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="PM = "/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="2.94 x ("/>
+
+                <TextView
+                    android:id="@+id/textViewSize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="SIZE"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text=")^E"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="PM = "/>
+
+                <TextView
+                    android:id="@+id/textViewPM"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="PM"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/white"
+                android:gravity="left"
+                android:textSize="25sp"
+                android:layout_margin="20dp"
+                android:text="Se obtiene F"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="F = "/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="0.28 + 0.2 x 0.01 x SF"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="F = "/>
+
+                <TextView
+                    android:id="@+id/textViewF"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="F"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/white"
+                android:gravity="left"
+                android:textSize="25sp"
+                android:layout_margin="20dp"
+                android:text="Se obtiene Tiempo de desarrollo"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="TDEV = "/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="3.67 x (PM)^F"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="TDEV = "/>
+
+                <TextView
+                    android:id="@+id/textViewTDEV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="TDEV"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/white"
+                android:gravity="left"
+                android:textSize="25sp"
+                android:layout_margin="20dp"
+                android:text="Se obtiene el costo"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="COSTO = "/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="PM x TDEV x "/>
+
+                <TextView
+                    android:id="@+id/textViewSalario"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="SALARIO"/>
+
+                <TextView
+                    android:id="@+id/textViewOtrosGastos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="+ OTROS GASTOS"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="COSTO = "/>
+
+                <TextView
+                    android:id="@+id/textViewCosto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="left"
+                    android:textSize="20sp"
+                    android:text="COSTO"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <ImageView
+        android:id="@+id/imageViewBack"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_arrow_left"
+        android:layout_marginTop="7dp"
+        android:layout_marginLeft="15dp"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

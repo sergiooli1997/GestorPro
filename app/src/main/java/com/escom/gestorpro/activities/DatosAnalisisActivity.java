@@ -215,7 +215,6 @@ public class DatosAnalisisActivity extends AppCompatActivity {
                 clasificacion = "No productivo";
             }
         }
-        mTextClasificacion.setText("Clasficación: " + clasificacion);
 
         crearGraficoRetraso(retraso);
         crearGraficoCompletas(completo);

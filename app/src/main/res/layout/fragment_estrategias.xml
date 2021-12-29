@@ -67,7 +67,7 @@ empieza a mejorar tu calidad de trabajo."
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Selecciona esta opción para realizar un análisis del proyecto"
+                android:text="Selecciona una opción para realizar un análisis del proyecto"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:gravity="center"
@@ -77,7 +77,15 @@ empieza a mejorar tu calidad de trabajo."
                 android:id="@+id/btnAnalisisDatos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Análisis de datos"
+                android:text="Gráficas de proyecto"
+                android:layout_margin="10dp"
+                />
+
+            <Button
+                android:id="@+id/btnEstimacionCosto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Estimación de costo"
                 android:layout_margin="10dp"
                 />
         </LinearLayout>

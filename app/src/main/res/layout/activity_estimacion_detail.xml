@@ -7,15 +7,6 @@
     tools:context=".activities.EstimacionDetailActivity"
     android:background="@drawable/background">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textColor="@color/white"
-        android:gravity="right"
-        android:textSize="30sp"
-        android:layout_margin="20dp"
-        android:text="Detalles de estimación"/>
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -25,7 +16,18 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginTop="50dp"
-            android:layout_marginBottom="50dp">
+            android:layout_marginBottom="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/white"
+                android:gravity="right"
+                android:textSize="30sp"
+                android:layout_margin="20dp"
+                android:text="Detalles de estimación"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -40,6 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+
                 android:layout_margin="5dp">
 
                 <TextView
@@ -402,7 +405,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
                     android:gravity="left"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:text="PM x TDEV x "/>
 
                 <TextView
@@ -411,16 +414,16 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
                     android:gravity="left"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:text="SALARIO"/>
 
                 <TextView
                     android:id="@+id/textViewOtrosGastos"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:textColor="@color/white"
                     android:gravity="left"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:text="+ OTROS GASTOS"/>
 
             </LinearLayout>

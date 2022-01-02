@@ -1,6 +1,7 @@
 package com.escom.gestorpro.fragments;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,11 +16,8 @@ import android.widget.Button;
 import com.escom.gestorpro.activities.EstimacionActivity;
 import com.escom.gestorpro.activities.MiEmpresaActivity;
 import com.escom.gestorpro.activities.BuzonActivity;
-import com.escom.gestorpro.activities.ConceptosActivity;
 import com.escom.gestorpro.activities.DatosAnalisisActivity;
 import com.escom.gestorpro.R;
-import com.escom.gestorpro.activities.BuenasPracticasActivity;
-import com.escom.gestorpro.activities.EstrategiasActivity;
 import com.escom.gestorpro.activities.MainActivity;
 import com.escom.gestorpro.providers.AuthProvider;
 
@@ -148,12 +146,16 @@ public class EstrategiasFragment extends Fragment {
     }
 
     private void goToConceptos() {
-        Intent intent = new Intent(getActivity(), ConceptosActivity.class);
+        String link = "https://www.chaparral-tolima.gov.co/NuestraAlcaldia/SaladePrensa/PublishingImages/Paginas/autocapacitaciones-talento-humano-tic-gel-alcaldia-chaparral-tolima/material%202%20Hardware%20y%20Software.pdf";
+        Uri uri = Uri.parse(link);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);
     }
 
     private void goToEstrategias() {
-        Intent intent = new Intent(getActivity(), EstrategiasActivity.class);
+        String link = "http://ipneconomybook.herokuapp.com/contenidos/u2";
+        Uri uri = Uri.parse(link);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);
     }
 
@@ -163,7 +165,9 @@ public class EstrategiasFragment extends Fragment {
     }
 
     private void goToBuenasPracticas() {
-        Intent intent = new Intent(getActivity(), BuenasPracticasActivity.class);
+        String link = "https://samuelcasanova.com/2016/09/resumen-clean-code/";
+        Uri uri = Uri.parse(link);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);
     }
 

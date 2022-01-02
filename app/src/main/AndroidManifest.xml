@@ -56,14 +56,7 @@
         <activity
             android:name=".activities.EditTareaActivity"
             android:exported="false" />
-        <activity
-            android:name=".activities.ConceptosActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.EstrategiasActivity"
-            android:exported="false" />
         <activity android:name=".activities.DatosAnalisisActivity" />
-        <activity android:name=".activities.BuenasPracticasActivity" />
         <activity android:name=".activities.ChatActivity" />
         <activity
             android:name=".activities.TareaDetailActivity"

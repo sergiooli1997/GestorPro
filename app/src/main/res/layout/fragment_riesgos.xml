@@ -6,32 +6,55 @@
     tools:context=".fragments.RiesgosFragment"
     android:background="@drawable/background">
 
-    <TextView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:text="Riesgos del proyecto"
-        android:textSize="30sp"
-        android:textColor="@color/white"
-        android:gravity="right"/>
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:text="En esta sección podrás identificar los riesgos de tus proyectos"
-        android:textSize="22sp"
-        android:textColor="@color/white"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/RecyclerViewProyectos"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="150dp"
-        android:layout_marginLeft="10dp"
-        android:layout_weight=".3"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="Riesgos del proyecto"
+                android:textSize="30sp"
+                android:textColor="@color/white"
+                android:gravity="right"/>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:text="En esta sección podrás identificar los riesgos de tus proyectos"
+                android:textSize="22sp"
+                android:textColor="@color/white"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/RecyclerViewProyectos"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="50dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight=".3"/>
+
+            <Button
+                android:id="@+id/btnRiesgosLink"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Aprende más sobre Riesgos"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </FrameLayout>

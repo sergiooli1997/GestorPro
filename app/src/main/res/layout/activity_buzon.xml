@@ -7,67 +7,75 @@
     android:layout_height="match_parent"
     tools:context=".activities.BuzonActivity"
     android:background="@drawable/background">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:layout_margin="20dp"
-        android:textAlignment="center"
-        android:text="Aquí podrás acceder a los buzones de quejas y felicitaciones de tus proyectos"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="80dp">
+        android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_folder"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="5dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:layout_margin="25dp"
+            android:textAlignment="center"
+            android:text="Aquí podrás acceder a los buzones de quejas y felicitaciones de tus proyectos"/>
 
-        <Spinner
-            android:id="@+id/spinnerProyecto"
-            android:layout_width="270dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="20dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_folder"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="5dp"/>
+
+            <Spinner
+                android:id="@+id/spinnerProyecto"
+                android:layout_width="270dp"
+                android:layout_height="60dp"
+                android:background="#AAAAAAAA"
+                />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnAsignar"
+            android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="#AAAAAAAA"
+            android:layout_marginTop="50dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:text="Asignar link"
+            />
+
+        <Button
+            android:id="@+id/btnModificar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:text="Eliminar link"
+            />
+        <Button
+            android:id="@+id/btnConsultar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:text="Abrir link"
             />
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/btnAsignar"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="180dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
-        android:text="Asignar link"
-        />
-
-    <Button
-        android:id="@+id/btnModificar"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="260dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
-        android:text="Eliminar link"
-        />
-    <Button
-        android:id="@+id/btnConsultar"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="340dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
-        android:text="Abrir link"
-        />
 
     <ImageView
         android:id="@+id/imageViewBack"

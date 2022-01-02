@@ -7,10 +7,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
@@ -52,6 +54,7 @@ public class EstimacionActivity extends AppCompatActivity {
     FloatingActionButton fab;
     RecyclerView mRecyclerEstimacion;
     Spinner spinnerProyecto;
+    Button btnCocomo;
     AlertDialog mDialog;
     ImageView mImageViewBack;
 
@@ -70,6 +73,7 @@ public class EstimacionActivity extends AppCompatActivity {
         mRecyclerEstimacion.setLayoutManager(linearLayoutManager);
 
         fab = findViewById(R.id.newEstimacion);
+        btnCocomo = findViewById(R.id.btnCocomo);
 
         spinnerProyecto = (Spinner)findViewById(R.id.spinnerProyectoEstimacion);
         adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, proyectos);
@@ -112,6 +116,16 @@ public class EstimacionActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        btnCocomo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String link = "https://blogadmi23.files.wordpress.com/2009/11/expococomofinal.pdf";
+                Uri uri = Uri.parse(link);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
             }
         });
 

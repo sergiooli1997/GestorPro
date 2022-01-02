@@ -2,6 +2,7 @@ package com.escom.gestorpro.fragments;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.escom.gestorpro.R;
 import com.escom.gestorpro.activities.MainActivity;
@@ -52,6 +54,7 @@ public class RiesgosFragment extends Fragment {
 
     RecyclerView mRecyclerProyectos;
     AlertDialog mDialog;
+    Button btnRiesgos;
 
     public RiesgosFragment() {
         // Required empty public constructor
@@ -99,6 +102,18 @@ public class RiesgosFragment extends Fragment {
                 .build();
 
         mDialog.show();
+
+        btnRiesgos = vista.findViewById(R.id.btnRiesgosLink);
+
+        btnRiesgos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String link = "https://blogs.portafolio.co/buenas-practicas-de-auditoria-y-control-interno-en-las-organizaciones/disenar-una-matriz-riesgos/";
+                Uri uri = Uri.parse(link);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
 
         mRecyclerProyectos =  vista.findViewById(R.id.RecyclerViewProyectos);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());

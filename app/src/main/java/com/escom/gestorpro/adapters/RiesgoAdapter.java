@@ -98,7 +98,7 @@ public class RiesgoAdapter extends FirestoreRecyclerAdapter<Riesgo, RiesgoAdapte
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
-                    Toast.makeText(context, "Riesgo eliminado", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Riesgo eliminado", Toast.LENGTH_LONG).show();
                 }
                 else{
                     Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();

@@ -201,10 +201,18 @@ public class NuevaEstimacionActivity extends AppCompatActivity {
         estimacion.setNombre(textInputNombre.getText().toString());
         estimacion.setIdProyecto(mExtraProyectoId);
         double size_valor = Double.parseDouble(textInputSize.getText().toString());
+        size_valor = size_valor/1000;
         estimacion.setSize(size_valor);
         double salario_valor = Double.parseDouble(textInputSalario.getText().toString());
         estimacion.setSalario(salario_valor);
-        double otros_gastos_valor = Double.parseDouble(textInputOtrosGastos.getText().toString());
+        String otros_gastos_texto = textInputOtrosGastos.getText().toString();
+        double otros_gastos_valor;
+        if (otros_gastos_texto.equals("") || otros_gastos_texto==null){
+            otros_gastos_valor = 0;
+        }
+        else{
+            otros_gastos_valor = Double.parseDouble(textInputOtrosGastos.getText().toString());
+        }
         estimacion.setOtrosGastos(otros_gastos_valor);
         double prec_valor = calcularPrec(prec);
         double flex_valor = calcularFlex(flex);

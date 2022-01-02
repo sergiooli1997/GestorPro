@@ -59,6 +59,24 @@
                 android:layout_marginTop="50dp"
                 android:layout_weight=".3" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Las estimaciones se hacen usando el método COCOMO II"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:layout_marginTop="50dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"/>
+
+            <Button
+                android:id="@+id/btnCocomo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Conoce más sobre COCOMO II"
+                android:layout_margin="20dp"/>
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

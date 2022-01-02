@@ -17,6 +17,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.DecimalFormat;
+
 import dmax.dialog.SpotsDialog;
 
 public class EstimacionDetailActivity extends AppCompatActivity {
@@ -87,33 +89,38 @@ public class EstimacionDetailActivity extends AppCompatActivity {
                 if (task.isSuccessful()){
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         double prec_valor = document.getDouble("prec");
-                        textViewPREC.setText(String.valueOf(prec_valor) + " + ");
+                        textViewPREC.setText(new DecimalFormat("0.00").format(prec_valor) + " + ");
                         double flex_valor = document.getDouble("flex");
-                        textViewFLEX.setText(String.valueOf(flex_valor) + " + ");
+                        textViewFLEX.setText(new DecimalFormat("0.00").format(flex_valor) + " + ");
                         double resl_valor = document.getDouble("resl");
-                        textViewRESL.setText(String.valueOf(resl_valor) + " + ");
+                        textViewRESL.setText(new DecimalFormat("0.00").format(resl_valor) + " + ");
                         double team_valor = document.getDouble("team");
-                        textViewTEAM.setText(String.valueOf(team_valor) + " + ");
+                        textViewTEAM.setText(new DecimalFormat("0.00").format(team_valor) + " + ");
                         double pmat_valor = document.getDouble("pmat");
-                        textViewPMAT.setText(String.valueOf(pmat_valor));
+                        textViewPMAT.setText(new DecimalFormat("0.00").format(pmat_valor));
                         double sf_valor = document.getDouble("sf");
-                        textViewSF.setText(String.valueOf(sf_valor));
+                        textViewSF.setText(new DecimalFormat("0.00").format(sf_valor));
                         double e_valor = document.getDouble("e");
-                        textViewE.setText(String.valueOf(e_valor));
+                        textViewE.setText(new DecimalFormat("0.00").format(e_valor));
                         double size_valor = document.getDouble("size");
-                        textViewSize.setText(String.valueOf(size_valor));
+                        textViewSize.setText(new DecimalFormat("0.00").format(size_valor));
                         double pm_valor = document.getDouble("pm");
-                        textViewPM.setText(String.valueOf(pm_valor));
+                        textViewPM.setText(new DecimalFormat("0.00").format(pm_valor));
                         double f_valor = document.getDouble("f");
-                        textViewF.setText(String.valueOf(f_valor));
+                        textViewF.setText(new DecimalFormat("0.00").format(f_valor));
                         double tdev_valor = document.getDouble("tdev");
-                        textViewTDEV.setText(String.valueOf(tdev_valor));
+                        textViewTDEV.setText(new DecimalFormat("0.00").format(tdev_valor));
                         double salario_valor = document.getDouble("salario");
-                        textViewSalario.setText(String.valueOf(salario_valor));
+                        textViewSalario.setText(new DecimalFormat("0,000.00").format(salario_valor));
                         double otros_gastos_valor = document.getDouble("otrosGastos");
-                        textViewOtrosGastos.setText("+ " + String.valueOf(otros_gastos_valor));
+                        textViewOtrosGastos.setText(" + " + new DecimalFormat("0.00").format(otros_gastos_valor));
                         double costo_valor = document.getDouble("costo");
-                        textViewCosto.setText(String.valueOf(costo_valor));
+                        if (costo_valor<1000000){
+                            textViewCosto.setText(new DecimalFormat("0,000.00").format(costo_valor));
+                        }
+                        else{
+                            textViewCosto.setText(new DecimalFormat("0,000,000.00").format(costo_valor));
+                        }
                     }
                 }
             }

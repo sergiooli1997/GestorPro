@@ -116,10 +116,10 @@ public class EstimacionDetailActivity extends AppCompatActivity {
                         textViewOtrosGastos.setText(" + " + new DecimalFormat("0.00").format(otros_gastos_valor));
                         double costo_valor = document.getDouble("costo");
                         if (costo_valor<1000000){
-                            textViewCosto.setText(new DecimalFormat("0,000.00").format(costo_valor));
+                            textViewCosto.setText("$ " + new DecimalFormat("0,000.00").format(costo_valor));
                         }
                         else{
-                            textViewCosto.setText(new DecimalFormat("0,000,000.00").format(costo_valor));
+                            textViewCosto.setText("$ " + new DecimalFormat("0,000,000.00").format(costo_valor));
                         }
                     }
                 }

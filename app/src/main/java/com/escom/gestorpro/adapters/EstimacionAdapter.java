@@ -47,10 +47,10 @@ public class EstimacionAdapter extends FirestoreRecyclerAdapter<Estimacion, Esti
 
         holder.textViewNombre.setText(nombre);
         if (costo < 1000000){
-            holder.textViewCosto.setText(new DecimalFormat("0,000.00").format(costo));
+            holder.textViewCosto.setText("$ "+ new DecimalFormat("0,000.00").format(costo));
         }
         else{
-            holder.textViewCosto.setText(new DecimalFormat("0,000,000.00").format(costo));
+            holder.textViewCosto.setText("$ " + new DecimalFormat("0,000,000.00").format(costo));
         }
         holder.linearLayoutEstimacion.setOnClickListener(new View.OnClickListener() {
             @Override

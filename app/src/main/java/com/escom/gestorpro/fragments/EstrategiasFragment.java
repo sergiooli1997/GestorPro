@@ -42,6 +42,7 @@ public class EstrategiasFragment extends Fragment {
     Button mButtonBuzon;
     Button mButtonMiEmpresa;
     Button mButtonEstimacion;
+    Button mButtonISO;
 
     AuthProvider mAuthProvider;
 
@@ -90,6 +91,7 @@ public class EstrategiasFragment extends Fragment {
         mButtonBuzon = view.findViewById(R.id.btnBuzon);
         mButtonMiEmpresa = view.findViewById(R.id.btnMiEmpresa);
         mButtonEstimacion = view.findViewById(R.id.btnEstimacionCosto);
+        mButtonISO = view.findViewById(R.id.btnISO);
 
         mButtonBuenasPracticas.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,9 +142,23 @@ public class EstrategiasFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        mButtonISO.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToISO();
+            }
+        });
         setHasOptionsMenu(true);
 
         return view;
+    }
+
+    private void goToISO() {
+        String link = "https://www.iso.org/obp/ui/#iso:std:iso:9001:ed-5:v1:es";
+        Uri uri = Uri.parse(link);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
     }
 
     private void goToConceptos() {

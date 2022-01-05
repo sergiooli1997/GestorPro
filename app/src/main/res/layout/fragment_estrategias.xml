@@ -64,6 +64,14 @@ empieza a mejorar tu calidad de trabajo."
                 android:layout_margin="10dp"
                 />
 
+            <Button
+                android:id="@+id/btnISO"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Conoce más sobre ISO 9001"
+                android:layout_margin="10dp"
+                />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -34,6 +34,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -278,7 +279,7 @@ public class ProyectoDetailActivity extends AppCompatActivity {
                     int tareas_completadas = queryDocumentSnapshots.size();
                     if (total_tareas != 0){
                         double avance = (tareas_completadas*100.00)/total_tareas;
-                        textViewAvance.setText(avance + "% de avance");
+                        textViewAvance.setText(new DecimalFormat("0.00").format(avance) + "% de avance");
                     }
                     else{
                         textViewAvance.setText("No hay tareas para calcular avance");

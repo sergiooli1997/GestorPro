@@ -30,7 +30,7 @@
     <fragment
         android:id="@+id/responsablesFragment"
         android:name="com.escom.gestorpro.fragments.ResponsablesFragment"
-        android:label="Miembros del equipo"
+        android:label="Miembros de proyectos"
         tools:layout="@layout/fragment_responsables" />
     <fragment
         android:id="@+id/lineaTiempoFragment"

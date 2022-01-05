@@ -67,22 +67,29 @@ public class TareaProvider {
         return mCollection.whereEqualTo("idProyecto", idProyecto).whereEqualTo("completado", value);
     }
 
-    public Query getTareaCompletoByValorAllUser (List<String> proyectos, int value){
-        return mCollection.whereIn("idProyecto", proyectos).whereEqualTo("completado", value);
+    public Query getTareasIncompletasByValorAllUser (List<String> proyectos){
+        return mCollection.whereIn("idProyecto", proyectos).whereEqualTo("retraso", 0).whereEqualTo("completado", 0);
     }
-    public Query getTareaCompletoByValorByUser (String idUser, int value){
-        return mCollection.whereEqualTo("idUsuario", idUser).whereEqualTo("completado", value);
+    public Query getTareasCompletasByValorAllUser (List<String> proyectos){
+        return mCollection.whereIn("idProyecto", proyectos).whereEqualTo("completado", 1);
+    }
+    public Query getTareaIcompletoByValorByUser (String idUser){
+        return mCollection.whereEqualTo("idUsuario", idUser).whereEqualTo("retraso", 0).whereEqualTo("completado", 0);
     }
 
-    public Query getTareaRetrasoAllUser (List<String> proyectos, int value){
-        return mCollection.whereIn("idProyecto", proyectos).whereEqualTo("retraso", value);
+    public Query getTareaCompletoByValorByUser (String idUser){
+        return mCollection.whereEqualTo("idUsuario", idUser).whereEqualTo("completado", 1);
     }
-    public Query getTareaRetrasoByUser (String idUser, int value){
-        return mCollection.whereEqualTo("idUsuario", idUser).whereEqualTo("retraso", value);
+
+    public Query getTareaRetrasoAllUser (List<String> proyectos){
+        return mCollection.whereIn("idProyecto", proyectos).whereEqualTo("retraso", 1).whereEqualTo("completado", 0);
+    }
+    public Query getTareaRetrasoByUser (String idUser){
+        return mCollection.whereEqualTo("idUsuario", idUser).whereEqualTo("retraso", 1).whereEqualTo("completado", 0);
     }
 
     public Query getTareasConRetraso (String idProyecto){
-        return mCollection.whereEqualTo("idProyecto", idProyecto).whereEqualTo("retraso", 1);
+        return mCollection.whereEqualTo("idProyecto", idProyecto).whereEqualTo("retraso", 1).whereEqualTo("completado", 0);
     }
 
     public Query getTareasRepoVacio (String idProyecto){

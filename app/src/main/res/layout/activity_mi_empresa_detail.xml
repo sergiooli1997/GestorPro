@@ -23,7 +23,7 @@
                 android:gravity="right"
                 android:textSize="30sp"
                 android:layout_margin="20dp"
-                android:text="Archivos de la empresa"/>
+                android:text="Comunicados de la empresa"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/RecyclerViewArchivos"

@@ -23,6 +23,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
@@ -84,7 +85,7 @@ public class RiesgosAdapter extends FirestoreRecyclerAdapter<Proyecto, RiesgosAd
                     int tareas_completadas = queryDocumentSnapshots.size();
                     if (total_tareas != 0){
                         double avance = (tareas_completadas*100.00)/total_tareas;
-                        holder.textViewAvance.setText(avance + "% de avance");
+                        holder.textViewAvance.setText(new DecimalFormat("0.00").format(avance) + "% de avance");
                     }
                     else{
                         holder.textViewAvance.setText("No hay tareas");

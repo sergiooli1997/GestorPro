@@ -40,6 +40,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
@@ -104,7 +105,7 @@ public class ProyectosAdapter extends FirestoreRecyclerAdapter<Proyecto, Proyect
                     int tareas_completadas = queryDocumentSnapshots.size();
                     if (total_tareas != 0){
                         double avance = (tareas_completadas*100.00)/total_tareas;
-                        holder.textViewAvance.setText(avance + "% de avance");
+                        holder.textViewAvance.setText(new DecimalFormat("0.00").format(avance) + "% de avance");
                     }
                     else{
                         holder.textViewAvance.setText("No hay tareas");

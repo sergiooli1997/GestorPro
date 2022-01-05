@@ -161,9 +161,9 @@ public class LineaTiempoFragment extends Fragment {
                             loadProyecto();
                         }
                         else{
-                            query[0] = mTareaProvider.getTareaCompletoByValorByUser(mAuthProvider.getUid(), 0);
-                            query[1] = mTareaProvider.getTareaCompletoByValorByUser(mAuthProvider.getUid(), 1);
-                            query[2] = mTareaProvider.getTareaRetrasoByUser(mAuthProvider.getUid(), 1);
+                            query[0] = mTareaProvider.getTareaIcompletoByValorByUser(mAuthProvider.getUid());
+                            query[1] = mTareaProvider.getTareaCompletoByValorByUser(mAuthProvider.getUid());
+                            query[2] = mTareaProvider.getTareaRetrasoByUser(mAuthProvider.getUid());
 
                             FirestoreRecyclerOptions<Tarea>  options1 = new FirestoreRecyclerOptions.Builder<Tarea>()
                                     .setQuery(query[0], Tarea.class)
@@ -231,9 +231,9 @@ public class LineaTiempoFragment extends Fragment {
                         String id = document.getString("id");
                         proyectos.add(nombre_proyectos);
                         id_proyectos.add(id);
-                        query[0] = mTareaProvider.getTareaCompletoByValorAllUser(id_proyectos,0);
-                        query[1] = mTareaProvider.getTareaCompletoByValorAllUser(id_proyectos,1);
-                        query[2] = mTareaProvider.getTareaRetrasoAllUser(id_proyectos,1);
+                        query[0] = mTareaProvider.getTareasIncompletasByValorAllUser(id_proyectos);
+                        query[1] = mTareaProvider.getTareasCompletasByValorAllUser(id_proyectos);
+                        query[2] = mTareaProvider.getTareaRetrasoAllUser(id_proyectos);
 
                         FirestoreRecyclerOptions<Tarea>  options1 = new FirestoreRecyclerOptions.Builder<Tarea>()
                                 .setQuery(query[0], Tarea.class)
